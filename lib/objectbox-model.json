@@ -1,0 +1,221 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:7775963153462216571",
+      "lastPropertyId": "4:5902914912258986544",
+      "name": "LoginResponseModelObj",
+      "properties": [
+        {
+          "id": "1:1295374064518727683",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:4868740457896375066",
+          "name": "httpCode",
+          "type": 6
+        },
+        {
+          "id": "3:2587304734327671881",
+          "name": "message",
+          "type": 9
+        },
+        {
+          "id": "4:5902914912258986544",
+          "name": "data",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:4960398078162770266",
+      "lastPropertyId": "4:3279742297215100433",
+      "name": "PlayerDetailsModelObj",
+      "properties": [
+        {
+          "id": "1:6836518152409413500",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:2544410350912881650",
+          "name": "httpCode",
+          "type": 6
+        },
+        {
+          "id": "3:4383151688051731588",
+          "name": "message",
+          "type": 9
+        },
+        {
+          "id": "4:3279742297215100433",
+          "name": "data",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:2269252030156946670",
+      "lastPropertyId": "4:2454459784757490407",
+      "name": "SportsDatamodelObj",
+      "properties": [
+        {
+          "id": "1:6474923495441452676",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:932775861304959490",
+          "name": "httpCode",
+          "type": 6
+        },
+        {
+          "id": "3:6276810349621832239",
+          "name": "message",
+          "type": 9
+        },
+        {
+          "id": "4:2454459784757490407",
+          "name": "data",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:8660093472256058846",
+      "lastPropertyId": "4:6107004349809873300",
+      "name": "VenueActivitiesObj",
+      "properties": [
+        {
+          "id": "1:4093511396128248453",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:749259751443132862",
+          "name": "httpCode",
+          "type": 6
+        },
+        {
+          "id": "3:2373571750053000346",
+          "name": "message",
+          "type": 9
+        },
+        {
+          "id": "4:6107004349809873300",
+          "name": "data",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:2915487773261947037",
+      "lastPropertyId": "4:7489688988883088097",
+      "name": "VenueBookingsResponseModelObj",
+      "properties": [
+        {
+          "id": "1:2523961094040975169",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:1188915496206898192",
+          "name": "httpCode",
+          "type": 6
+        },
+        {
+          "id": "3:532344500907617517",
+          "name": "message",
+          "type": 9
+        },
+        {
+          "id": "4:7489688988883088097",
+          "name": "data",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:3745135822207626095",
+      "lastPropertyId": "4:4635381241698875706",
+      "name": "VenueDetailsModelObj",
+      "properties": [
+        {
+          "id": "1:765321974117756496",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:1927807465065253247",
+          "name": "httpCode",
+          "type": 6
+        },
+        {
+          "id": "3:8172474769680412659",
+          "name": "message",
+          "type": 9
+        },
+        {
+          "id": "4:4635381241698875706",
+          "name": "data",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "7:8513644944553792741",
+      "lastPropertyId": "4:297744022195807030",
+      "name": "VenueMediaModelObj",
+      "properties": [
+        {
+          "id": "1:363386252358201948",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:8202295944660013260",
+          "name": "httpCode",
+          "type": 6
+        },
+        {
+          "id": "3:7278319546727669090",
+          "name": "message",
+          "type": 9
+        },
+        {
+          "id": "4:297744022195807030",
+          "name": "data",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "7:8513644944553792741",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
