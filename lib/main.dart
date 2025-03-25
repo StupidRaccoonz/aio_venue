@@ -63,49 +63,68 @@ class MyApp extends StatelessWidget {
     ]);
     return ScaledSize(builder: () {
       // getStorage.write(Constants.isNewAccount, true);
-      profile.isLoggedIn.value = getStorage.read<bool>(Constants.isLoggedIn) ?? false;
+      profile.isLoggedIn.value =
+          getStorage.read<bool>(Constants.isLoggedIn) ?? false;
       // bool isNew = getStorage.read<bool>(Constants.isNewAccount) ?? false;
       // if user is logged in
       if (profile.isLoggedIn.value && !objectbox.loginBox.isEmpty()) {
-        profile.loginDataModel.value = LoginResponseModel.fromJson(objectbox.loginBox.get(1)!.toJson());
+        profile.loginDataModel.value =
+            LoginResponseModel.fromJson(objectbox.loginBox.get(1)!.toJson());
         log("user info ${profile.loginDataModel.value?.toJson()}");
 
         // get all sports list
         if (!objectbox.sportsBox.isEmpty()) {
-          profile.sportsList.assignAll(SportsDatamodel.fromJson(objectbox.sportsBox.get(5)!.toJson()).data!.sports);
+          profile.sportsList.assignAll(
+              SportsDatamodel.fromJson(objectbox.sportsBox.get(5)!.toJson())
+                  .data!
+                  .sports);
         }
         profile.venueService.getSports(profile.bearer).then((value) {
-          if (value != null && value.data != null && value.data!.sports.isNotEmpty) {
+          if (value != null &&
+              value.data != null &&
+              value.data!.sports.isNotEmpty) {
             profile.sportsList.assignAll(value.data!.sports);
             profile.sportsList.refresh();
-            objectbox.sportsBox.put(SportsDatamodelObj.fromJson(value.toJson()));
+            objectbox.sportsBox
+                .put(SportsDatamodelObj.fromJson(value.toJson()));
           }
         });
 
         if (profile.isVenue()) {
           // if offline data available
           if (!objectbox.venueBox.isEmpty()) {
-            profile.currentVenue.value = venue.VenueDetailsModel.fromJson(objectbox.venueBox.get(2)!.toJson());
+            profile.currentVenue.value = venue.VenueDetailsModel.fromJson(
+                objectbox.venueBox.get(2)!.toJson());
 
             // get venue sports list
-            profile.venueService.getVenueSports(profile.bearer, "${profile.venueId}").then((value) {
-              if (value != null && value.data != null && value.data!.sports.isNotEmpty) {
+            profile.venueService
+                .getVenueSports(profile.bearer, "${profile.venueId}")
+                .then((value) {
+              if (value != null &&
+                  value.data != null &&
+                  value.data!.sports.isNotEmpty) {
                 profile.selectedSportsList.assignAll(value.data!.sports);
                 profile.selectedSportsList.refresh();
                 if (profile.addGroundFormsList.isNotEmpty) {
-                  profile.addGroundFormsList.first.value.groundSize = profile.selectedSportsList.first.sportsizes.first.size;
+                  profile.addGroundFormsList.first.value.groundSize =
+                      profile.selectedSportsList.first.sportsizes.first.size;
                 }
               }
             });
 
             // Get venue details
-            profile.venueService.getVenueDetails(profile.bearer, "${profile.venueId}").then((response) {
+            profile.venueService
+                .getVenueDetails(profile.bearer, "${profile.venueId}")
+                .then((response) {
               if (response != null && response.httpCode == 200) {
                 profile.currentVenue.value = response;
-                objectbox.venueBox.put(VenueDetailsModelObj.fromJson(response.toJson()));
+                objectbox.venueBox
+                    .put(VenueDetailsModelObj.fromJson(response.toJson()));
               }
             });
-            profile.venueService.getMyVenuesDetails(profile.bearer).then((MyVenuesResponseModel? myVenues) {
+            profile.venueService
+                .getMyVenuesDetails(profile.bearer)
+                .then((MyVenuesResponseModel? myVenues) {
               if (myVenues != null && myVenues.data != null) {
                 profile.myVenues.value = myVenues;
               }
@@ -123,14 +142,24 @@ class MyApp extends StatelessWidget {
             // profile.currentVenue.value = VenueDetailsModel.fromJson(objectbox.venueBox.get(2)!.toJson());
             profile.loading.value = true;
             // getting venue details from API
-            profile.venueService.getMyVenuesDetails(profile.bearer).then((MyVenuesResponseModel? myVenues) async {
-              if (myVenues != null && myVenues.data != null && myVenues.data!.venue.isNotEmpty && myVenues.httpCode == 200) {
-                profile.currentVenue.value = venue.VenueDetailsModel.fromJson(myVenues.toJson());
+            profile.venueService
+                .getMyVenuesDetails(profile.bearer)
+                .then((MyVenuesResponseModel? myVenues) async {
+              if (myVenues != null &&
+                  myVenues.data != null &&
+                  myVenues.data!.venue.isNotEmpty &&
+                  myVenues.httpCode == 200) {
+                profile.currentVenue.value =
+                    venue.VenueDetailsModel.fromJson(myVenues.toJson());
                 profile.myVenues.value = myVenues;
                 profile.myVenues.refresh();
                 // get venue sports list
-                await profile.venueService.getVenueSports(profile.bearer, "${profile.venueId}").then((value) {
-                  if (value != null && value.data != null && value.data!.sports.isNotEmpty) {
+                await profile.venueService
+                    .getVenueSports(profile.bearer, "${profile.venueId}")
+                    .then((value) {
+                  if (value != null &&
+                      value.data != null &&
+                      value.data!.sports.isNotEmpty) {
                     profile.selectedSportsList.assignAll(value.data!.sports);
                     profile.selectedSportsList.refresh();
                   }
@@ -142,7 +171,8 @@ class MyApp extends StatelessWidget {
                 profile.getVenueReviews();
                 profile.getVenueEarning();
                 // adding data for offline
-                objectbox.venueBox.put(VenueDetailsModelObj.fromJson(profile.currentVenue.value!.toJson()));
+                objectbox.venueBox.put(VenueDetailsModelObj.fromJson(
+                    profile.currentVenue.value!.toJson()));
               } else {
                 // Constants.showSnackbar("Error", myVenues?.message ?? "Venue data not found");
                 getStorage.write(Constants.lastPage, 'VenueDetails');
@@ -174,7 +204,10 @@ class MyApp extends StatelessWidget {
           }
           double textScale = MediaQuery.of(context).textScaler.scale(1);
           log("textScale value: $textScale");
-          return MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(textScale >= 1 ? 0.8 : 0.9)), child: child);
+          return MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                  textScaler: TextScaler.linear(textScale >= 1 ? 0.8 : 0.9)),
+              child: child);
         },
       );
     });
