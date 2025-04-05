@@ -24,7 +24,8 @@ class VenueCreateActivityScreen extends StatefulWidget {
   const VenueCreateActivityScreen({super.key});
 
   @override
-  State<VenueCreateActivityScreen> createState() => _VenueCreateActivityScreenState();
+  State<VenueCreateActivityScreen> createState() =>
+      _VenueCreateActivityScreenState();
 }
 
 class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
@@ -58,7 +59,9 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
   void initState() {
     manager.selectedSport = Rx(venueController.selectedSportsList.first.name);
     sport = venueController.selectedSportsList.first;
-    selectedGroundData = venueController.currentVenue.value!.data!.venue.grounds.firstWhere((element) => element.sportsId == sport.id).obs;
+    selectedGroundData = venueController.currentVenue.value!.data!.venue.grounds
+        .firstWhere((element) => element.sportsId == sport.id)
+        .obs;
 
     manager.selectedDate.value = dateTime.day;
     setState(() {});
@@ -96,11 +99,16 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("Select date", style: Get.textTheme.displayMedium),
+                            Text("Select date",
+                                style: Get.textTheme.displayMedium),
                             const Spacer(),
                             InkWell(
                               onTap: () async {
-                                final datePicked = await showDatePicker(context: context, initialDate: dateTime, firstDate: DateTime.now(), lastDate: DateTime(2030, 12, 31));
+                                final datePicked = await showDatePicker(
+                                    context: context,
+                                    initialDate: dateTime,
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime(2030, 12, 31));
                                 if (datePicked != null) {
                                   dateTime = datePicked;
                                   manager.selectedDate.value = dateTime.day;
@@ -111,9 +119,12 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.calendar_month_rounded, color: CustomTheme.iconColor),
+                                    Icon(Icons.calendar_month_rounded,
+                                        color: CustomTheme.iconColor),
                                     const SizedBox(width: 8.0),
-                                    Text(Constants.monthToString(dateTime.month), style: Get.textTheme.headlineSmall),
+                                    Text(
+                                        Constants.monthToString(dateTime.month),
+                                        style: Get.textTheme.headlineSmall),
                                   ],
                                 ),
                               ),
@@ -147,30 +158,41 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("Select time", style: Get.textTheme.displayMedium),
+                            Text("Select time",
+                                style: Get.textTheme.displayMedium),
                             const Spacer(),
                             Material(
-                              color: isAM.value ? CustomTheme.iconColor : Colors.white,
+                              color: isAM.value
+                                  ? CustomTheme.iconColor
+                                  : Colors.white,
                               child: InkWell(
                                 onTap: () => isAM.value = true,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text("AM",
-                                      style: Get.textTheme.headlineSmall!.copyWith(
-                                        color: isAM.value ? Colors.white : CustomTheme.iconColor,
+                                      style:
+                                          Get.textTheme.headlineSmall!.copyWith(
+                                        color: isAM.value
+                                            ? Colors.white
+                                            : CustomTheme.iconColor,
                                       )),
                                 ),
                               ),
                             ),
                             Material(
-                              color: isAM.value ? Colors.white : CustomTheme.iconColor,
+                              color: isAM.value
+                                  ? Colors.white
+                                  : CustomTheme.iconColor,
                               child: InkWell(
                                 onTap: () => isAM.value = false,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text("PM",
-                                      style: Get.textTheme.headlineSmall!.copyWith(
-                                        color: isAM.value ? CustomTheme.iconColor : Colors.white,
+                                      style:
+                                          Get.textTheme.headlineSmall!.copyWith(
+                                        color: isAM.value
+                                            ? CustomTheme.iconColor
+                                            : Colors.white,
                                       )),
                                 ),
                               ),
@@ -206,26 +228,44 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                         // time seletion end
 
                         const SizedBox(height: 16.0),
-                        Text("Select sport", style: Get.textTheme.displayMedium),
+                        Text("Select sport",
+                            style: Get.textTheme.displayMedium),
                         const SizedBox(height: 16.0),
                         Material(
                           color: Colors.white,
                           elevation: 1,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0), side: BorderSide(width: 0.5, color: CustomTheme.borderColor)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                              side: BorderSide(
+                                  width: 0.5, color: CustomTheme.borderColor)),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: DropdownButton<String>(
                               value: manager.selectedSport.value,
                               isExpanded: true,
                               underline: const SizedBox(),
-                              icon: const Icon(Icons.keyboard_arrow_down_rounded, size: 30.0),
-                              items: venueController.selectedSportsList.map<DropdownMenuItem<String>>((e) => DropdownMenuItem(value: e.name, child: Text(e.name))).toList(),
+                              icon: const Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  size: 30.0),
+                              items: venueController.selectedSportsList
+                                  .map<DropdownMenuItem<String>>((e) =>
+                                      DropdownMenuItem(
+                                          value: e.name, child: Text(e.name)))
+                                  .toList(),
                               onChanged: (value) {
                                 if (value != null) {
                                   manager.selectedSport.value = value;
-                                  sport = venueController.selectedSportsList.firstWhere((element) => element.name == value);
-                                  if (venueController.currentVenue.value!.data!.venue.grounds.any((element) => element.sportsId == sport.id)) {
-                                    selectedGroundData.value = venueController.currentVenue.value!.data!.venue.grounds.firstWhere((element) => element.sportsId == sport.id);
+                                  sport = venueController.selectedSportsList
+                                      .firstWhere(
+                                          (element) => element.name == value);
+                                  if (venueController
+                                      .currentVenue.value!.data!.venue.grounds
+                                      .any((element) =>
+                                          element.sportsId == sport.id)) {
+                                    selectedGroundData.value = venueController
+                                        .currentVenue.value!.data!.venue.grounds
+                                        .firstWhere((element) =>
+                                            element.sportsId == sport.id);
                                   }
                                 }
                               },
@@ -233,20 +273,33 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                           ),
                         ),
                         const SizedBox(height: 16.0),
-                        Text("Select ground", style: Get.textTheme.displayMedium),
+                        Text("Select ground",
+                            style: Get.textTheme.displayMedium),
                         const SizedBox(height: 16.0),
                         Material(
                           color: Colors.white,
                           elevation: 1,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0), side: BorderSide(width: 0.5, color: CustomTheme.borderColor)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                              side: BorderSide(
+                                  width: 0.5, color: CustomTheme.borderColor)),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: DropdownButton<venue.Ground>(
                               value: selectedGroundData.value,
                               isExpanded: true,
                               underline: const SizedBox(),
-                              icon: const Icon(Icons.keyboard_arrow_down_rounded, size: 30.0),
-                              items: venueController.currentVenue.value!.data!.venue.grounds.where((element) => element.sportsId == sport.id).map<DropdownMenuItem<venue.Ground>>((e) => DropdownMenuItem<venue.Ground>(value: e, child: Text("${e.name}"))).toList(),
+                              icon: const Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  size: 30.0),
+                              items: venueController
+                                  .currentVenue.value!.data!.venue.grounds
+                                  .where(
+                                      (element) => element.sportsId == sport.id)
+                                  .map<DropdownMenuItem<venue.Ground>>((e) =>
+                                      DropdownMenuItem<venue.Ground>(
+                                          value: e, child: Text("${e.name}")))
+                                  .toList(),
                               onChanged: (value) {
                                 if (value != null) {
                                   selectedGroundData.value = value;
@@ -258,12 +311,16 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                         ),
                         const SizedBox(height: 20.0),
 
-                        Text("Team required ?", style: Get.textTheme.displayMedium),
+                        Text("Team required ?",
+                            style: Get.textTheme.displayMedium),
                         const SizedBox(height: 16.0),
                         Material(
                           color: Colors.white,
                           elevation: 1,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0), side: BorderSide(width: 0.5, color: CustomTheme.borderColor)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                              side: BorderSide(
+                                  width: 0.5, color: CustomTheme.borderColor)),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -276,10 +333,12 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                                       manager.teamChallange.value = value;
                                     }
                                   },
-                                  title: Text("No, Single player challenge", style: Get.textTheme.bodySmall),
+                                  title: Text("No, Single player challenge",
+                                      style: Get.textTheme.bodySmall),
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 16.0),
                                   child: Divider(),
                                 ),
                                 RadioListTile(
@@ -290,7 +349,8 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                                       manager.teamChallange.value = value;
                                     }
                                   },
-                                  title: Text("Yes, Team challenge", style: Get.textTheme.bodySmall),
+                                  title: Text("Yes, Team challenge",
+                                      style: Get.textTheme.bodySmall),
                                 ),
                                 Obx(() {
                                   return manager.teamChallange.value
@@ -298,45 +358,86 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: Material(
                                             elevation: 1,
-                                            color: CustomTheme.bocLightBackground,
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0), side: BorderSide(width: 0.5, color: CustomTheme.borderColor)),
+                                            color:
+                                                CustomTheme.bocLightBackground,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16.0),
+                                                side: BorderSide(
+                                                    width: 0.5,
+                                                    color: CustomTheme
+                                                        .borderColor)),
                                             child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16.0,
+                                                      vertical: 20.0),
                                               child: Row(
                                                 children: [
-                                                  Expanded(child: Text("How many players in each team?", style: TextStyle(color: Color(0xff6E6F73), fontSize: 16, fontWeight: FontWeight.bold))),
+                                                  Expanded(
+                                                      child: Text(
+                                                          "How many players in each team?",
+                                                          style: TextStyle(
+                                                              color: Color(
+                                                                  0xff6E6F73),
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold))),
                                                   //  Get.textTheme.displaySmall,
                                                   const SizedBox(width: 8.0),
                                                   Material(
                                                       color: Colors.white,
                                                       elevation: 2.0,
-                                                      borderRadius: BorderRadius.circular(4.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4.0),
                                                       child: InkWell(
                                                         onTap: () {
-                                                          if (manager.numberOfPlayers.value > 0) {
-                                                            manager.numberOfPlayers.value--;
+                                                          if (manager
+                                                                  .numberOfPlayers
+                                                                  .value >
+                                                              0) {
+                                                            manager
+                                                                .numberOfPlayers
+                                                                .value--;
                                                           }
                                                         },
                                                         child: const Padding(
-                                                          padding: EdgeInsets.all(6.0),
-                                                          child: Icon(Icons.remove),
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  6.0),
+                                                          child: Icon(
+                                                              Icons.remove),
                                                         ),
                                                       )),
                                                   Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Text("${manager.numberOfPlayers.value}", style: Get.textTheme.bodySmall),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                        "${manager.numberOfPlayers.value}",
+                                                        style: Get.textTheme
+                                                            .bodySmall),
                                                   ),
                                                   Material(
                                                       color: Colors.white,
                                                       elevation: 2.0,
-                                                      borderRadius: BorderRadius.circular(4.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4.0),
                                                       child: InkWell(
                                                         onTap: () {
-                                                          manager.numberOfPlayers.value++;
+                                                          manager
+                                                              .numberOfPlayers
+                                                              .value++;
                                                         },
                                                         child: const Padding(
-                                                          padding: EdgeInsets.all(6.0),
-                                                          child: Icon(Icons.add),
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  6.0),
+                                                          child:
+                                                              Icon(Icons.add),
                                                         ),
                                                       )),
                                                 ],
@@ -357,29 +458,50 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                         Material(
                             color: Colors.white,
                             elevation: 1,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0), side: BorderSide(width: 0.5, color: CustomTheme.borderColor)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                                side: BorderSide(
+                                    width: 0.5,
+                                    color: CustomTheme.borderColor)),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Material(
                                 color: CustomTheme.bocLightBackground,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0), side: BorderSide(width: 0.5, color: CustomTheme.borderColor)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    side: BorderSide(
+                                        width: 0.5,
+                                        color: CustomTheme.borderColor)),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 20.0),
                                   child: Row(
                                     children: [
-                                      SizedBox(width: constraints.maxWidth * 0.5, child: Text("Registration fees for each team.", style: TextStyle(color: Color(0xff6E6F73), fontSize: 16, fontWeight: FontWeight.bold))),
+                                      SizedBox(
+                                          width: constraints.maxWidth * 0.5,
+                                          child: Text(
+                                              "Registration fees for each team.",
+                                              style: TextStyle(
+                                                  color: Color(0xff6E6F73),
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      FontWeight.bold))),
                                       const SizedBox(width: 10.0),
                                       Expanded(
                                         flex: 2,
                                         child: InputFieldWidget(
-                                          textStyle: TextStyle(fontWeight: FontWeight.bold, color: CustomTheme.green),
-                                          textEditingController: registrationFeeC,
+                                          textStyle: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: CustomTheme.green),
+                                          textEditingController:
+                                              registrationFeeC,
                                           inputType: TextInputType.number,
                                           prefixText: "OMR",
                                           // textColor: CustomTheme.green,
                                           hint: "25",
                                           validate: (value) {
-                                            if (value == null || value.isEmpty) {
+                                            if (value == null ||
+                                                value.isEmpty) {
                                               return "fields is required";
                                             }
                                             return null;
@@ -393,34 +515,55 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                               ),
                             )),
                         const SizedBox(height: 20.0),
-                        Text("Winning price", style: Get.textTheme.displayMedium),
+                        Text("Winning price",
+                            style: Get.textTheme.displayMedium),
                         const SizedBox(height: 16.0),
                         Material(
                             color: Colors.white,
                             elevation: 1.5,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0), side: BorderSide(width: 0.5, color: CustomTheme.borderColor)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                                side: BorderSide(
+                                    width: 0.5,
+                                    color: CustomTheme.borderColor)),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Material(
                                 color: CustomTheme.bocLightBackground,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0), side: BorderSide(width: 0.5, color: CustomTheme.borderColor)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    side: BorderSide(
+                                        width: 0.5,
+                                        color: CustomTheme.borderColor)),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 20.0),
                                   child: Row(
                                     children: [
-                                      SizedBox(width: constraints.maxWidth * 0.5, child: Text("Winning amount must be higher then registration fees.", style: TextStyle(color: Color(0xff6E6F73), fontSize: 16, fontWeight: FontWeight.bold))),
+                                      SizedBox(
+                                          width: constraints.maxWidth * 0.5,
+                                          child: Text(
+                                              "Winning amount must be higher then registration fees.",
+                                              style: TextStyle(
+                                                  color: Color(0xff6E6F73),
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      FontWeight.bold))),
                                       const SizedBox(width: 10.0),
                                       Expanded(
                                         flex: 2,
                                         child: InputFieldWidget(
-                                          textStyle: TextStyle(fontWeight: FontWeight.bold, color: CustomTheme.green),
+                                          textStyle: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: CustomTheme.green),
                                           textEditingController: winningPriceC,
                                           inputType: TextInputType.number,
                                           prefixText: "OMR",
                                           hint: "100",
                                           // textColor: CustomTheme.green,
                                           validate: (value) {
-                                            if (value == null || value.isEmpty) {
+                                            if (value == null ||
+                                                value.isEmpty) {
                                               return "fields is required";
                                             }
                                             return null;
@@ -434,14 +577,16 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                               ),
                             )),
                         const SizedBox(height: 20.0),
-                        Text("Define rules", style: Get.textTheme.displayMedium),
+                        Text("Define rules",
+                            style: Get.textTheme.displayMedium),
                         const SizedBox(height: 16.0),
                         Material(
                           color: Colors.white,
                           elevation: 2.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
-                            side: BorderSide(width: 0.5, color: CustomTheme.borderColor),
+                            side: BorderSide(
+                                width: 0.5, color: CustomTheme.borderColor),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -452,12 +597,16 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                                   children: [
                                     Expanded(
                                         child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
                                       child: InputFieldWidget(
                                         textEditingController: rulesC,
                                         label: "Write rules here",
                                         inputAction: TextInputAction.done,
-                                        textStyle: TextStyle(color: Color(0xff6E6F73), fontSize: 16, fontWeight: FontWeight.bold),
+                                        textStyle: TextStyle(
+                                            color: Color(0xff6E6F73),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     )),
                                     // IconButton(
@@ -481,9 +630,11 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                                                 title: Text(element),
                                                 onTap: () {},
                                                 trailing: IconButton(
-                                                  icon: const Icon(Icons.delete_outline_outlined),
+                                                  icon: const Icon(Icons
+                                                      .delete_outline_outlined),
                                                   onPressed: () {
-                                                    rules.removeWhere((value) => element == value);
+                                                    rules.removeWhere((value) =>
+                                                        element == value);
                                                     rules.refresh();
                                                   },
                                                 ),
@@ -497,7 +648,8 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                                   alignment: Alignment.bottomRight,
                                   child: InkWell(
                                     onTap: () {
-                                      print("vivek test ===========================>");
+                                      print(
+                                          "vivek test ===========================>");
                                       if (rulesC.text.isNotEmpty) {
                                         rules.add(rulesC.text);
                                         rulesC.clear();
@@ -506,7 +658,8 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text("+Add one more", style: Get.textTheme.headlineSmall),
+                                      child: Text("+Add one more",
+                                          style: Get.textTheme.headlineSmall),
                                     ),
                                   ),
                                 )
@@ -515,6 +668,11 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                           ),
                         ),
                         const SizedBox(height: 30.0),
+                        Text(
+                            "We accept online payments, including card payments as well.",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: const Color.fromARGB(255, 47, 125, 49))),
                         MyButton(
                           text: "Create Activity",
                           height: constraints.maxHeight * 0.05,
@@ -527,7 +685,13 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
                     ),
                   ),
                 ),
-                manager.loading.value ? Container(color: Colors.white54, child: Center(child: CircularProgressIndicator(color: CustomTheme.appColor))) : const SizedBox(),
+                manager.loading.value
+                    ? Container(
+                        color: Colors.white54,
+                        child: Center(
+                            child: CircularProgressIndicator(
+                                color: CustomTheme.appColor)))
+                    : const SizedBox(),
               ],
             );
           }),
@@ -544,9 +708,12 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
         Constants.showSnackbar("Error", "select time slot first");
         return;
       }
-      final list = venueController.currentVenue.value!.data!.venue.grounds.where((element) => element.sportsId == sport.id).toList();
+      final list = venueController.currentVenue.value!.data!.venue.grounds
+          .where((element) => element.sportsId == sport.id)
+          .toList();
       if (list.isEmpty) {
-        Constants.showSnackbar("Error", "no ground available for ${manager.selectedSport}");
+        Constants.showSnackbar(
+            "Error", "no ground available for ${manager.selectedSport}");
         manager.loading.value = false;
         return;
       }
@@ -556,9 +723,22 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
       if (hasPaid) {
         Constants.showSnackbar("Success", "Your payment has been successful.");
         final ground = list.first;
-        requestModel = VenueCreateActivityRequestModel(date: _selectedDays.isEmpty ? _focusedDay : _selectedDays.first, numberOfPlayers: manager.numberOfPlayers.value, sportId: sport.id, morningAvailability: ground.morningAvailability, eveningAvailability: ground.eveningAvailability, bookedSlots: selectedSlots, rules: rules, entryFees: registrationFeeC.text, venueId: manager.selectedVenue.value.data!.venue.id, teamRequired: manager.teamChallange.value ? "yes" : "no", winningPrice: winningPriceC.text, createdBy: 'venue');
+        requestModel = VenueCreateActivityRequestModel(
+            date: _selectedDays.isEmpty ? _focusedDay : _selectedDays.first,
+            numberOfPlayers: manager.numberOfPlayers.value,
+            sportId: sport.id,
+            morningAvailability: ground.morningAvailability,
+            eveningAvailability: ground.eveningAvailability,
+            bookedSlots: selectedSlots,
+            rules: rules,
+            entryFees: registrationFeeC.text,
+            venueId: manager.selectedVenue.value.data!.venue.id,
+            teamRequired: manager.teamChallange.value ? "yes" : "no",
+            winningPrice: winningPriceC.text,
+            createdBy: 'venue');
 
-        final result = await manager.venueService.createVenueActivity(venueController.bearer, requestModel);
+        final result = await manager.venueService
+            .createVenueActivity(venueController.bearer, requestModel);
         if (result != null && result.httpCode == 200) {
           venueController.getVenueActivities(getNewData: true);
 
@@ -572,7 +752,8 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
   }
 
   Future<bool> createThawaniSession() async {
-    final url = Uri.parse("https://uatcheckout.thawani.om/api/v1/checkout/session");
+    final url =
+        Uri.parse("https://uatcheckout.thawani.om/api/v1/checkout/session");
     final body = jsonEncode({
       "client_reference_id": 'AIO_Ref_' + sport.id.toString(),
       "products": [
@@ -606,7 +787,10 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      final status = await Get.to(() => ThaiwanPayScreen(url: 'https://uatcheckout.thawani.om/pay/${data['data']['session_id']}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy', targetUrl: "https://yourapp.com/success"));
+      final status = await Get.to(() => ThaiwanPayScreen(
+          url:
+              'https://uatcheckout.thawani.om/pay/${data['data']['session_id']}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy',
+          targetUrl: "https://yourapp.com/success"));
       print('Payment status: $status');
       if (status != null && status == 'success') {
         return true;
