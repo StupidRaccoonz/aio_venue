@@ -12,10 +12,14 @@ import 'package:aio_sport/models/login_response_model.dart';
 import 'package:aio_sport/models/my_venues_model.dart' as my_venue;
 import 'package:aio_sport/models/paused_ground_model.dart';
 import 'package:aio_sport/models/player/player_details_model.dart';
-import 'package:aio_sport/models/player/player_my_matches_response_model.dart' as mymatch;
-import 'package:aio_sport/models/player/player_nearby_matches_response.dart' as nearby;
-import 'package:aio_sport/models/player/player_team_response_model.dart' as myteams;
-import 'package:aio_sport/models/player/sports_venue_list_model.dart' as sportsvenue;
+import 'package:aio_sport/models/player/player_my_matches_response_model.dart'
+    as mymatch;
+import 'package:aio_sport/models/player/player_nearby_matches_response.dart'
+    as nearby;
+import 'package:aio_sport/models/player/player_team_response_model.dart'
+    as myteams;
+import 'package:aio_sport/models/player/sports_venue_list_model.dart'
+    as sportsvenue;
 import 'package:aio_sport/models/sports_data_model.dart' as sports;
 import 'package:aio_sport/models/success_response_model.dart';
 import 'package:aio_sport/models/teams_list_data_model.dart';
@@ -39,14 +43,17 @@ import 'package:get/get.dart';
 import '../models/venue_earning_model.dart';
 
 class ProfileController extends GetxController {
-  final authController = Get.isRegistered<AuthController>() ? Get.find<AuthController>() : Get.put(AuthController());
+  final authController = Get.isRegistered<AuthController>()
+      ? Get.find<AuthController>()
+      : Get.put(AuthController());
   var loading = false.obs;
   Rx<LoginResponseModel?> loginDataModel = Rx(null);
   Rx<VenueDetailsModel?> currentVenue = Rx(null);
   Rx<PlayerDetailsModel?> currentPlayer = Rx(null);
   RxList<mymatch.Match> playerMatches = <mymatch.Match>[].obs;
   RxList<nearby.Match> playerNearbyMatches = <nearby.Match>[].obs;
-  RxList<sportsvenue.Venue> playerSportsVenueInfoList = <sportsvenue.Venue>[].obs;
+  RxList<sportsvenue.Venue> playerSportsVenueInfoList =
+      <sportsvenue.Venue>[].obs;
   RxList<myteams.MyTeam> myTeams = <myteams.MyTeam>[].obs;
   Rx<VenueBookingsResponseModel?> venueBookings = Rx(null);
   Rx<VenueCreateActivityResponse?> venueActivities = Rx(null);
@@ -56,7 +63,8 @@ class ProfileController extends GetxController {
   Rx<analytics.VenueAnalyticsModel?> venueAnalytics = Rx(null);
   Rx<VenueEarningModel?> venueEarnings = Rx(null);
   Rx<VenueReviewsModel?> venueReviews = Rx(null);
-  Rx<VenueMediaModel> venueMedia = Rx(VenueMediaModel(data: null, httpCode: 403, message: "Data not found."));
+  Rx<VenueMediaModel> venueMedia = Rx(
+      VenueMediaModel(data: null, httpCode: 403, message: "Data not found."));
   Rx<my_venue.MyVenuesResponseModel?> myVenues = Rx(null);
   RxList<sports.Sport?> sportsList = <sports.Sport?>[].obs;
   RxList listOfVenueActivities = [].obs;
@@ -78,7 +86,11 @@ class ProfileController extends GetxController {
 
   int get numberOfBookings => venueBookings.value?.bookings?.data.length ?? 0;
 
-  List<sports.Sport?> get venueSports => currentVenue.value!.data!.venue.sports?.map((e) => sportsList.firstWhere((element) => element!.id == e.id)).toList() ?? <sports.Sport>[];
+  List<sports.Sport?> get venueSports =>
+      currentVenue.value!.data!.venue.sports
+          ?.map((e) => sportsList.firstWhere((element) => element!.id == e.id))
+          .toList() ??
+      <sports.Sport>[];
   var addFormSelectedSport = 0.obs;
   var addGroundFormSelectedGround = 0.obs;
   var addGroundFormSelectedAddon = 0.obs;
@@ -108,11 +120,13 @@ class ProfileController extends GetxController {
     playerService = PlayerService(this);
   }
 
-  Future<SuccessResponseModel?> uploadMedia(List<File> videos, List<File> images, String venueId) async {
+  Future<SuccessResponseModel?> uploadMedia(
+      List<File> videos, List<File> images, String venueId) async {
     loading.value = true;
     SuccessResponseModel? model;
     if (images.isNotEmpty || videos.isNotEmpty) {
-      model = await commonService.uploadImages(images, videos, loginDataModel.value!.data!.user.token, venueId);
+      model = await commonService.uploadImages(
+          images, videos, loginDataModel.value!.data!.user.token, venueId);
       log("images upload result: $model");
     }
     return model;
@@ -193,7 +207,9 @@ class ProfileController extends GetxController {
     DateTime today = DateTime.now();
 
     bool isToday(DateTime date) {
-      return date.year == today.year && date.month == today.month && date.day == today.day;
+      return date.year == today.year &&
+          date.month == today.month &&
+          date.day == today.day;
     }
 
     final shortTermBookings = venueAnalytics.value?.data.shortTermBooking ?? [];
@@ -201,9 +217,13 @@ class ProfileController extends GetxController {
 
     log("Length --> Short(${shortTermBookings.length}) Long(${longTermBookings.length})");
 
-    int shortTermTotal = shortTermBookings.where((b) => isToday(b.bookingDate!)).fold(0, (sum, b) => sum + b.bookingCount);
+    int shortTermTotal = shortTermBookings
+        .where((b) => isToday(b.bookingDate!))
+        .fold(0, (sum, b) => sum + b.bookingCount);
 
-    int longTermTotal = longTermBookings.where((b) => isToday(b.bookingDate!)).fold(0, (sum, b) => sum + b.bookingCount);
+    int longTermTotal = longTermBookings
+        .where((b) => isToday(b.bookingDate!))
+        .fold(0, (sum, b) => sum + b.bookingCount);
 
     return shortTermTotal + longTermTotal;
   }
@@ -212,7 +232,9 @@ class ProfileController extends GetxController {
     DateTime today = DateTime.now();
 
     bool isToday(DateTime date) {
-      return date.year == today.year && date.month == today.month && date.day == today.day;
+      return date.year == today.year &&
+          date.month == today.month &&
+          date.day == today.day;
     }
 
     /*final shortTermBookings = venueAnalytics.value?.data.shortTermBooking ?? [];
@@ -231,9 +253,16 @@ class ProfileController extends GetxController {
     return todayBookings?.length ?? 0;
   }
 
-  void changePassword({required String oldPassword, required String newPassword, required String confirmPassword}) async {
+  void changePassword(
+      {required String oldPassword,
+      required String newPassword,
+      required String confirmPassword}) async {
     try {
-      var result = await authController.authService.changePassword(confirmPassword: confirmPassword, password: newPassword, oldPassword: oldPassword, token: loginDataModel.value?.data?.user.token ?? "");
+      var result = await authController.authService.changePassword(
+          confirmPassword: confirmPassword,
+          password: newPassword,
+          oldPassword: oldPassword,
+          token: loginDataModel.value?.data?.user.token ?? "");
       if (result != null) {
         if (result.httpCode != 200) {
           Constants.showSnackbar("Error", result.message);
@@ -249,7 +278,12 @@ class ProfileController extends GetxController {
 
   void submitReport({required String issue, required String id}) async {
     try {
-      var result = await commonService.submitReport(userId: loginDataModel.value?.data?.user.iD ?? 1, userRole: "venue", catergoryId: "17", issue: issue, token: loginDataModel.value?.data?.user.token ?? "");
+      var result = await commonService.submitReport(
+          userId: loginDataModel.value?.data?.user.iD ?? 1,
+          userRole: "venue",
+          catergoryId: "17",
+          issue: issue,
+          token: loginDataModel.value?.data?.user.token ?? "");
       if (result != null) {
         if (result.httpCode != 200) {
           Constants.showSnackbar("Error", result.message);
@@ -275,11 +309,13 @@ class ProfileController extends GetxController {
   void getVenueEarning() async {
     try {
       var value = await venueService.getVenueEarnings(bearer, "$venueId");
+      print('Valuereponse:' + value!.toString());
       if (value != null) {
         if (value.httpCode == 200) {
           venueEarnings.value = value;
           venueEarnings.refresh();
         } else {
+          print("Hello cutireee");
           return print("${value.httpCode}");
         }
       }
@@ -300,23 +336,30 @@ class ProfileController extends GetxController {
   void getVenueBookings() async {
     loading.value = true;
 
-    final shortResults = await venueService.getVenuesBookings(bearer, "$venueId", "short", "1", "6");
+    final shortResults = await venueService.getVenuesBookings(
+        bearer, "$venueId", "short", "1", "6");
 
-    final longResults = await venueService.getVenuesBookings(bearer, "$venueId", "long", "1", "6");
+    final longResults = await venueService.getVenuesBookings(
+        bearer, "$venueId", "long", "1", "6");
 
     longBookings.value = longResults;
     shortBookings.value = shortResults;
 
     if (shortResults != null && longResults != null) {
       if (shortResults.httpCode == 200 || longResults.httpCode == 200) {
-        var combinedBookings = [...?shortResults.bookings?.data, ...?longResults.bookings?.data];
+        var combinedBookings = [
+          ...?shortResults.bookings?.data,
+          ...?longResults.bookings?.data
+        ];
 
         venueBookings.value = shortResults;
-        combinedBookings.sort((b1, b2) => b2.bookingDate.compareTo(b1.bookingDate));
+        combinedBookings
+            .sort((b1, b2) => b2.bookingDate.compareTo(b1.bookingDate));
         venueBookings.value?.bookings?.data = combinedBookings;
         venueBookings.refresh();
         if (venueBookings.value != null) {
-          objectbox.venuebookingBox.put(VenueBookingsResponseModelObj.fromJson(venueBookings.value!.toJson()));
+          objectbox.venuebookingBox.put(VenueBookingsResponseModelObj.fromJson(
+              venueBookings.value!.toJson()));
         }
       }
     }
@@ -330,7 +373,8 @@ class ProfileController extends GetxController {
       if (results.httpCode == 200 && results.data != null) {
         venueActivities.value = results;
         venueActivities.refresh();
-        objectbox.venueActivityBox.put(VenueActivitiesObj.fromJson(results.toJson()));
+        objectbox.venueActivityBox
+            .put(VenueActivitiesObj.fromJson(results.toJson()));
       }
     }
     loading.value = false;
@@ -338,13 +382,15 @@ class ProfileController extends GetxController {
 
   void getOtherVenueActivities({bool? getNewData}) async {
     loading.value = true;
-    final results = await venueService.getOtherVenuesActivities(bearer, "$venueId");
+    final results =
+        await venueService.getOtherVenuesActivities(bearer, "$venueId");
     log("getOtherVenueActivities: $results");
     if (results != null) {
       if (results.httpCode == 200 && results.data != null) {
         otherVenueActivities.value = results;
         otherVenueActivities.refresh();
-        objectbox.otherVenueActivityBox.put(VenueActivitiesObj.fromJson(results.toJson()));
+        objectbox.otherVenueActivityBox
+            .put(VenueActivitiesObj.fromJson(results.toJson()));
       }
     }
     loading.value = false;
@@ -373,7 +419,9 @@ class ProfileController extends GetxController {
   Future<void> firstTimeLoginCheck() async {
     loading.value = true;
     final allSports = await venueService.getSports(bearer);
-    if (allSports != null && allSports.data != null && allSports.data!.sports.isNotEmpty) {
+    if (allSports != null &&
+        allSports.data != null &&
+        allSports.data!.sports.isNotEmpty) {
       sportsList.assignAll(allSports.data!.sports);
       sportsList.refresh();
     }
@@ -384,9 +432,15 @@ class ProfileController extends GetxController {
       facilities.refresh();
     }
     if (isVenue()) {
-      venueService.getVenueMedia(bearer, "${loginDataModel.value!.data!.venueId}").then((value) => venueMedia.value = value ?? VenueMediaModel(httpCode: 401, message: "Data not found.", data: null));
-      objectbox.venueMediaBox.put(venueMediaModelObjFromJson(venueMediaModelToJson(venueMedia.value)));
-      final res = await venueService.getVenueDetails(bearer, "${loginDataModel.value!.data!.venueId}");
+      venueService
+          .getVenueMedia(bearer, "${loginDataModel.value!.data!.venueId}")
+          .then((value) => venueMedia.value = value ??
+              VenueMediaModel(
+                  httpCode: 401, message: "Data not found.", data: null));
+      objectbox.venueMediaBox.put(
+          venueMediaModelObjFromJson(venueMediaModelToJson(venueMedia.value)));
+      final res = await venueService.getVenueDetails(
+          bearer, "${loginDataModel.value!.data!.venueId}");
       getVenuesListData();
       getVenueAnalytics();
       if (res != null) {
@@ -394,7 +448,9 @@ class ProfileController extends GetxController {
         objectbox.venueBox.put(VenueDetailsModelObj.fromJson(res.toJson()));
         getVenueBookings();
         final sports = await venueService.getVenueSports(bearer, "$venueId");
-        if (sports != null && sports.data != null && sports.data!.sports.isNotEmpty) {
+        if (sports != null &&
+            sports.data != null &&
+            sports.data!.sports.isNotEmpty) {
           selectedSportsList.assignAll(sports.data!.sports);
         }
         getVenueActivities();
@@ -416,7 +472,11 @@ class ProfileController extends GetxController {
   }
 
   Future<VenueMediaModel?> getVenueMedia() async {
-    venueMedia.value = await venueService.getVenueMedia(bearer, "${loginDataModel.value!.data!.venueId}").then((value) => venueMedia.value = value ?? VenueMediaModel(httpCode: 401, message: "Data not found.", data: null));
+    venueMedia.value = await venueService
+        .getVenueMedia(bearer, "${loginDataModel.value!.data!.venueId}")
+        .then((value) => venueMedia.value = value ??
+            VenueMediaModel(
+                httpCode: 401, message: "Data not found.", data: null));
     log("Venue media: ${venueMedia.value.data?.photos.toString()}");
     return venueMedia.value;
     ;
@@ -428,12 +488,15 @@ class ProfileController extends GetxController {
 
     if (venue != null && venue.data != null) {
       currentVenue.value = venue;
-      venueMedia.value = VenueMediaModel(httpCode: 401, message: "No media found", data: null);
+      venueMedia.value =
+          VenueMediaModel(httpCode: 401, message: "No media found", data: null);
       objectbox.venueMediaBox.removeAll();
       objectbox.venueActivityBox.removeAll();
       objectbox.venuebookingBox.removeAll();
       objectbox.venueBox.put(VenueDetailsModelObj.fromJson(venue.toJson()));
-      venueMedia.value = await venueService.getVenueMedia(bearer, venueId) ?? VenueMediaModel(httpCode: 401, message: "No media found.", data: null);
+      venueMedia.value = await venueService.getVenueMedia(bearer, venueId) ??
+          VenueMediaModel(
+              httpCode: 401, message: "No media found.", data: null);
     }
     loading.value = false;
   }
@@ -452,9 +515,12 @@ class ProfileController extends GetxController {
       }
     });
 
-    playerService.getSportsVenueInfoList(bearer, "$playerId", "1").then((value) {
+    playerService
+        .getSportsVenueInfoList(bearer, "$playerId", "1")
+        .then((value) {
       if (value != null && value.data != null && value.httpCode == 200) {
-        playerSportsVenueInfoList.assignAll(value.data!.data ?? <sportsvenue.Venue>[]);
+        playerSportsVenueInfoList
+            .assignAll(value.data!.data ?? <sportsvenue.Venue>[]);
         playerSportsVenueInfoList.refresh();
       }
     });

@@ -33,7 +33,8 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     bool loadingMedia = false;
     return Obx(() {
-      if (profileController.isLoggedIn.value && profileController.loginDataModel.value != null) {
+      if (profileController.isLoggedIn.value &&
+          profileController.loginDataModel.value != null) {
         // checking if user type is venue
         // getStorage.write(Constants.lastPage, "UploadMediaScreen");
         if (profileController.isVenue()) {
@@ -41,11 +42,13 @@ class Wrapper extends StatelessWidget {
             return const LoadingPage();
           } */
 
-          if (profileController.loading.value && profileController.currentVenue.value == null) {
+          if (profileController.loading.value &&
+              profileController.currentVenue.value == null) {
             return const LoadingPage();
           }
 
-          if (profileController.loginDataModel.value!.data!.venueId == 0 && profileController.currentVenue.value == null) {
+          if (profileController.loginDataModel.value!.data!.venueId == 0 &&
+              profileController.currentVenue.value == null) {
             getStorage.write(Constants.lastPage, "VenueDetails");
             return const VenueDetails(addAnotherVenue: false);
           }
@@ -54,33 +57,49 @@ class Wrapper extends StatelessWidget {
               objectbox.venueMediaBox.get(6) != null &&
               objectbox.venueMediaBox.get(6)?.httpCode == 200 &&
               profileController.venueMedia.value.data == null) {
-            profileController.venueMedia.value = VenueMediaModel.fromJson(objectbox.venueMediaBox.get(6)!.toJson());
-          } else if (profileController.currentVenue.value != null && profileController.venueMedia.value.data == null && !loadingMedia) {
+            profileController.venueMedia.value = VenueMediaModel.fromJson(
+                objectbox.venueMediaBox.get(6)!.toJson());
+          } else if (profileController.currentVenue.value != null &&
+              profileController.venueMedia.value.data == null &&
+              !loadingMedia) {
             loadingMedia = true;
             final venueId =
-                profileController.loginDataModel.value!.data!.venueId != 0 ? profileController.loginDataModel.value!.data!.venueId : profileController.venueId;
-            profileController.venueService.getVenueMedia(profileController.bearer, "$venueId").then((value) {
-              profileController.venueMedia.value = value ?? VenueMediaModel(httpCode: 401, message: "Media not found.", data: null);
-              objectbox.venueMediaBox.put(venueMediaModelObjFromJson(venueMediaModelToJson(profileController.venueMedia.value)));
+                profileController.loginDataModel.value!.data!.venueId != 0
+                    ? profileController.loginDataModel.value!.data!.venueId
+                    : profileController.venueId;
+            profileController.venueService
+                .getVenueMedia(profileController.bearer, "$venueId")
+                .then((value) {
+              profileController.venueMedia.value = value ??
+                  VenueMediaModel(
+                      httpCode: 401, message: "Media not found.", data: null);
+              objectbox.venueMediaBox.put(venueMediaModelObjFromJson(
+                  venueMediaModelToJson(profileController.venueMedia.value)));
             });
           }
 
-          if (profileController.currentVenue.value != null && profileController.venueMedia.value.data == null ||
+          if (profileController.currentVenue.value != null &&
+                  profileController.venueMedia.value.data == null ||
               profileController.venueMedia.value.data!.photos.isEmpty) {
             return const UploadMediaScreen();
           }
 
-          if (profileController.currentVenue.value != null && profileController.currentVenue.value!.data!.venue.facilitiesVenues.isEmpty) {
+          if (profileController.currentVenue.value != null &&
+              profileController
+                  .currentVenue.value!.data!.venue.facilitiesVenues.isEmpty) {
             getStorage.write(Constants.lastPage, "FacilitiesScreen");
             return const FacilitiesScreen();
           }
 
-          if (profileController.currentVenue.value != null && profileController.currentVenue.value!.data!.venue.grounds.isEmpty) {
+          if (profileController.currentVenue.value != null &&
+              profileController
+                  .currentVenue.value!.data!.venue.grounds.isEmpty) {
             getStorage.write(Constants.lastPage, "AddGroundsScreen");
             return const NewAddGroundScreen();
           }
 
-          if (getStorage.read<bool>(Constants.isNewAccount) ?? false || profileController.currentVenue.value == null) {
+          if (getStorage.read<bool>(Constants.isNewAccount) ??
+              false || profileController.currentVenue.value == null) {
             log("Last page value: ${getStorage.read<String>(Constants.lastPage)}");
             /* if (profileController.currentVenue.value!.data!.venue.grounds.isEmpty && getStorage.read<String>(Constants.lastPage) == "/") {
               return const AddGroundsScreen();
@@ -100,7 +119,8 @@ class Wrapper extends StatelessWidget {
             }
           }
 
-          if (profileController.currentVenue.value!.data!.venue.grounds.isEmpty) {
+          if (profileController
+              .currentVenue.value!.data!.venue.grounds.isEmpty) {
             return const NewAddGroundScreen();
           }
 
@@ -112,7 +132,8 @@ class Wrapper extends StatelessWidget {
         }
         // for player
         if (profileController.isPlayer()) {
-          if (profileController.loading.value && profileController.currentPlayer.value == null) {
+          if (profileController.loading.value &&
+              profileController.currentPlayer.value == null) {
             return const LoadingPage();
           }
 
@@ -121,26 +142,33 @@ class Wrapper extends StatelessWidget {
           //   return const PlayerDetailsScreen();
           // }
 
-          if (profileController.loginDataModel.value?.data?.playerId != 0 && profileController.currentPlayer.value == null && objectbox.playerBox.isEmpty()) {
+          if (profileController.loginDataModel.value?.data?.playerId != 0 &&
+              profileController.currentPlayer.value == null &&
+              objectbox.playerBox.isEmpty()) {
             profileController.loading.value = true;
             profileController.playerService
-                .getPlayerDetails(profileController.bearer, "${profileController.loginDataModel.value!.data!.playerId}")
+                .getPlayerDetails(profileController.bearer,
+                    "${profileController.loginDataModel.value!.data!.playerId}")
                 .then((value) {
               profileController.currentPlayer.value = value;
               objectbox.playerBox.get(7);
               profileController.updatePlayerDataFromApi();
+              profileController.getVenueEarning();
+
               profileController.loading.value = false;
             });
             return const LoadingPage();
           }
 
-         // return const PlayerMainPage();
+          // return const PlayerMainPage();
         }
         return const VenueDetails(addAnotherVenue: false);
       }
 
       getStorage.write(Constants.isLoggedIn, false);
-      return authController.isLoginPage.value ? const LoginScreen() : const SignupScreen();
+      return authController.isLoginPage.value
+          ? const LoginScreen()
+          : const SignupScreen();
     });
   }
 }

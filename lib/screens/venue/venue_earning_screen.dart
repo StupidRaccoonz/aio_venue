@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:aio_sport/models/venue_earning_model.dart';
 import 'package:aio_sport/screens/venue/venue_earning_metrics.dart';
 import 'package:aio_sport/screens/venue/venue_metrics.dart';
@@ -18,16 +20,19 @@ class VenueEarningScreen extends StatefulWidget {
 class _VenueEarningScreenState extends State<VenueEarningScreen> {
   final profileController = Get.find<ProfileController>();
 
-
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
-    String convertDate(String dateString) {
-      DateTime datetime = DateTime.parse(dateString);
-      return DateFormat('dd MMM yy, hh:mm a').format(datetime);
+    String? convertDate(String dateString) {
+      DateTime? datetime = DateTime.tryParse(dateString);
+      return datetime == null
+          ? null
+          : DateFormat('dd MMM yy, hh:mm a').format(datetime!);
     }
+
+    log(profileController.venueEarnings.value.toString());
 
     return Scaffold(
       body: LayoutBuilder(
@@ -39,7 +44,9 @@ class _VenueEarningScreenState extends State<VenueEarningScreen> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Color(0xff15192C),
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -62,14 +69,17 @@ class _VenueEarningScreenState extends State<VenueEarningScreen> {
                           Expanded(
                             child: Center(
                                 child: Text('My earnings',
-                                    style: TextStyle(color: Color(0xffEBECF0), fontSize: screenHeight * 0.03))),
+                                    style: TextStyle(
+                                        color: Color(0xffEBECF0),
+                                        fontSize: screenHeight * 0.03))),
                           ),
                           IconButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => VenueEarningMetricsScreen(),
+                                    builder: (context) =>
+                                        VenueEarningMetricsScreen(),
                                   ));
                             },
                             icon: Image.asset(
@@ -84,14 +94,18 @@ class _VenueEarningScreenState extends State<VenueEarningScreen> {
                     ),
                     SizedBox(height: screenHeight * 0.018),
                     Text(
-                      'OMR ${profileController.venueEarnings.value?.data?.totalVenueEarning}',
+                      'OMR ${profileController.venueEarnings.value?.data?.totalVenueEarning ?? 0}',
                       style: TextStyle(
-                          color: Color(0xffEBECF0), fontSize: screenHeight * 0.05, fontWeight: FontWeight.bold),
+                          color: Color(0xffEBECF0),
+                          fontSize: screenHeight * 0.05,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: screenHeight * 0.01),
                     Text(
                       'Total earning',
-                      style: TextStyle(color: Color(0xffEBECF0), fontSize: screenHeight * 0.02),
+                      style: TextStyle(
+                          color: Color(0xffEBECF0),
+                          fontSize: screenHeight * 0.02),
                     ),
                     // SizedBox(height: screenHeight * 0.025),
                     // GestureDetector(
@@ -115,16 +129,21 @@ class _VenueEarningScreenState extends State<VenueEarningScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "My sales",
-                      style: TextStyle(color: Colors.black, fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: screenHeight * 0.03,
+                          fontWeight: FontWeight.bold),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 0),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
@@ -132,7 +151,8 @@ class _VenueEarningScreenState extends State<VenueEarningScreen> {
                       child: DropdownButton<String>(
                         padding: EdgeInsets.zero,
                         //elevation: 2,
-                        value: profileController.selectedValue.value, // Set default selected value
+                        value: profileController
+                            .selectedValue.value, // Set default selected value
                         items: [
                           DropdownMenuItem(
                             value: 'All',
@@ -140,7 +160,9 @@ class _VenueEarningScreenState extends State<VenueEarningScreen> {
                               'All',
                               softWrap: true,
                               style: TextStyle(
-                                  color: Colors.black, fontSize: screenHeight * 0.02, fontWeight: FontWeight.bold),
+                                  color: Colors.black,
+                                  fontSize: screenHeight * 0.02,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           DropdownMenuItem(
@@ -148,13 +170,16 @@ class _VenueEarningScreenState extends State<VenueEarningScreen> {
                             child: Text(
                               'Last month',
                               style: TextStyle(
-                                  color: Colors.black, fontSize: screenHeight * 0.02, fontWeight: FontWeight.bold),
+                                  color: Colors.black,
+                                  fontSize: screenHeight * 0.02,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],
                         onChanged: (value) {
                           if (value != null) {
-                            profileController.selectedValue.value = value; // Update selected value
+                            profileController.selectedValue.value =
+                                value; // Update selected value
                           }
                         },
                         icon: Icon(
@@ -169,97 +194,109 @@ class _VenueEarningScreenState extends State<VenueEarningScreen> {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  //physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: profileController.venueEarnings.value?.data?.myEarning?.data?.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: Colors.white,
-                      margin: EdgeInsets.symmetric(vertical: index == 0 ? 0 : 8, horizontal: 10),
-                      child: Padding(
-                        padding: EdgeInsets.all(15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${profileController.venueEarnings.value?.data?.myEarning?.data![index].player?.name}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                child: profileController.venueEarnings.value == null
+                    ? Center(child: Text("No sales found."))
+                    : ListView.builder(
+                        padding: EdgeInsets.zero,
+                        //physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: profileController
+                            .venueEarnings.value?.data?.myEarning?.data?.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            color: Colors.white,
+                            margin: EdgeInsets.symmetric(
+                                vertical: index == 0 ? 0 : 8, horizontal: 10),
+                            child: Padding(
+                              padding: EdgeInsets.all(15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${profileController.venueEarnings.value?.data?.myEarning?.data![index].player?.name}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${convertDate(profileController.venueEarnings.value?.data?.myEarning?.data![index].paymentDate ?? DateTime.now.toString())}',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Text(
-                                      '${convertDate(profileController.venueEarnings.value?.data?.myEarning?.data![index].paymentDate ?? DateTime.now.toString())}',
-                                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  'OMR ${profileController.venueEarnings.value?.data?.myEarning?.data![index].totalAmount}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
+                                      Text(
+                                        'OMR ${profileController.venueEarnings.value?.data?.myEarning?.data![index].totalAmount ?? 0}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Program name',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                    Text(
-                                      '${profileController.venueEarnings.value?.data?.myEarning?.data![index].bookingType}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                  SizedBox(height: 8),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Program name',
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                          Text(
+                                            '${profileController.venueEarnings.value?.data?.myEarning?.data![index].bookingType}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Translation ID',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                    Text(
-                                      '#${profileController.venueEarnings.value?.data?.myEarning?.data![index].paymentId}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Translation ID',
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                          Text(
+                                            '#${profileController.venueEarnings.value?.data?.myEarning?.data![index].paymentId}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: screenWidth * 0.02 / 2,
-                                )
-                              ],
+                                      SizedBox(
+                                        width: screenWidth * 0.02 / 2,
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
             ],
           ),

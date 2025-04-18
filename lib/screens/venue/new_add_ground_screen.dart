@@ -32,7 +32,8 @@ class NewAddGroundScreen extends StatefulWidget {
   State<NewAddGroundScreen> createState() => _NewAddGroundScreenState();
 }
 
-class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProviderStateMixin {
+class _NewAddGroundScreenState extends State<NewAddGroundScreen>
+    with TickerProviderStateMixin {
   final profile = Get.find<ProfileController>();
   RxList<sport.Sport> sports = <sport.Sport>[].obs;
   Rx<int> selectedSport = 0.obs;
@@ -46,11 +47,15 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (profile.currentVenue.value != null && profile.sportsList.isNotEmpty) {
-        for (Sport element1 in profile.currentVenue.value!.data!.venue.sports!) {
-          sports.add(profile.sportsList.firstWhere((element) => element!.id == element1.id)!);
+        for (Sport element1
+            in profile.currentVenue.value!.data!.venue.sports!) {
+          sports.add(profile.sportsList
+              .firstWhere((element) => element!.id == element1.id)!);
         }
         sports.refresh();
-        tabController = TabController(length: profile.currentVenue.value!.data!.venue.sports!.length, vsync: this);
+        tabController = TabController(
+            length: profile.currentVenue.value!.data!.venue.sports!.length,
+            vsync: this);
         setState(() {});
       } else {
         tabController = TabController(length: 0, vsync: this);
@@ -64,7 +69,9 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
         decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/images/background.jpg'), fit: BoxFit.cover)),
+            image: DecorationImage(
+                image: AssetImage('assets/images/background.jpg'),
+                fit: BoxFit.cover)),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Padding(
@@ -73,7 +80,8 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return [
                     SliverOverlapAbsorber(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
                       sliver: SliverAppBar(
                         automaticallyImplyLeading: false,
                         pinned: false,
@@ -92,18 +100,24 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 2.0),
                                   child: IconButton(
-                                      onPressed: () => Get.to(() => FacilitiesScreen()),
-                                      icon: Icon(Icons.arrow_back_rounded, color: CustomTheme.appColor)),
+                                      onPressed: () =>
+                                          Get.to(() => FacilitiesScreen()),
+                                      icon: Icon(Icons.arrow_back_rounded,
+                                          color: CustomTheme.appColor)),
                                 ),
                                 SizedBox(height: 3.0.rh),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Text("Add Grounds", style: Get.textTheme.titleLarge),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: Text("Add Grounds",
+                                      style: Get.textTheme.titleLarge),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
                                   child: Text(
                                     "Let us know how many grounds you have for each sport",
                                     style: Get.textTheme.displaySmall,
@@ -122,22 +136,30 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                     SizedBox(
                       height: constraints.maxHeight,
                       child: Padding(
-                        padding: EdgeInsets.only(top: constraints.maxHeight * 0.15, right: 16, left: 16),
+                        padding: EdgeInsets.only(
+                            top: constraints.maxHeight * 0.15,
+                            right: 16,
+                            left: 16),
                         child: TabBarView(
                             controller: tabController,
-                            physics: const NeverScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+                            physics: const NeverScrollableScrollPhysics(
+                                parent: ClampingScrollPhysics()),
                             children: sports.map(
                               (element) {
                                 Rx<bool> expanded = false.obs;
                                 Rx<bool> expandedAddon = false.obs;
                                 RxList<int> numberOfGrounds = [1].obs;
                                 RxList<int> numberOfAddons = [1].obs;
-                                RxList<req.AddOn> addonFormsData =
-                                    <req.AddOn>[req.AddOn(itemName: "", quality: "", rentPrice: "")].obs;
+                                RxList<req.AddOn> addonFormsData = <req.AddOn>[
+                                  req.AddOn(
+                                      itemName: "", quality: "", rentPrice: "")
+                                ].obs;
                                 RxList<FormInfo> groundFormsData = <FormInfo>[
                                   FormInfo(
                                     groundName: "",
-                                    groundSize: element.sportsizes.isNotEmpty ? element.sportsizes.first.size : "",
+                                    groundSize: element.sportsizes.isNotEmpty
+                                        ? element.sportsizes.first.size
+                                        : "",
                                     groundUnits: "",
                                     hourlyRent: "",
                                     isIndoor: true,
@@ -152,7 +174,8 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                   formsMapDataList.add({
                                     "sport": element.name,
                                     "list": groundFormsData
-                                        .map((element) => req.Ground.fromJson(element.toJson()))
+                                        .map((element) => req.Ground.fromJson(
+                                            element.toJson()))
                                         .toList(),
                                     "addons": addonFormsData,
                                   });
@@ -162,59 +185,98 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                 return Obx(() {
                                   return SingleChildScrollView(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         //for grounds form list
                                         Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            border: Border.all(color: CustomTheme.borderColor, width: 1.5),
-                                            borderRadius: BorderRadius.circular(24.0),
+                                            border: Border.all(
+                                                color: CustomTheme.borderColor,
+                                                width: 1.5),
+                                            borderRadius:
+                                                BorderRadius.circular(24.0),
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0, vertical: 4.0),
                                             child: ExpansionPanelList(
                                               elevation: 0.0,
-                                              expandedHeaderPadding: const EdgeInsets.symmetric(vertical: 4.0),
-                                              expansionCallback: (panelIndex, isExpanded) =>
-                                                  expanded.value = !expanded.value,
+                                              expandedHeaderPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 4.0),
+                                              expansionCallback:
+                                                  (panelIndex, isExpanded) =>
+                                                      expanded.value =
+                                                          !expanded.value,
                                               children: [
                                                 ExpansionPanel(
                                                     canTapOnHeader: true,
-                                                    backgroundColor: Colors.white,
+                                                    backgroundColor:
+                                                        Colors.white,
                                                     isExpanded: expanded.value,
-                                                    headerBuilder: (context, isExpanded) {
+                                                    headerBuilder:
+                                                        (context, isExpanded) {
                                                       return Padding(
-                                                        padding: const EdgeInsets.all(8.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: Row(
                                                           children: [
-                                                            Text("Ground Details (${numberOfGrounds.length})",
-                                                                style: Get.textTheme.titleSmall!
-                                                                    .copyWith(color: CustomTheme.appColor)),
+                                                            Text(
+                                                                "Ground Details (${numberOfGrounds.length})",
+                                                                style: Get
+                                                                    .textTheme
+                                                                    .titleSmall!
+                                                                    .copyWith(
+                                                                        color: CustomTheme
+                                                                            .appColor)),
                                                             const Spacer(),
                                                             InkWell(
                                                                 onTap: () {
-                                                                  numberOfGrounds.add(numberOfGrounds.length);
-                                                                  groundFormsData.add(FormInfo(
-                                                                    groundName: "",
-                                                                    groundSize: element.sportsizes.first.size,
-                                                                    groundUnits: "",
-                                                                    hourlyRent: "",
-                                                                    isIndoor: true,
-                                                                    sportId: element.id,
+                                                                  numberOfGrounds.add(
+                                                                      numberOfGrounds
+                                                                          .length);
+                                                                  groundFormsData
+                                                                      .add(
+                                                                          FormInfo(
+                                                                    groundName:
+                                                                        "",
+                                                                    groundSize: element
+                                                                        .sportsizes
+                                                                        .first
+                                                                        .size,
+                                                                    groundUnits:
+                                                                        "",
+                                                                    hourlyRent:
+                                                                        "",
+                                                                    isIndoor:
+                                                                        true,
+                                                                    sportId:
+                                                                        element
+                                                                            .id,
                                                                     morningTiming: [],
                                                                     eveningTiming: [],
                                                                     // addOn: [],
                                                                   ));
-                                                                  setState(() {});
+                                                                  setState(
+                                                                      () {});
                                                                   // addnewGround(sportName: element.name, formInfo: groundFormsData.last);
                                                                 },
                                                                 child: Padding(
-                                                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          16.0),
                                                                   child: Text(
                                                                     "+ Add more",
-                                                                    style: Get.textTheme.displaySmall!
-                                                                        .copyWith(color: CustomTheme.iconColor),
+                                                                    style: Get
+                                                                        .textTheme
+                                                                        .displaySmall!
+                                                                        .copyWith(
+                                                                            color:
+                                                                                CustomTheme.iconColor),
                                                                   ),
                                                                 )),
                                                           ],
@@ -222,29 +284,55 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                                       );
                                                     },
                                                     body: Column(
-                                                      mainAxisSize: MainAxisSize.min,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
                                                       children: [
-                                                        Divider(color: CustomTheme.borderColor, thickness: 2.0),
+                                                        Divider(
+                                                            color: CustomTheme
+                                                                .borderColor,
+                                                            thickness: 2.0),
                                                         SizedBox(
-                                                          height: numberOfGrounds.length * constraints.maxHeight * 0.48,
-                                                          child: ListView.builder(
-                                                            itemCount: numberOfGrounds.length,
-                                                            addAutomaticKeepAlives: true,
-                                                            physics: const NeverScrollableScrollPhysics(),
-                                                            itemBuilder: (context, index) {
+                                                          height: numberOfGrounds
+                                                                  .length *
+                                                              constraints
+                                                                  .maxHeight *
+                                                              0.48,
+                                                          child:
+                                                              ListView.builder(
+                                                            itemCount:
+                                                                numberOfGrounds
+                                                                    .length,
+                                                            addAutomaticKeepAlives:
+                                                                true,
+                                                            physics:
+                                                                const NeverScrollableScrollPhysics(),
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
                                                               return Column(
-                                                                mainAxisSize: MainAxisSize.min,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
                                                                 children: [
                                                                   Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.symmetric(horizontal: 16.0),
-                                                                    child: ListTile(
-                                                                      title: Text("Ground ${index + 1}",
-                                                                          style: Get.textTheme.headlineMedium),
-                                                                      tileColor: CustomTheme.borderColor,
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            16.0),
+                                                                    child:
+                                                                        ListTile(
+                                                                      title: Text(
+                                                                          "Ground ${index + 1}",
+                                                                          style: Get
+                                                                              .textTheme
+                                                                              .headlineMedium),
+                                                                      tileColor:
+                                                                          CustomTheme
+                                                                              .borderColor,
                                                                       trailing: InkWell(
                                                                           onTap: () {
-                                                                            if (numberOfGrounds.length > 1) {
+                                                                            if (numberOfGrounds.length >
+                                                                                1) {
                                                                               numberOfGrounds.removeAt(index);
                                                                               numberOfGrounds.refresh();
                                                                               groundFormsData.removeAt(index);
@@ -256,14 +344,24 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                                                     ),
                                                                   ),
                                                                   AddGroundForm(
-                                                                    sport: profile.sportsList
-                                                                        .firstWhere((e) => e!.id == element.id)!,
-                                                                    formInfo: (FormInfo value) {
-                                                                      groundFormsData[index] = value;
+                                                                    sport: profile
+                                                                        .sportsList
+                                                                        .firstWhere((e) =>
+                                                                            e!.id ==
+                                                                            element.id)!,
+                                                                    formInfo:
+                                                                        (FormInfo
+                                                                            value) {
+                                                                      groundFormsData[
+                                                                              index] =
+                                                                          value;
                                                                       updateFormData(
-                                                                          sportName: element.name,
-                                                                          formInfo: value,
-                                                                          index: index);
+                                                                          sportName: element
+                                                                              .name,
+                                                                          formInfo:
+                                                                              value,
+                                                                          index:
+                                                                              index);
                                                                     },
                                                                   ),
                                                                 ],
@@ -283,68 +381,128 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                         //for addons form list
                                         Container(
                                           decoration: BoxDecoration(
-                                              border: Border.all(color: CustomTheme.borderColor, width: 1.5),
-                                              borderRadius: BorderRadius.circular(24.0),
+                                              border: Border.all(
+                                                  color:
+                                                      CustomTheme.borderColor,
+                                                  width: 1.5),
+                                              borderRadius:
+                                                  BorderRadius.circular(24.0),
                                               color: Colors.white),
                                           child: Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0, vertical: 4.0),
                                             child: ExpansionPanelList(
                                               elevation: 0.0,
-                                              expandedHeaderPadding: const EdgeInsets.symmetric(vertical: 4.0),
-                                              expansionCallback: (panelIndex, isExpanded) =>
-                                                  expandedAddon.value = !expandedAddon.value,
+                                              expandedHeaderPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 4.0),
+                                              expansionCallback:
+                                                  (panelIndex, isExpanded) =>
+                                                      expandedAddon.value =
+                                                          !expandedAddon.value,
                                               children: [
                                                 ExpansionPanel(
                                                     canTapOnHeader: true,
-                                                    isExpanded: expandedAddon.value,
-                                                    backgroundColor: Colors.white,
-                                                    headerBuilder: (context, isExpanded) {
+                                                    isExpanded:
+                                                        expandedAddon.value,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    headerBuilder:
+                                                        (context, isExpanded) {
                                                       return ListTile(
                                                         title: Row(
                                                           children: [
-                                                            Text("Add ons (${numberOfAddons.length})",
-                                                                style: Get.textTheme.titleSmall!
-                                                                    .copyWith(color: CustomTheme.appColor)),
+                                                            Text(
+                                                                "Add ons (${numberOfAddons.length})",
+                                                                style: Get
+                                                                    .textTheme
+                                                                    .titleSmall!
+                                                                    .copyWith(
+                                                                        color: CustomTheme
+                                                                            .appColor)),
                                                             const Spacer(),
                                                             InkWell(
                                                                 onTap: () {
                                                                   addonFormsData.add(req.AddOn(
-                                                                      itemName: "", quality: "", rentPrice: ""));
-                                                                  numberOfAddons.add(numberOfAddons.length);
+                                                                      itemName:
+                                                                          "",
+                                                                      quality:
+                                                                          "",
+                                                                      rentPrice:
+                                                                          ""));
+                                                                  numberOfAddons.add(
+                                                                      numberOfAddons
+                                                                          .length);
                                                                   addAddonsToAllGrounds(
-                                                                      addons: addonFormsData, sportName: element.name);
+                                                                      addons:
+                                                                          addonFormsData,
+                                                                      sportName:
+                                                                          element
+                                                                              .name);
                                                                 },
                                                                 child: Padding(
-                                                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                                                                  child: Text("+ Add more",
-                                                                      style: Get.textTheme.displaySmall!
-                                                                          .copyWith(color: CustomTheme.iconColor)),
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          16.0),
+                                                                  child: Text(
+                                                                      "+ Add more",
+                                                                      style: Get
+                                                                          .textTheme
+                                                                          .displaySmall!
+                                                                          .copyWith(
+                                                                              color: CustomTheme.iconColor)),
                                                                 )),
                                                           ],
                                                         ),
                                                       );
                                                     },
                                                     body: Column(
-                                                      mainAxisSize: MainAxisSize.min,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
                                                       children: [
-                                                        Divider(color: CustomTheme.borderColor, thickness: 2.0),
+                                                        Divider(
+                                                            color: CustomTheme
+                                                                .borderColor,
+                                                            thickness: 2.0),
                                                         SizedBox(
-                                                          height: numberOfAddons.length * constraints.maxHeight * 0.27,
-                                                          child: ListView.builder(
-                                                            itemCount: numberOfAddons.length,
-                                                            addAutomaticKeepAlives: true,
-                                                            physics: const NeverScrollableScrollPhysics(),
-                                                            itemBuilder: (context, index) {
+                                                          height: numberOfAddons
+                                                                  .length *
+                                                              constraints
+                                                                  .maxHeight *
+                                                              0.27,
+                                                          child:
+                                                              ListView.builder(
+                                                            itemCount:
+                                                                numberOfAddons
+                                                                    .length,
+                                                            addAutomaticKeepAlives:
+                                                                true,
+                                                            physics:
+                                                                const NeverScrollableScrollPhysics(),
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
                                                               return Column(
-                                                                mainAxisSize: MainAxisSize.min,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
                                                                 children: [
                                                                   Padding(
-                                                                    padding:
-                                                                        const EdgeInsets.symmetric(horizontal: 16.0),
-                                                                    child: ListTile(
-                                                                      title: Text("Item ${index + 1}",
-                                                                          style: Get.textTheme.headlineMedium),
-                                                                      tileColor: CustomTheme.borderColor,
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            16.0),
+                                                                    child:
+                                                                        ListTile(
+                                                                      title: Text(
+                                                                          "Item ${index + 1}",
+                                                                          style: Get
+                                                                              .textTheme
+                                                                              .headlineMedium),
+                                                                      tileColor:
+                                                                          CustomTheme
+                                                                              .borderColor,
                                                                       trailing: InkWell(
                                                                           onTap: () {
                                                                             numberOfAddons.removeAt(index);
@@ -358,11 +516,16 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                                                     ),
                                                                   ),
                                                                   AddonFormWidget(
-                                                                    index: index,
+                                                                    index:
+                                                                        index,
                                                                     addonData: (value) => updateAddonData(
-                                                                        sportName: element.name,
-                                                                        addon: value,
-                                                                        index: index),
+                                                                        sportName:
+                                                                            element
+                                                                                .name,
+                                                                        addon:
+                                                                            value,
+                                                                        index:
+                                                                            index),
                                                                   ),
                                                                 ],
                                                               );
@@ -379,11 +542,15 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                         // time selection
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text("Ground availability", style: Get.textTheme.displayMedium),
+                                          child: Text("Ground availability",
+                                              style:
+                                                  Get.textTheme.displayMedium),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text("Ante meridiem (AM)", style: Get.textTheme.displaySmall),
+                                          child: Text("Ante meridiem (AM)",
+                                              style:
+                                                  Get.textTheme.displaySmall),
                                         ),
 
                                         Padding(
@@ -396,12 +563,15 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                               removingZeroAtIndex: 4,
                                               callback: (List<String> val) {
                                                 log("morning selected time $val");
-                                                for (FormInfo element in groundFormsData) {
+                                                for (FormInfo element
+                                                    in groundFormsData) {
                                                   element.morningTiming = val;
                                                 }
 
                                                 addAvailabilityTimigs(
-                                                    isMorning: true, sportName: element.name, timings: val);
+                                                    isMorning: true,
+                                                    sportName: element.name,
+                                                    timings: val);
                                                 // profile.addGroundFormsList[profile.addGroundFormSelectedGround.value].value.morningTiming = val;
                                               },
                                             ),
@@ -410,7 +580,9 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
 
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text("Post meridiem (PM)", style: Get.textTheme.displaySmall),
+                                          child: Text("Post meridiem (PM)",
+                                              style:
+                                                  Get.textTheme.displaySmall),
                                         ),
 
                                         Padding(
@@ -423,11 +595,14 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                                 removingZeroAtIndex: 5,
                                                 callback: (List<String> val) {
                                                   log("evening selected time $val");
-                                                  for (FormInfo element in groundFormsData) {
+                                                  for (FormInfo element
+                                                      in groundFormsData) {
                                                     element.eveningTiming = val;
                                                   }
                                                   addAvailabilityTimigs(
-                                                      isMorning: false, sportName: element.name, timings: val);
+                                                      isMorning: false,
+                                                      sportName: element.name,
+                                                      timings: val);
                                                 },
                                               )),
                                         ),
@@ -440,7 +615,9 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                           ),
                                         ),
 
-                                        SizedBox(height: constraints.maxHeight * 0.25),
+                                        SizedBox(
+                                            height:
+                                                constraints.maxHeight * 0.25),
                                       ],
                                     ),
                                   );
@@ -462,8 +639,10 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                 ? Positioned(
                                     top: constraints.maxHeight * 0.04,
                                     left: 20,
-                                    child:
-                                        Container(color: CustomTheme.appColor, height: 2.0, width: sports.length * 60),
+                                    child: Container(
+                                        color: CustomTheme.appColor,
+                                        height: 2.0,
+                                        width: sports.length * 60),
                                   )
                                 : const SizedBox(),
                             SizedBox(
@@ -474,7 +653,8 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                 itemBuilder: (context, index) {
                                   return Obx(() {
                                     return Padding(
-                                      padding: const EdgeInsets.only(top: 8.0, right: 16.0),
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, right: 16.0),
                                       child: Material(
                                         color: Colors.transparent,
                                         child: InkWell(
@@ -491,13 +671,22 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                         border: Border.all(
-                                                            color: selectedSport.value == index
-                                                                ? CustomTheme.iconColor
-                                                                : CustomTheme.borderColor,
+                                                            color: selectedSport
+                                                                        .value ==
+                                                                    index
+                                                                ? CustomTheme
+                                                                    .iconColor
+                                                                : CustomTheme
+                                                                    .borderColor,
                                                             width: 1.0),
-                                                        borderRadius: BorderRadius.circular(30.0)),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    30.0)),
                                                     child: Padding(
-                                                        padding: const EdgeInsets.all(2.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(2.0),
                                                         child: ImageWidget(
                                                             imageurl:
                                                                 "${ServerUrls.mediaUrl}sports/${sports[index].image}",
@@ -509,10 +698,16 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                                                 ),
                                                 const SizedBox(height: 4.0),
                                                 Text(sports[index].name,
-                                                    style: Get.textTheme.bodySmall!.copyWith(
-                                                        color: selectedSport.value == index
-                                                            ? CustomTheme.textColor
-                                                            : CustomTheme.textColorLight)),
+                                                    style: Get
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: selectedSport
+                                                                        .value ==
+                                                                    index
+                                                                ? CustomTheme
+                                                                    .textColor
+                                                                : CustomTheme
+                                                                    .textColorLight)),
                                               ],
                                             ),
                                           ),
@@ -533,7 +728,9 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                             width: constraints.maxWidth,
                             height: constraints.maxHeight,
                             color: Colors.white54,
-                            child: Center(child: CircularProgressIndicator(color: CustomTheme.appColor)),
+                            child: Center(
+                                child: CircularProgressIndicator(
+                                    color: CustomTheme.appColor)),
                           )
                         : const SizedBox())
                   ],
@@ -1200,7 +1397,8 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
           //     ],
           //   ),
           // )),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Padding(
             padding: const EdgeInsets.all(16.0),
             child: MyButton(
@@ -1224,7 +1422,9 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
                   final result = await profile.venueService.addGround(
                       profile.bearer,
                       AddGroundRequestModel(
-                        venueId: widget.venueId != null ? int.parse(widget.venueId!) : profile.venueId!,
+                        venueId: widget.venueId != null
+                            ? int.parse(widget.venueId!)
+                            : profile.venueId!,
                         grounds: allGrounds,
                       ));
                   if (result != null && result.httpCode == 200) {
@@ -1250,26 +1450,31 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
 
   bool validateFormData() {
     for (var sport in sports) {
-      var formData = formsMapDataList.firstWhere((element) => element['sport'] == sport.name);
+      var formData = formsMapDataList
+          .firstWhere((element) => element['sport'] == sport.name);
       int index = formsMapDataList.indexOf(formData);
       List<req.Ground> groundsData = formData['list'];
       List<req.AddOn> addonsData = formData['addons'];
       for (int i = 0; i < groundsData.length; i++) {
         log("formData: ${groundsData.map((e) => e.toJson()).toList().join(',')}");
         if (groundsData[i].name.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Ground ${i + 1} name field is required");
+          Constants.showSnackbar(
+              "Error", "${sport.name} Ground ${i + 1} name field is required");
           return false;
         }
         if (groundsData[i].hourlyRent <= 0) {
-          Constants.showSnackbar("Error", "${sport.name} Ground ${i + 1} hourly rent field is required");
+          Constants.showSnackbar("Error",
+              "${sport.name} Ground ${i + 1} hourly rent field is required");
           return false;
         }
         if (groundsData[i].morningAvailability.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Ground ${i + 1} select morning availability");
+          Constants.showSnackbar("Error",
+              "${sport.name} Ground ${i + 1} select morning availability");
           return false;
         }
         if (groundsData[i].eveningAvailability.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Ground ${i + 1} select evening availability");
+          Constants.showSnackbar("Error",
+              "${sport.name} Ground ${i + 1} select evening availability");
           return false;
         }
       }
@@ -1277,15 +1482,18 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
       for (int i = 0; i < addonsData.length; i++) {
         log("addonsData: ${addonsData.map((e) => e.toJson()).toList().join(',')}");
         if (addonsData[i].itemName.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Addon ${i + 1} name field is required");
+          Constants.showSnackbar(
+              "Error", "${sport.name} Addon ${i + 1} name field is required");
           return false;
         }
         if (addonsData[i].rentPrice.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Addon ${i + 1} rent field is required");
+          Constants.showSnackbar(
+              "Error", "${sport.name} Addon ${i + 1} rent field is required");
           return false;
         }
         if (addonsData[i].quality.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Addon ${i + 1} select morning availability");
+          Constants.showSnackbar("Error",
+              "${sport.name} Addon ${i + 1} select morning availability");
           return false;
         }
       }
@@ -1302,25 +1510,30 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
 
   void testDataPopulate() {
     for (var sport in sports) {
-      var formData = formsMapDataList.firstWhere((element) => element['sport'] == sport.name);
+      var formData = formsMapDataList
+          .firstWhere((element) => element['sport'] == sport.name);
       List<req.Ground> groundsData = formData['list'];
       List<req.AddOn> addonsData = formData['addons'];
       for (int i = 0; i < groundsData.length; i++) {
         log("formData: ${groundsData.map((e) => e.toJson()).toList().join(',')}");
         if (groundsData[i].name.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Ground ${i + 1} name field is required");
+          Constants.showSnackbar(
+              "Error", "${sport.name} Ground ${i + 1} name field is required");
           return;
         }
         if (groundsData[i].hourlyRent <= 0) {
-          Constants.showSnackbar("Error", "${sport.name} Ground ${i + 1} hourly rent field is required");
+          Constants.showSnackbar("Error",
+              "${sport.name} Ground ${i + 1} hourly rent field is required");
           return;
         }
         if (groundsData[i].morningAvailability.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Ground ${i + 1} select morning availability");
+          Constants.showSnackbar("Error",
+              "${sport.name} Ground ${i + 1} select morning availability");
           return;
         }
         if (groundsData[i].eveningAvailability.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Ground ${i + 1} select evening availability");
+          Constants.showSnackbar("Error",
+              "${sport.name} Ground ${i + 1} select evening availability");
           return;
         }
       }
@@ -1328,15 +1541,18 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
       for (int i = 0; i < addonsData.length; i++) {
         log("addonsData: ${addonsData.map((e) => e.toJson()).toList().join(',')}");
         if (addonsData[i].itemName.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Addon ${i + 1} name field is required");
+          Constants.showSnackbar(
+              "Error", "${sport.name} Addon ${i + 1} name field is required");
           return;
         }
         if (addonsData[i].rentPrice.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Addon ${i + 1} rent field is required");
+          Constants.showSnackbar(
+              "Error", "${sport.name} Addon ${i + 1} rent field is required");
           return;
         }
         if (addonsData[i].quality.isEmpty) {
-          Constants.showSnackbar("Error", "${sport.name} Addon ${i + 1} select morning availability");
+          Constants.showSnackbar("Error",
+              "${sport.name} Addon ${i + 1} select morning availability");
           return;
         }
       }
@@ -1346,7 +1562,8 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
   void addnewGround({required String sportName, required FormInfo formInfo}) {
     // var data = formInfo.toJson();
     // data.addEntries([MapEntry("add_ons", addon.map((e) => e.toJson()).toList())]);
-    var listElement = formsMapDataList.firstWhere((element) => element['sport'] == sportName);
+    var listElement =
+        formsMapDataList.firstWhere((element) => element['sport'] == sportName);
     int index = formsMapDataList.indexOf(listElement);
     List<req.Ground> list = listElement['list'];
     formInfo.morningTiming = list.first.morningAvailability;
@@ -1362,7 +1579,8 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
   }
 
   void removeGround(int removeIndex, String sportname) {
-    var element = formsMapDataList.firstWhere((value) => value['sport'] == sportname);
+    var element =
+        formsMapDataList.firstWhere((value) => value['sport'] == sportname);
     int index = formsMapDataList.indexOf(element);
     List<req.Ground> list = element['list'];
     log("before removing ground ${list.map((e) => e.toJson()).toList().join(",")}");
@@ -1371,11 +1589,16 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
     formsMapDataList[index]['list'] = list;
   }
 
-  void updateFormData({required String sportName, required FormInfo formInfo, required int index}) {
-    var value = formsMapDataList.firstWhere((element) => element['sport'] == sportName);
+  void updateFormData(
+      {required String sportName,
+      required FormInfo formInfo,
+      required int index}) {
+    var value =
+        formsMapDataList.firstWhere((element) => element['sport'] == sportName);
     int elIndex = formsMapDataList.indexOf(value);
     while (value['list'].length <= index) {
-      value['list'].add(req.Ground.fromJson(formInfo.toJson())); // Add placeholders (null or default object)
+      value['list'].add(req.Ground.fromJson(
+          formInfo.toJson())); // Add placeholders (null or default object)
     }
 
     log("value beforesd update ${value['list'].map((e) => e.toJson()).toList()}");
@@ -1384,8 +1607,12 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
     log("value after update ${value['list'].map((e) => e.toJson()).toList()}");
   }
 
-  void updateAddonData({required String sportName, required req.AddOn addon, required int index}) {
-    var value = formsMapDataList.firstWhere((element) => element['sport'] == sportName);
+  void updateAddonData(
+      {required String sportName,
+      required req.AddOn addon,
+      required int index}) {
+    var value =
+        formsMapDataList.firstWhere((element) => element['sport'] == sportName);
     int valueIndex = formsMapDataList.indexOf(value);
     log("value before update ${value['addons'].map((e) => e.toJson()).toList()}");
     value['addons'][index] = addon;
@@ -1393,20 +1620,30 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen> with TickerProv
     log("value after update ${value['addons'][index].toJson()}");
   }
 
-  void addAddonsToAllGrounds({required List<req.AddOn> addons, required String sportName}) {
-    var data = formsMapDataList.firstWhere((element) => element['sport'] == sportName);
+  void addAddonsToAllGrounds(
+      {required List<req.AddOn> addons, required String sportName}) {
+    var data =
+        formsMapDataList.firstWhere((element) => element['sport'] == sportName);
     int index = formsMapDataList.indexOf(data);
     data['addons'] = addons;
     formsMapDataList[index] = data;
     log("new added AddOns list: ${formsMapDataList.map((element) => element['addons']).toList().join(",")}");
   }
 
-  void addAvailabilityTimigs({required List<String> timings, required String sportName, required bool isMorning}) {
-    var data = formsMapDataList.firstWhere((element) => element['sport'] == sportName);
+  void addAvailabilityTimigs(
+      {required List<String> timings,
+      required String sportName,
+      required bool isMorning}) {
+    var data =
+        formsMapDataList.firstWhere((element) => element['sport'] == sportName);
     int index = formsMapDataList.indexOf(data);
     List<req.Ground> list = data["list"];
     log("list befor update ${list.map((e) => e.toJson()).toList().join(",")}");
-    list.map((e) => isMorning ? e.morningAvailability = timings : e.eveningAvailability = timings).toList();
+    list
+        .map((e) => isMorning
+            ? e.morningAvailability = timings
+            : e.eveningAvailability = timings)
+        .toList();
     log("list after update ${list.map((e) => e.toJson()).toList().join(",")}");
     data['list'] = list;
     formsMapDataList[index] = data;
