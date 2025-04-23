@@ -50,3 +50,5 @@ app.*.map.json
 pubspec.lock
 lib/objectbox.g.dart
 
+# FVM Version Cache
+.fvm/

@@ -60,17 +60,17 @@ dependencies:
   intl:
   url_launcher: ^6.3.1
   webview_flutter: ^4.9.0
-  
+
+  # For ios please remove this to avoid issue
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
-  objectbox_generator: any
+  objectbox_generator: ^4.1.0
   build_runner: ^2.4.14
   flutter_launcher_icons: ^0.14.3
- 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
