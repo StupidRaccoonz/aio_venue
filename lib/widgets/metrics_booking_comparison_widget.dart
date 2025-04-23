@@ -13,10 +13,12 @@ class MetricsBookingComparisonWidget extends StatefulWidget {
   const MetricsBookingComparisonWidget({super.key});
 
   @override
-  _MetricsBookingComparisonWidgetState createState() => _MetricsBookingComparisonWidgetState();
+  _MetricsBookingComparisonWidgetState createState() =>
+      _MetricsBookingComparisonWidgetState();
 }
 
-class _MetricsBookingComparisonWidgetState extends State<MetricsBookingComparisonWidget> {
+class _MetricsBookingComparisonWidgetState
+    extends State<MetricsBookingComparisonWidget> {
   List<FlSpot> totalShortAmountSpots = [];
   List<FlSpot> slotsCountSpots = [];
   List<String> dateLabels = [];
@@ -80,8 +82,14 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
 
       for (int i = 6; i >= 0; i--) {
         final date = today.subtract(Duration(days: i));
-        final booking = profileController!.venueAnalytics.value!.data.shortTermBooking.firstWhereOrNull((element) => element.bookingDate!.day == date.day && element.bookingDate!.month == date.month && element.bookingDate!.year == date.year);
-        shortTermSpotList.add(FlSpot(6 - i.toDouble(), (booking != null ? booking.bookingCount : 0).toDouble()));
+        final booking = profileController!
+            .venueAnalytics.value!.data.shortTermBooking
+            .firstWhereOrNull((element) =>
+                element.bookingDate!.day == date.day &&
+                element.bookingDate!.month == date.month &&
+                element.bookingDate!.year == date.year);
+        shortTermSpotList.add(FlSpot(6 - i.toDouble(),
+            (booking != null ? booking.bookingCount : 0).toDouble()));
       }
       shortTermSpots = shortTermSpotList;
     } else if (selectedFilter == '1M') {
@@ -95,12 +103,14 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
         weeklyBookingCount[week] = 0;
       }
 
-      for (var booking in profileController!.venueAnalytics.value!.data.shortTermBooking) {
+      for (var booking
+          in profileController!.venueAnalytics.value!.data.shortTermBooking) {
         DateTime bookingDate = booking.bookingDate!;
 
         if (bookingDate.isAfter(startOfMonth) && bookingDate.isBefore(today)) {
           int weekIndex = ((bookingDate.difference(startOfMonth).inDays) ~/ 7);
-          weeklyBookingCount[weekIndex] = (weeklyBookingCount[weekIndex] ?? 0) + booking.bookingCount;
+          weeklyBookingCount[weekIndex] =
+              (weeklyBookingCount[weekIndex] ?? 0) + booking.bookingCount;
         }
       }
 
@@ -118,17 +128,27 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
         int monthlyBookingCount = 0;
 
         final currentMonth = today.subtract(Duration(days: 30 * monthIndex));
-        final firstDayOfMonth = DateTime(currentMonth.year, currentMonth.month, 1);
-        final lastDayOfMonth = DateTime(currentMonth.year, currentMonth.month + 1, 0);
+        final firstDayOfMonth =
+            DateTime(currentMonth.year, currentMonth.month, 1);
+        final lastDayOfMonth =
+            DateTime(currentMonth.year, currentMonth.month + 1, 0);
 
-        for (var day = firstDayOfMonth; day.isBefore(lastDayOfMonth.add(Duration(days: 1))); day = day.add(Duration(days: 1))) {
-          final booking = profileController!.venueAnalytics.value!.data.shortTermBooking.firstWhereOrNull((element) => element.bookingDate!.day == day.day && element.bookingDate!.month == day.month && element.bookingDate!.year == day.year);
+        for (var day = firstDayOfMonth;
+            day.isBefore(lastDayOfMonth.add(Duration(days: 1)));
+            day = day.add(Duration(days: 1))) {
+          final booking = profileController!
+              .venueAnalytics.value!.data.shortTermBooking
+              .firstWhereOrNull((element) =>
+                  element.bookingDate!.day == day.day &&
+                  element.bookingDate!.month == day.month &&
+                  element.bookingDate!.year == day.year);
           if (booking != null) {
             monthlyBookingCount += booking.bookingCount;
           }
         }
 
-        shortTermSpotList.add(FlSpot(5 - monthIndex.toDouble(), monthlyBookingCount.toDouble()));
+        shortTermSpotList.add(
+            FlSpot(5 - monthIndex.toDouble(), monthlyBookingCount.toDouble()));
       }
 
       shortTermSpots = shortTermSpotList;
@@ -143,18 +163,28 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
         final startMonth = today.month - monthsToSubtract;
 
         final firstDayOfQuarter = DateTime(today.year, startMonth, 1);
-        final lastMonthOfQuarter = (startMonth + 2) > 12 ? 12 : (startMonth + 2);
-        final lastDayOfQuarter = DateTime(today.year, lastMonthOfQuarter + 1, 0);
+        final lastMonthOfQuarter =
+            (startMonth + 2) > 12 ? 12 : (startMonth + 2);
+        final lastDayOfQuarter =
+            DateTime(today.year, lastMonthOfQuarter + 1, 0);
 
-        for (var day = firstDayOfQuarter; day.isBefore(lastDayOfQuarter.add(Duration(days: 1))); day = day.add(Duration(days: 1))) {
-          final booking = profileController!.venueAnalytics.value!.data.shortTermBooking.firstWhereOrNull((element) => element.bookingDate!.day == day.day && element.bookingDate!.month == day.month && element.bookingDate!.year == day.year);
+        for (var day = firstDayOfQuarter;
+            day.isBefore(lastDayOfQuarter.add(Duration(days: 1)));
+            day = day.add(Duration(days: 1))) {
+          final booking = profileController!
+              .venueAnalytics.value!.data.shortTermBooking
+              .firstWhereOrNull((element) =>
+                  element.bookingDate!.day == day.day &&
+                  element.bookingDate!.month == day.month &&
+                  element.bookingDate!.year == day.year);
 
           if (booking != null) {
             quarterlyBookingCount += booking.bookingCount;
           }
         }
 
-        yearlySpotList.add(FlSpot((3 - quarterIndex).toDouble(), quarterlyBookingCount.toDouble()));
+        yearlySpotList.add(FlSpot(
+            (3 - quarterIndex).toDouble(), quarterlyBookingCount.toDouble()));
       }
 
       shortTermSpots = yearlySpotList;
@@ -171,25 +201,38 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
         final firstDayOfYear = DateTime(year, 1, 1);
         final lastDayOfYear = DateTime(year, 12, 31);
 
-        for (var day = firstDayOfYear; day.isBefore(lastDayOfYear.add(Duration(days: 1))); day = day.add(Duration(days: 1))) {
-          final booking = profileController!.venueAnalytics.value!.data.shortTermBooking.firstWhereOrNull((element) => element.bookingDate!.day == day.day && element.bookingDate!.month == day.month && element.bookingDate!.year == day.year);
+        for (var day = firstDayOfYear;
+            day.isBefore(lastDayOfYear.add(Duration(days: 1)));
+            day = day.add(Duration(days: 1))) {
+          final booking = profileController!
+              .venueAnalytics.value!.data.shortTermBooking
+              .firstWhereOrNull((element) =>
+                  element.bookingDate!.day == day.day &&
+                  element.bookingDate!.month == day.month &&
+                  element.bookingDate!.year == day.year);
 
           if (booking != null) {
             yearlyBookingCount += booking.bookingCount;
           }
         }
 
-        fiveYearSpotList.add(FlSpot((yearIndex).toDouble(), yearlyBookingCount.toDouble()));
+        fiveYearSpotList
+            .add(FlSpot((yearIndex).toDouble(), yearlyBookingCount.toDouble()));
       }
 
       shortTermSpots = fiveYearSpotList;
     } else if (selectedFilter == 'Max') {
-      final bookingData = profileController!.venueAnalytics.value!.data.shortTermBooking;
+      final bookingData =
+          profileController!.venueAnalytics.value!.data.shortTermBooking;
 
       if (bookingData.isEmpty) return;
 
-      int minYear = bookingData.map((e) => e.bookingDate!.year).reduce((a, b) => a < b ? a : b);
-      int maxYear = bookingData.map((e) => e.bookingDate!.year).reduce((a, b) => a > b ? a : b);
+      int minYear = bookingData
+          .map((e) => e.bookingDate!.year)
+          .reduce((a, b) => a < b ? a : b);
+      int maxYear = bookingData
+          .map((e) => e.bookingDate!.year)
+          .reduce((a, b) => a > b ? a : b);
 
       List<FlSpot> spotList = [];
       Map<int, int> yearlyBookingCount = {};
@@ -200,7 +243,8 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
 
       for (var booking in bookingData) {
         int year = booking.bookingDate!.year;
-        yearlyBookingCount[year] = (yearlyBookingCount[year] ?? 0) + booking.bookingCount;
+        yearlyBookingCount[year] =
+            (yearlyBookingCount[year] ?? 0) + booking.bookingCount;
       }
 
       int index = 0;
@@ -221,8 +265,14 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
 
       for (int i = 6; i >= 0; i--) {
         final date = today.subtract(Duration(days: i));
-        final booking = profileController!.venueAnalytics.value!.data.longTermBooking.firstWhereOrNull((element) => element.bookingDate!.day == date.day && element.bookingDate!.month == date.month && element.bookingDate!.year == date.year);
-        longTermSpots.add(FlSpot(6 - i.toDouble(), (booking != null ? booking.bookingCount : 0).toDouble()));
+        final booking = profileController!
+            .venueAnalytics.value!.data.longTermBooking
+            .firstWhereOrNull((element) =>
+                element.bookingDate!.day == date.day &&
+                element.bookingDate!.month == date.month &&
+                element.bookingDate!.year == date.year);
+        longTermSpots.add(FlSpot(6 - i.toDouble(),
+            (booking != null ? booking.bookingCount : 0).toDouble()));
       }
       longTermSpots = longTermSpots;
     } else if (selectedFilter == '1M') {
@@ -235,11 +285,13 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
       for (int week = 0; week < 4; week++) {
         weeklyBookingCount[week] = 0;
       }
-      for (var booking in profileController!.venueAnalytics.value!.data.longTermBooking) {
+      for (var booking
+          in profileController!.venueAnalytics.value!.data.longTermBooking) {
         DateTime bookingDate = booking.bookingDate!;
         if (bookingDate.isAfter(startOfMonth) && bookingDate.isBefore(today)) {
           int weekIndex = ((bookingDate.difference(startOfMonth).inDays) ~/ 7);
-          weeklyBookingCount[weekIndex] = (weeklyBookingCount[weekIndex] ?? 0) + booking.bookingCount;
+          weeklyBookingCount[weekIndex] =
+              (weeklyBookingCount[weekIndex] ?? 0) + booking.bookingCount;
         }
       }
       weeklyBookingCount.forEach((week, count) {
@@ -254,15 +306,25 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
       for (int monthIndex = 5; monthIndex >= 0; monthIndex--) {
         int monthlyBookingCount = 0;
         final currentMonth = today.subtract(Duration(days: 30 * monthIndex));
-        final firstDayOfMonth = DateTime(currentMonth.year, currentMonth.month, 1);
-        final lastDayOfMonth = DateTime(currentMonth.year, currentMonth.month + 1, 0);
-        for (var day = firstDayOfMonth; day.isBefore(lastDayOfMonth.add(Duration(days: 1))); day = day.add(Duration(days: 1))) {
-          final booking = profileController!.venueAnalytics.value!.data.longTermBooking.firstWhereOrNull((element) => element.bookingDate!.day == day.day && element.bookingDate!.month == day.month && element.bookingDate!.year == day.year);
+        final firstDayOfMonth =
+            DateTime(currentMonth.year, currentMonth.month, 1);
+        final lastDayOfMonth =
+            DateTime(currentMonth.year, currentMonth.month + 1, 0);
+        for (var day = firstDayOfMonth;
+            day.isBefore(lastDayOfMonth.add(Duration(days: 1)));
+            day = day.add(Duration(days: 1))) {
+          final booking = profileController!
+              .venueAnalytics.value!.data.longTermBooking
+              .firstWhereOrNull((element) =>
+                  element.bookingDate!.day == day.day &&
+                  element.bookingDate!.month == day.month &&
+                  element.bookingDate!.year == day.year);
           if (booking != null) {
             monthlyBookingCount += booking.bookingCount;
           }
         }
-        longTermSpotList.add(FlSpot(5 - monthIndex.toDouble(), monthlyBookingCount.toDouble()));
+        longTermSpotList.add(
+            FlSpot(5 - monthIndex.toDouble(), monthlyBookingCount.toDouble()));
       }
 
       longTermSpots = longTermSpotList;
@@ -275,16 +337,26 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
         int monthsToSubtract = quarterIndex * 3;
         final startMonth = today.month - monthsToSubtract;
         final firstDayOfQuarter = DateTime(today.year, startMonth, 1);
-        final lastMonthOfQuarter = (startMonth + 2) > 12 ? 12 : (startMonth + 2);
-        final lastDayOfQuarter = DateTime(today.year, lastMonthOfQuarter + 1, 0);
-        for (var day = firstDayOfQuarter; day.isBefore(lastDayOfQuarter.add(Duration(days: 1))); day = day.add(Duration(days: 1))) {
-          final booking = profileController!.venueAnalytics.value!.data.longTermBooking.firstWhereOrNull((element) => element.bookingDate!.day == day.day && element.bookingDate!.month == day.month && element.bookingDate!.year == day.year);
+        final lastMonthOfQuarter =
+            (startMonth + 2) > 12 ? 12 : (startMonth + 2);
+        final lastDayOfQuarter =
+            DateTime(today.year, lastMonthOfQuarter + 1, 0);
+        for (var day = firstDayOfQuarter;
+            day.isBefore(lastDayOfQuarter.add(Duration(days: 1)));
+            day = day.add(Duration(days: 1))) {
+          final booking = profileController!
+              .venueAnalytics.value!.data.longTermBooking
+              .firstWhereOrNull((element) =>
+                  element.bookingDate!.day == day.day &&
+                  element.bookingDate!.month == day.month &&
+                  element.bookingDate!.year == day.year);
 
           if (booking != null) {
             quarterlyBookingCount += booking.bookingCount;
           }
         }
-        yearlySpotList.add(FlSpot((3 - quarterIndex).toDouble(), quarterlyBookingCount.toDouble()));
+        yearlySpotList.add(FlSpot(
+            (3 - quarterIndex).toDouble(), quarterlyBookingCount.toDouble()));
       }
 
       longTermSpots = yearlySpotList;
@@ -300,24 +372,37 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
         final firstDayOfYear = DateTime(year, 1, 1);
         final lastDayOfYear = DateTime(year, 12, 31);
 
-        for (var day = firstDayOfYear; day.isBefore(lastDayOfYear.add(Duration(days: 1))); day = day.add(Duration(days: 1))) {
-          final booking = profileController!.venueAnalytics.value!.data.longTermBooking.firstWhereOrNull((element) => element.bookingDate!.day == day.day && element.bookingDate!.month == day.month && element.bookingDate!.year == day.year);
+        for (var day = firstDayOfYear;
+            day.isBefore(lastDayOfYear.add(Duration(days: 1)));
+            day = day.add(Duration(days: 1))) {
+          final booking = profileController!
+              .venueAnalytics.value!.data.longTermBooking
+              .firstWhereOrNull((element) =>
+                  element.bookingDate!.day == day.day &&
+                  element.bookingDate!.month == day.month &&
+                  element.bookingDate!.year == day.year);
 
           if (booking != null) {
             yearlyBookingCount += booking.bookingCount;
           }
         }
-        fiveYearSpotList.add(FlSpot((yearIndex).toDouble(), yearlyBookingCount.toDouble()));
+        fiveYearSpotList
+            .add(FlSpot((yearIndex).toDouble(), yearlyBookingCount.toDouble()));
       }
 
       longTermSpots = fiveYearSpotList;
     } else if (selectedFilter == 'Max') {
-      final bookingData = profileController!.venueAnalytics.value!.data.longTermBooking;
+      final bookingData =
+          profileController!.venueAnalytics.value!.data.longTermBooking;
 
       if (bookingData.isEmpty) return;
 
-      int minYear = bookingData.map((e) => e.bookingDate!.year).reduce((a, b) => a < b ? a : b);
-      int maxYear = bookingData.map((e) => e.bookingDate!.year).reduce((a, b) => a > b ? a : b);
+      int minYear = bookingData
+          .map((e) => e.bookingDate!.year)
+          .reduce((a, b) => a < b ? a : b);
+      int maxYear = bookingData
+          .map((e) => e.bookingDate!.year)
+          .reduce((a, b) => a > b ? a : b);
 
       List<FlSpot> spotList = [];
       Map<int, int> yearlyBookingCount = {};
@@ -327,7 +412,8 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
       }
       for (var booking in bookingData) {
         int year = booking.bookingDate!.year;
-        yearlyBookingCount[year] = (yearlyBookingCount[year] ?? 0) + booking.bookingCount;
+        yearlyBookingCount[year] =
+            (yearlyBookingCount[year] ?? 0) + booking.bookingCount;
       }
       int index = 0;
       yearlyBookingCount.forEach((year, count) {
@@ -366,7 +452,8 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
     } else if (selectedFilter == '6M') {
       final today = DateTime.now();
 
-      final monthDate = DateTime(today.year, today.month - (5 - value.toInt()), 1);
+      final monthDate =
+          DateTime(today.year, today.month - (5 - value.toInt()), 1);
 
       return SideTitleWidget(
         axisSide: meta.axisSide,
@@ -412,7 +499,8 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
       // }
     } else if (selectedFilter == '5Y') {
       final int currentYear = DateTime.now().year;
-      final int year = currentYear - (4 - value.toInt()); // Mapping index to year
+      final int year =
+          currentYear - (4 - value.toInt()); // Mapping index to year
 
       return SideTitleWidget(
         axisSide: meta.axisSide,
@@ -426,11 +514,13 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
         ),
       );
     } else {
-      final bookingData = profileController!.venueAnalytics.value!.data.shortTermBooking;
+      final bookingData =
+          profileController!.venueAnalytics.value!.data.shortTermBooking;
 
       if (bookingData.isEmpty) return SizedBox();
 
-      List<int> years = bookingData.map((e) => e.bookingDate!.year).toSet().toList();
+      List<int> years =
+          bookingData.map((e) => e.bookingDate!.year).toSet().toList();
       years.sort();
 
       if (value.toInt() < 0 || value.toInt() >= years.length) return SizedBox();
@@ -464,14 +554,25 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
 
   @override
   Widget build(BuildContext context) {
-    final myEarnings = profileController.venueEarnings.value?.data?.myEarning?.data ?? [];
-    var longBookings = myEarnings.where((item) => item.bookingType == "long").toList();
-    var shortBookings = myEarnings.where((item) => item.bookingType == "short").toList();
+    final myEarnings =
+        profileController.venueEarnings.value?.data?.myEarning?.data ?? [];
+    var longBookings =
+        myEarnings.where((item) => item.bookingType == "long").toList();
+    var shortBookings =
+        myEarnings.where((item) => item.bookingType == "short").toList();
 
     int totalBookings = longBookings.length + shortBookings.length;
 
-    final List<BookingData> allBookings = [...profileController.longBookings!.value!.bookings!.data, ...profileController.shortBookings!.value!.bookings!.data];
-    print("TotalBookings: ${totalBookings} allBooking: ${allBookings.length}, shortBookings: ${shortBookings.length} longBookins:${longBookings.length}, len: ${profileController.venueAnalytics.value!.data.shortTermBooking.length}");
+    final List<BookingData> allBookings = [
+      ...(profileController.longBookings.value!.bookings == null
+          ? []
+          : profileController.longBookings!.value!.bookings!.data),
+      ...(profileController.shortBookings.value!.bookings == null
+          ? []
+          : profileController.shortBookings!.value!.bookings!.data)
+    ];
+    print(
+        "TotalBookings: ${totalBookings} allBooking: ${allBookings.length}, shortBookings: ${shortBookings.length} longBookins:${longBookings.length}, len: ${profileController.venueAnalytics.value!.data.shortTermBooking.length}");
 
     return Container(
       width: 350,
@@ -570,7 +671,8 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
             reservedSize: 22,
           ),
         ),
-        rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        rightTitles:
+            const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
       ),
       borderData: FlBorderData(show: false),
@@ -621,7 +723,8 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
               return LineTooltipItem(
                   '', // Unicode bullet for dot effect
                   TextStyle(
-                    color: touchedSpot.bar.color, // Apply the dot color to the text
+                    color: touchedSpot
+                        .bar.color, // Apply the dot color to the text
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
@@ -629,7 +732,8 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
                     TextSpan(
                       text: '• ',
                       style: TextStyle(
-                        color: touchedSpot.bar.color, // Dot color matches line color
+                        color: touchedSpot
+                            .bar.color, // Dot color matches line color
                         fontSize: 25, // Slightly larger to mimic a circle
                       ),
                     ),
@@ -674,9 +778,19 @@ class _MetricsBookingComparisonWidgetState extends State<MetricsBookingCompariso
   }
 
   Widget _bottomTitleWidgets(double value, TitleMeta meta) {
-    List<String> labels = ["1 Jan", "2 Jan", "3 Jan", "4 Jan", "5 Jan", "6 Jan", "7 Jan"];
+    List<String> labels = [
+      "1 Jan",
+      "2 Jan",
+      "3 Jan",
+      "4 Jan",
+      "5 Jan",
+      "6 Jan",
+      "7 Jan"
+    ];
     // List<String> labels = uniqueDates.map((date) => DateFormat("d MMM").format(date).toString()).toList();
-    String text = value.toInt() >= 0 && value.toInt() < labels.length ? labels[value.toInt()] : '';
+    String text = value.toInt() >= 0 && value.toInt() < labels.length
+        ? labels[value.toInt()]
+        : '';
     return Text(text, style: const TextStyle(fontSize: 10));
   }
 }

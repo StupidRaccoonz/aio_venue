@@ -24,12 +24,17 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final myEarnings = profileController.venueEarnings.value?.data?.myEarning?.data ?? [];
-    var longBookingsCount = myEarnings.where((item) => item.bookingType == "long").toList();
-    var shortBookingCount = myEarnings.where((item) => item.bookingType == "short").toList();
+    final myEarnings =
+        profileController.venueEarnings.value?.data?.myEarning?.data ?? [];
+    var longBookingsCount =
+        myEarnings.where((item) => item.bookingType == "long").toList();
+    var shortBookingCount =
+        myEarnings.where((item) => item.bookingType == "short").toList();
 
-    var totalLongBookingAmount = longBookingsCount.fold(0.0, (sum, item) => sum + (item.totalAmount ?? 0.0));
-    var totalshortBookingAmount = shortBookingCount.fold(0.0, (sum, item) => sum + (item.totalAmount ?? 0.0));
+    var totalLongBookingAmount = longBookingsCount.fold(
+        0.0, (sum, item) => sum + (item.totalAmount ?? 0.0));
+    var totalshortBookingAmount = shortBookingCount.fold(
+        0.0, (sum, item) => sum + (item.totalAmount ?? 0.0));
 
     return Scaffold(
       appBar: PreferredSize(
@@ -49,7 +54,10 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 30),
-              Text("Overview", style: TextStyle(fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold)),
+              Text("Overview",
+                  style: TextStyle(
+                      fontSize: screenHeight * 0.03,
+                      fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -77,13 +85,15 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                                       sections: [
                                         PieChartSectionData(
                                           color: longTermColor,
-                                          value: longBookingsCount.length.toDouble(),
+                                          value: longBookingsCount.length
+                                              .toDouble(),
                                           title: '',
                                           radius: 20,
                                         ),
                                         PieChartSectionData(
                                           color: shortTermColor,
-                                          value: shortBookingCount.length.toDouble(),
+                                          value: shortBookingCount.length
+                                              .toDouble(),
                                           title: '',
                                           radius: 20,
                                         ),
@@ -96,14 +106,17 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                                       Text(
                                         "${profileController.venueAnalytics.value?.data.totalBooking}",
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
                                         width: 60,
                                         child: Text(
                                           "Total Bookings",
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                                          style: TextStyle(
+                                              fontSize: 14, color: Colors.grey),
                                         ),
                                       ),
                                     ],
@@ -112,9 +125,21 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                               ),
                             ),
                             _buildLegend(
-                                totalLongBookingAmount + totalshortBookingAmount > 0 ? (longBookingsCount.length * 100 / (shortBookingCount.length + longBookingsCount.length)) : 0,
-                                totalLongBookingAmount + totalshortBookingAmount > 0
-                                    ? (shortBookingCount.length * 100 / (shortBookingCount.length + longBookingsCount.length))
+                                totalLongBookingAmount +
+                                            totalshortBookingAmount >
+                                        0
+                                    ? (longBookingsCount.length *
+                                        100 /
+                                        (shortBookingCount.length +
+                                            longBookingsCount.length))
+                                    : 0,
+                                totalLongBookingAmount +
+                                            totalshortBookingAmount >
+                                        0
+                                    ? (shortBookingCount.length *
+                                        100 /
+                                        (shortBookingCount.length +
+                                            longBookingsCount.length))
                                     : 0),
                           ],
                         ),
@@ -122,7 +147,8 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: CustomTheme.grey.withOpacity(0.5)),
+                        border: Border.all(
+                            color: CustomTheme.grey.withOpacity(0.5)),
                       ),
                     ),
                   ),
@@ -140,19 +166,25 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                         children: [
                           ActivityItem(
                             color: Colors.purple,
-                            value: profileController.venueAnalytics.value!.data.createdActivity.toString(),
+                            value: profileController
+                                .venueAnalytics.value!.data.createdActivity
+                                .toString(),
                             label: "Created activity",
                           ),
                           SizedBox(height: 12),
                           ActivityItem(
                             color: Colors.blue,
-                            value: profileController.venueAnalytics.value!.data.hostedActivity.toString(),
+                            value: profileController
+                                .venueAnalytics.value!.data.hostedActivity
+                                .toString(),
                             label: "Hosted activity",
                           ),
                           SizedBox(height: 12),
                           ActivityItem(
                             color: Colors.orange,
-                            value: profileController.venueAnalytics.value!.data.challanges.toString(),
+                            value: profileController
+                                .venueAnalytics.value!.data.challanges
+                                .toString(),
                             label: "Challenges",
                           ),
                         ],
@@ -160,7 +192,8 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: CustomTheme.grey.withOpacity(0.5)),
+                        border: Border.all(
+                            color: CustomTheme.grey.withOpacity(0.5)),
                       ),
                     ),
                   ),
@@ -169,10 +202,17 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
               SizedBox(height: 20),
               Container(
                 // height: screenHeight * 0.5,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: CustomTheme.grey.withOpacity(0.5))),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border:
+                        Border.all(color: CustomTheme.grey.withOpacity(0.5))),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                  child: profileController.venueAnalytics.value?.data.shortTermBooking == null
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                  child: profileController
+                              .venueAnalytics.value?.data.shortTermBooking ==
+                          null
                       ? Center(
                           child: Text('No Data Found'),
                         )
@@ -180,14 +220,20 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              Text("Total ground bookings", style: TextStyle(fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold)),
+              Text("Total ground bookings",
+                  style: TextStyle(
+                      fontSize: screenHeight * 0.03,
+                      fontWeight: FontWeight.bold)),
               SizedBox(height: 5),
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: profileController.venueAnalytics.value!.data.gettotalgroundbookings.length,
+                itemCount: profileController
+                    .venueAnalytics.value!.data.gettotalgroundbookings.length,
                 itemBuilder: (context, index) {
-                  final items = profileController.venueAnalytics.value?.data.gettotalgroundbookings ?? [];
+                  final items = profileController
+                          .venueAnalytics.value?.data.gettotalgroundbookings ??
+                      [];
                   ;
                   if (items == null || items.isEmpty) {
                     return Center(child: Text("No data available"));
@@ -201,7 +247,8 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     item.sportsName,
@@ -214,17 +261,21 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              if (item.grounds != null && item.grounds.isNotEmpty)
+                              if (item.grounds != null &&
+                                  item.grounds.isNotEmpty)
                                 Container(
                                   decoration: BoxDecoration(
                                     color: Color(0xffE9E8EB).withOpacity(0.3),
                                     borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: CustomTheme.grey.withOpacity(0.5)),
+                                    border: Border.all(
+                                        color:
+                                            CustomTheme.grey.withOpacity(0.5)),
                                   ),
                                   child: ListView.separated(
                                       separatorBuilder: (context, index) {
                                         return Padding(
-                                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0),
                                           child: Divider(),
                                         );
                                       },
@@ -235,15 +286,18 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                                         return Padding(
                                           padding: const EdgeInsets.all(12.0),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
                                                 ground.groundName,
-                                                style: Get.textTheme.labelMedium,
+                                                style:
+                                                    Get.textTheme.labelMedium,
                                               ),
                                               Text(
                                                 "${ground.pitchBookingCount.toString()}", // Displays the booking count
-                                                style: Get.textTheme.titleMedium,
+                                                style:
+                                                    Get.textTheme.titleMedium,
                                               ),
                                             ],
                                           ),
@@ -276,7 +330,8 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: CustomTheme.grey.withOpacity(0.5)),
+                          border: Border.all(
+                              color: CustomTheme.grey.withOpacity(0.5)),
                         ),
                       )
                       // MetricsTotalGroundBookingsWidget(data: '${profileController.venueAnalytics.value!.data}',),
@@ -291,7 +346,8 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
   }
 
   Widget _buildProgressIndicator() {
-    double screenWidth = MediaQuery.of(context).size.width - 32; // Full width minus padding
+    double screenWidth =
+        MediaQuery.of(context).size.width - 32; // Full width minus padding
     double total = 10500;
     double orangeWidth = (2200 / total) * screenWidth;
     double blueWidth = (3150 / total) * screenWidth;
@@ -310,9 +366,13 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
               ),
             ),
             // 3️⃣ Last segment (Purple) - Drawn first
-            _progressSegment(purpleWidth, longTermColor, screenWidth - purpleWidth, overlap: 6, isLast: true),
+            _progressSegment(
+                purpleWidth, longTermColor, screenWidth - purpleWidth,
+                overlap: 6, isLast: true),
             // 2️⃣ Middle segment (Blue) - Drawn second, overlapping last
-            _progressSegment(blueWidth, shortTermColor, screenWidth - (purpleWidth + blueWidth), overlap: 6),
+            _progressSegment(blueWidth, shortTermColor,
+                screenWidth - (purpleWidth + blueWidth),
+                overlap: 6),
             // 1️⃣ First segment (Orange) - Drawn last, overlapping all
             _progressSegment(orangeWidth, Colors.orange, 0, isFirst: true),
           ],
@@ -375,7 +435,8 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
     );
   }
 
-  Widget _progressSegment(double width, Color color, double leftPosition, {bool isFirst = false, bool isLast = false, double overlap = 0}) {
+  Widget _progressSegment(double width, Color color, double leftPosition,
+      {bool isFirst = false, bool isLast = false, double overlap = 0}) {
     return Positioned(
       left: leftPosition - overlap,
       right: isLast ? 0 : null, // Adjust for overlapping effect
@@ -403,7 +464,8 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
       children: [
         _legendItem("${long.round().toString()}%", "Long term", longTermColor),
         SizedBox(width: 20),
-        _legendItem("${short.round().toString()}%", "Short term", shortTermColor),
+        _legendItem(
+            "${short.round().toString()}%", "Short term", shortTermColor),
       ],
     );
   }
@@ -420,7 +482,8 @@ class _VenueMetricsScreenState extends State<VenueMetricsScreen> {
               decoration: BoxDecoration(shape: BoxShape.circle, color: color),
             ),
             SizedBox(width: 5),
-            Text(percent, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(percent,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ],
         ),
         //SizedBox(width: 5),

@@ -23,7 +23,8 @@ class VenueActivityScreen extends StatefulWidget {
   State<VenueActivityScreen> createState() => _VenueActivityScreenState();
 }
 
-class _VenueActivityScreenState extends State<VenueActivityScreen> with AutomaticKeepAliveClientMixin {
+class _VenueActivityScreenState extends State<VenueActivityScreen>
+    with AutomaticKeepAliveClientMixin {
   late BookingFilterModel filterModelMyActivity;
   late BookingFilterModel filterModelOther;
   bool isMyActivity = true;
@@ -36,11 +37,16 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
     filterModelOther = BookingFilterModel(sport: Sport(), date: 6);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      filterModelMyActivity = BookingFilterModel(sport: profileController.currentVenue.value!.data!.venue.sports!.first, date: 6);
-
-      filterModelOther = BookingFilterModel(sport: profileController.currentVenue.value!.data!.venue.sports!.first, date: 6);
-      super.initState();
+      filterModelMyActivity = BookingFilterModel(
+          sport:
+              profileController.currentVenue.value!.data!.venue.sports!.first,
+          date: 6);
+      filterModelOther = BookingFilterModel(
+          sport:
+              profileController.currentVenue.value!.data!.venue.sports!.first,
+          date: 6);
     });
+    super.initState();
   }
 
   @override
@@ -70,7 +76,9 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
                             "My Activity",
                           ),
                         )),
-                    Tab(height: 30.rh, child: FittedBox(child: const Text("Other Activity"))),
+                    Tab(
+                        height: 30.rh,
+                        child: FittedBox(child: const Text("Other Activity"))),
                     Tab(height: 30.rh, child: const Text("Completed")),
                   ]),
               Expanded(
@@ -92,12 +100,16 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
                                     filterModelMyActivity.sport.name ?? "",
                                     style: Get.textTheme.labelMedium,
                                   ),
-                                  deleteIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                  deleteIcon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded),
                                   onDeleted: () {
                                     applyFilters(0, true);
                                   },
-                                  side: BorderSide(color: CustomTheme.borderColor),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.br)),
+                                  side: BorderSide(
+                                      color: CustomTheme.borderColor),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.br)),
                                 ),
                               ),
                               const SizedBox(width: 13.0),
@@ -105,15 +117,20 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
                                 onTap: () => applyFilters(1, true),
                                 child: Chip(
                                   label: Text(
-                                    Constants.intToString(filterModelMyActivity.date, false),
+                                    Constants.intToString(
+                                        filterModelMyActivity.date, false),
                                     style: Get.textTheme.labelMedium,
                                   ),
-                                  deleteIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                  deleteIcon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded),
                                   onDeleted: () {
                                     applyFilters(1, true);
                                   },
-                                  side: BorderSide(color: CustomTheme.borderColor),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.br)),
+                                  side: BorderSide(
+                                      color: CustomTheme.borderColor),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.br)),
                                 ),
                               ),
                             ],
@@ -121,23 +138,37 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
                         ),
                         Expanded(
                           child: Obx(() {
-                            var listOfMatches = profileController.venueActivities.value?.data?.match.where((element) => element.type == "venue" && element.sport.name == filterModelMyActivity.sport.name).toList() ?? [];
+                            var listOfMatches = profileController
+                                    .venueActivities.value?.data?.match
+                                    .where((element) =>
+                                        element.type == "venue" &&
+                                        element.sport.name ==
+                                            filterModelMyActivity.sport.name)
+                                    .toList() ??
+                                [];
 
-                            listOfMatches = Constants.filterMatchesByDate(listOfMatches, filterModelMyActivity.date).reversed.toList();
+                            listOfMatches = Constants.filterMatchesByDate(
+                                    listOfMatches, filterModelMyActivity.date)
+                                .reversed
+                                .toList();
                             return listOfMatches.isEmpty
                                 ? Center(
                                     child: Text(
                                       "No activities found",
-                                      style: Get.textTheme.headlineSmall!.copyWith(color: CustomTheme.appColor),
+                                      style: Get.textTheme.headlineSmall!
+                                          .copyWith(
+                                              color: CustomTheme.appColor),
                                     ),
                                   )
                                 : ListView.builder(
                                     itemCount: listOfMatches.length,
                                     itemBuilder: (context, index) {
                                       return Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
                                           child: ActivityCardWidget(
-                                            height: constraints.maxHeight * 0.35,
+                                            height:
+                                                constraints.maxHeight * 0.35,
                                             width: constraints.maxWidth * 0.9,
                                             fromActivity: true,
                                             onPressed: () {},
@@ -165,12 +196,16 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
                                     filterModelOther.sport.name ?? "",
                                     style: Get.textTheme.labelMedium,
                                   ),
-                                  deleteIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                  deleteIcon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded),
                                   onDeleted: () {
                                     applyFilters(0, false);
                                   },
-                                  side: BorderSide(color: CustomTheme.borderColor),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.br)),
+                                  side: BorderSide(
+                                      color: CustomTheme.borderColor),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.br)),
                                 ),
                               ),
                               const SizedBox(width: 13.0),
@@ -178,15 +213,20 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
                                 onTap: () => applyFilters(1, false),
                                 child: Chip(
                                   label: Text(
-                                    Constants.intToString(filterModelOther.date, false),
+                                    Constants.intToString(
+                                        filterModelOther.date, false),
                                     style: Get.textTheme.labelMedium,
                                   ),
-                                  deleteIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                  deleteIcon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded),
                                   onDeleted: () {
                                     applyFilters(1, false);
                                   },
-                                  side: BorderSide(color: CustomTheme.borderColor),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.br)),
+                                  side: BorderSide(
+                                      color: CustomTheme.borderColor),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.br)),
                                 ),
                               ),
                             ],
@@ -195,14 +235,23 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
 
                         Expanded(
                           child: Obx(() {
-                            var listOfMatches = profileController.otherVenueActivities.value?.data?.match.where((element) => element.type != "venue" && element.sport.name == filterModelOther.sport.name).toList() ?? [];
-                            listOfMatches = Constants.filterMatchesByDate(listOfMatches, filterModelOther.date);
+                            var listOfMatches = profileController
+                                    .otherVenueActivities.value?.data?.match
+                                    .where((element) =>
+                                        element.type != "venue" &&
+                                        element.sport.name ==
+                                            filterModelOther.sport.name)
+                                    .toList() ??
+                                [];
+                            listOfMatches = Constants.filterMatchesByDate(
+                                listOfMatches, filterModelOther.date);
 
                             return ListView.builder(
                               itemCount: listOfMatches.length,
                               itemBuilder: (context, index) {
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
                                   child: ActivityCardWidget(
                                     height: constraints.maxHeight * 0.25,
                                     width: constraints.maxWidth * 0.9,
@@ -233,27 +282,36 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
                                     filterModelMyActivity.sport.name ?? "",
                                     style: Get.textTheme.labelMedium,
                                   ),
-                                  deleteIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                  deleteIcon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded),
                                   onDeleted: () {
                                     applyFilters(0, true);
                                   },
-                                  side: BorderSide(color: CustomTheme.borderColor),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.br)),
+                                  side: BorderSide(
+                                      color: CustomTheme.borderColor),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.br)),
                                 ),
                               ),
                               GestureDetector(
                                 onTap: () => applyFilters(0, true),
                                 child: Chip(
                                   label: Text(
-                                    Constants.intToString(filterModelMyActivity.date, false),
+                                    Constants.intToString(
+                                        filterModelMyActivity.date, false),
                                     style: Get.textTheme.labelMedium,
                                   ),
-                                  deleteIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                  deleteIcon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded),
                                   onDeleted: () {
                                     applyFilters(1, true);
                                   },
-                                  side: BorderSide(color: CustomTheme.borderColor),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.br)),
+                                  side: BorderSide(
+                                      color: CustomTheme.borderColor),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.br)),
                                 ),
                               ),
                               GestureDetector(
@@ -263,12 +321,16 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
                                     filterModelMyActivity.sport.name ?? "",
                                     style: Get.textTheme.labelMedium,
                                   ),
-                                  deleteIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                  deleteIcon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded),
                                   onDeleted: () {
                                     applyFilters(0, true);
                                   },
-                                  side: BorderSide(color: CustomTheme.borderColor),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.br)),
+                                  side: BorderSide(
+                                      color: CustomTheme.borderColor),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(20.br)),
                                 ),
                               ),
                             ],
@@ -276,26 +338,33 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
                         ),
                         Expanded(
                           child: Obx(() {
-                            List<CreateActivityMatch> completedMatches = _getCompletedMatches();
-                            completedMatches = Constants.filterMatchesByDate(completedMatches, filterModelMyActivity.date);
+                            List<CreateActivityMatch> completedMatches =
+                                _getCompletedMatches();
+                            completedMatches = Constants.filterMatchesByDate(
+                                completedMatches, filterModelMyActivity.date);
                             return completedMatches.isEmpty
                                 ? Center(
                                     child: Text(
                                       "No activities found",
-                                      style: Get.textTheme.headlineSmall!.copyWith(color: CustomTheme.appColor),
+                                      style: Get.textTheme.headlineSmall!
+                                          .copyWith(
+                                              color: CustomTheme.appColor),
                                     ),
                                   )
                                 : ListView.builder(
                                     itemCount: completedMatches.length,
                                     itemBuilder: (context, index) {
                                       return Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
                                           child: ActivityCardWidget(
-                                            height: constraints.maxHeight * 0.35,
+                                            height:
+                                                constraints.maxHeight * 0.35,
                                             width: constraints.maxWidth * 0.9,
                                             fromActivity: true,
                                             onPressed: () {},
-                                            activityModel: completedMatches[index],
+                                            activityModel:
+                                                completedMatches[index],
                                           ));
                                     },
                                   );
@@ -313,7 +382,8 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
       floatingActionButton: isMyActivity
           ? FloatingActionButton(
               heroTag: Get.currentRoute,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.br)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.br)),
               backgroundColor: CustomTheme.appColorSecondary,
               onPressed: () => Get.to(() => const VenueCreateActivityScreen()),
               child: const Icon(Icons.add, color: Colors.white),
@@ -323,21 +393,27 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
   }
 
   List<CreateActivityMatch> _getCompletedMatches() {
-    List<CreateActivityMatch>? myActivityMatches = profileController.venueActivities.value?.data?.match;
-    List<CreateActivityMatch>? otherActivityMatches = profileController.otherVenueActivities.value?.data?.match;
+    List<CreateActivityMatch>? myActivityMatches =
+        profileController.venueActivities.value?.data?.match;
+    List<CreateActivityMatch>? otherActivityMatches =
+        profileController.otherVenueActivities.value?.data?.match;
     List<CreateActivityMatch> completedMatches = [];
 
     DateTime currentDate = DateTime.now();
 
     if (myActivityMatches != null) {
       completedMatches.addAll(
-        myActivityMatches.where((match) => match.date.isBefore(currentDate)).toList(),
+        myActivityMatches
+            .where((match) => match.date.isBefore(currentDate))
+            .toList(),
       );
     }
 
     if (otherActivityMatches != null) {
       completedMatches.addAll(
-        otherActivityMatches.where((match) => match.date.isBefore(currentDate)).toList(),
+        otherActivityMatches
+            .where((match) => match.date.isBefore(currentDate))
+            .toList(),
       );
     }
 
@@ -345,8 +421,13 @@ class _VenueActivityScreenState extends State<VenueActivityScreen> with Automati
   }
 
   Future<void> applyFilters(int filterIndex, bool myActivity) async {
-    BookingFilterModel? bookingFilters = await Get.bottomSheet<BookingFilterModel>(
-      VenueBookingFilters(filterModel: filterIndex == 0 ? filterModelMyActivity : filterModelOther, isBooking: false, filterIndex: filterIndex),
+    BookingFilterModel? bookingFilters =
+        await Get.bottomSheet<BookingFilterModel>(
+      VenueBookingFilters(
+          filterModel:
+              filterIndex == 0 ? filterModelMyActivity : filterModelOther,
+          isBooking: false,
+          filterIndex: filterIndex),
       isScrollControlled: false,
       enableDrag: false,
     );

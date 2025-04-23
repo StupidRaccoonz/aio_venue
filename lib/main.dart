@@ -167,6 +167,7 @@ class MyApp extends StatelessWidget {
                 profile.getVenueBookings();
                 profile.getVenueActivities();
                 profile.getOtherVenueActivities();
+                profile.getVenuesListData();
                 profile.getVenueAnalytics();
                 profile.getVenueReviews();
                 profile.getVenueEarning();

@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-SportsVenueListModel sportsVenueListModelFromJson(String str) => SportsVenueListModel.fromJson(json.decode(str));
+SportsVenueListModel sportsVenueListModelFromJson(String str) =>
+    SportsVenueListModel.fromJson(json.decode(str));
 
-String sportsVenueListModelToJson(SportsVenueListModel data) => json.encode(data.toJson());
+String sportsVenueListModelToJson(SportsVenueListModel data) =>
+    json.encode(data.toJson());
 
 class SportsVenueListModel {
   final int httpCode;
@@ -21,7 +23,8 @@ class SportsVenueListModel {
     required this.venueCount,
   });
 
-  factory SportsVenueListModel.fromJson(Map<String, dynamic> json) => SportsVenueListModel(
+  factory SportsVenueListModel.fromJson(Map<String, dynamic> json) =>
+      SportsVenueListModel(
         httpCode: json["http_code"],
         message: json["message"],
         data: Data.fromJson(json["data"]),
@@ -85,7 +88,9 @@ class Data {
 
   Map<String, dynamic> toJson() => {
         "current_page": currentPage,
-        "data": data == null ? null : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": data == null
+            ? null
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
         "first_page_url": firstPageUrl,
         "from": from,
         "last_page": lastPage,
@@ -105,7 +110,7 @@ class Venue {
   final int userId;
   final String name;
   final String email;
-  final String phone;
+  final String? phone;
   final String address;
   final String? latitude;
   final String? longitude;
@@ -172,7 +177,8 @@ class Venue {
         numberOfGrounds: json["number_of_grounds"],
         openingHour: json["opening_hour"],
         closingHour: json["closing_hour"],
-        workingDays: List<WorkingDay>.from(json["working_days"].map((x) => WorkingDay.fromJson(x))),
+        workingDays: List<WorkingDay>.from(
+            json["working_days"].map((x) => WorkingDay.fromJson(x))),
         longTermBooking: json["long_term_booking"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
@@ -185,7 +191,9 @@ class Venue {
         ratingAvarage: json["rating_avarage"] + 0.0,
         ratingCount: json["rating_count"] + 0.0,
         sports: List<Sport>.from(json["sports"].map((x) => Sport.fromJson(x))),
-        grounds: json["grounds"] != null ? List<Ground>.from(json["grounds"].map((x) => Ground.fromJson(x))) : <Ground>[],
+        grounds: json["grounds"] != null
+            ? List<Ground>.from(json["grounds"].map((x) => Ground.fromJson(x)))
+            : <Ground>[],
         isWishlist: json["is_wishlist"],
       );
 
@@ -269,14 +277,17 @@ class Ground {
         unit: json["unit"],
         hourlyRent: json["hourly_rent"],
         addedBy: json["added_by"],
-        morningAvailability: List<String>.from(json["morning_availability"].map((x) => x)),
-        eveningAvailability: List<String>.from(json["evening_availability"].map((x) => x)),
+        morningAvailability:
+            List<String>.from(json["morning_availability"].map((x) => x)),
+        eveningAvailability:
+            List<String>.from(json["evening_availability"].map((x) => x)),
         status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         deletedAt: json["deleted_at"],
         futureDeletedDate: json["future_deleted_date"],
-        grounditems: List<Grounditem>.from(json["grounditems"].map((x) => Grounditem.fromJson(x))),
+        grounditems: List<Grounditem>.from(
+            json["grounditems"].map((x) => Grounditem.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -289,8 +300,10 @@ class Ground {
         "unit": unit,
         "hourly_rent": hourlyRent,
         "added_by": addedBy,
-        "morning_availability": List<dynamic>.from(morningAvailability.map((x) => x)),
-        "evening_availability": List<dynamic>.from(eveningAvailability.map((x) => x)),
+        "morning_availability":
+            List<dynamic>.from(morningAvailability.map((x) => x)),
+        "evening_availability":
+            List<dynamic>.from(eveningAvailability.map((x) => x)),
         "status": status,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),

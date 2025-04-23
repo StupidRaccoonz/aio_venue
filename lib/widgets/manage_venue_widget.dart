@@ -4,14 +4,20 @@ import 'package:aio_sport/widgets/image_widget.dart';
 import 'package:aio_sport/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class ManageVenueWidget extends StatefulWidget {
   final String imageUrl, venueName, venueCity;
   final int index;
-  // final void Function() onDelete;
+  final VoidCallback onDelete;
 
-  const ManageVenueWidget({super.key, required this.imageUrl, required this.venueName, required this.venueCity, required this.index, // required this.onDelete
-  });
+  const ManageVenueWidget(
+      {super.key,
+      required this.imageUrl,
+      required this.venueName,
+      required this.venueCity,
+      required this.index,
+      required this.onDelete});
 
   @override
   State<ManageVenueWidget> createState() => _ManageVenueWidgetState();
@@ -46,7 +52,8 @@ class _ManageVenueWidgetState extends State<ManageVenueWidget> {
                   children: [
                     Text(
                       widget.venueName,
-                      style: Get.textTheme.labelSmall!.copyWith(color: CustomTheme.appColor),
+                      style: Get.textTheme.labelSmall!
+                          .copyWith(color: CustomTheme.appColor),
                     ),
                     Text(
                       widget.venueCity,
@@ -66,43 +73,60 @@ class _ManageVenueWidgetState extends State<ManageVenueWidget> {
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
-                              Image.asset('assets/icons/remove_venue.png',height: 80,width: 80,),
+                              Image.asset(
+                                'assets/icons/remove_venue.png',
+                                height: 80,
+                                width: 80,
+                              ),
                               SizedBox(height: 15),
-                              Text("Remove Venue",style:TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+                              Text(
+                                "Remove Venue",
+                                style: TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold),
+                              ),
                               SizedBox(height: 10),
                               RichText(
                                 textAlign: TextAlign.center,
-                                text: TextSpan(text:"We will stop any future booking but currently you will have booking till ",
-                                  style: TextStyle(color: Colors.grey,fontSize: 17),
-                                  children: [
-                                    TextSpan(
-                                      text: '12 Nov 2022; 03:00 PM.',
-                                      style: TextStyle(color: Colors.black87)
-                                    ),
-                                    TextSpan(
-                                        text: 'your venue will stay active til this date and will be deleted after ',
-                                    ),
-                                    TextSpan(
-                                        text: '12 Nov 2022; 03:00 PM.',
-                                        style: TextStyle(color: Colors.black87)
-                                    ),
-                                  ]
-                                ),
+                                text: TextSpan(
+                                    text:
+                                        "We will stop any future booking but currently you will have booking till ",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 17),
+                                    children: [
+                                      TextSpan(
+                                          text: '12 Nov 2022; 03:00 PM.',
+                                          style:
+                                              TextStyle(color: Colors.black87)),
+                                      TextSpan(
+                                        text:
+                                            'your venue will stay active til this date and will be deleted after ',
+                                      ),
+                                      TextSpan(
+                                          text: '12 Nov 2022; 03:00 PM.',
+                                          style:
+                                              TextStyle(color: Colors.black87)),
+                                    ]),
                               ),
                               SizedBox(height: 25),
-                              Container(
-                                height: MediaQuery.of(context).size.height * 0.06,
-                                width: MediaQuery.of(context).size.width * 1,
-                                decoration: BoxDecoration(
-                                  color: Colors.orange,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: Center(
-                                  child: Text("Remove venue",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                      fontWeight: FontWeight.bold
+                              InkWell(
+                                onTap: () {
+                                  widget.onDelete.call();
+                                },
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.06,
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Remove venue",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
@@ -111,16 +135,16 @@ class _ManageVenueWidgetState extends State<ManageVenueWidget> {
                               Padding(
                                 padding: const EdgeInsets.only(),
                                 child: TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      'Not now',
-                                      style: TextStyle(
-                                          color: Colors.orange,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'Not now',
+                                    style: TextStyle(
+                                        color: Colors.orange,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
                             ],
@@ -129,10 +153,10 @@ class _ManageVenueWidgetState extends State<ManageVenueWidget> {
                       );
                     },
                   );
-
                 },
                 padding: const EdgeInsets.all(12.0),
-                icon: Icon(Icons.delete_outline_rounded, color: CustomTheme.appColor),
+                icon: Icon(Icons.delete_outline_rounded,
+                    color: CustomTheme.appColor),
               ),
             ],
           ),

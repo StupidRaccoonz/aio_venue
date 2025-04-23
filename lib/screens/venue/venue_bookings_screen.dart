@@ -20,7 +20,8 @@ class VenueBookingsScreen extends StatefulWidget {
   State<VenueBookingsScreen> createState() => _VenueBookingsScreenState();
 }
 
-class _VenueBookingsScreenState extends State<VenueBookingsScreen> with AutomaticKeepAliveClientMixin {
+class _VenueBookingsScreenState extends State<VenueBookingsScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
@@ -38,21 +39,26 @@ class _VenueBookingsScreenState extends State<VenueBookingsScreen> with Automati
         length: 2,
         child: Column(
           children: [
-            TabBar(labelColor: Colors.black, indicatorColor: Colors.black, unselectedLabelColor: CustomTheme.grey, indicatorSize: TabBarIndicatorSize.tab, tabs: [
-              Tab(
-                height: 36.rh,
-                child: const Text(
-                  "Short term",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-              Tab(
-                  height: 36.rh,
-                  child: const Text(
-                    "Long term",
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  )),
-            ]),
+            TabBar(
+                labelColor: Colors.black,
+                indicatorColor: Colors.black,
+                unselectedLabelColor: CustomTheme.grey,
+                indicatorSize: TabBarIndicatorSize.tab,
+                tabs: [
+                  Tab(
+                    height: 36.rh,
+                    child: const Text(
+                      "Short term",
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Tab(
+                      height: 36.rh,
+                      child: const Text(
+                        "Long term",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      )),
+                ]),
             const Expanded(
               child: TabBarView(
                 physics: NeverScrollableScrollPhysics(),
@@ -171,7 +177,8 @@ class _VenueBookingsScreenState extends State<VenueBookingsScreen> with Automati
             },
           );
         },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.br)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.br)),
         backgroundColor: CustomTheme.appColorSecondary,
         splashColor: Colors.white,
         child: const Icon(Icons.file_download_outlined, color: Colors.white),
@@ -219,7 +226,9 @@ class _MyDialogState extends State<MyDialog> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.03),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.05,
+                        vertical: screenHeight * 0.03),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -281,7 +290,8 @@ class _MyDialogState extends State<MyDialog> {
                         );
                         if (selectedDate != null) {
                           setState(() {
-                            fromController.text = "${selectedDate.toLocal()}".split(' ')[0];
+                            fromController.text =
+                                "${selectedDate.toLocal()}".split(' ')[0];
                           });
                         }
                       },
@@ -323,7 +333,8 @@ class _MyDialogState extends State<MyDialog> {
                         );
                         if (selectedDate != null) {
                           setState(() {
-                            toController.text = "${selectedDate.toLocal()}".split(' ')[0];
+                            toController.text =
+                                "${selectedDate.toLocal()}".split(' ')[0];
                           });
                         }
                       },
@@ -357,7 +368,8 @@ class _MyDialogState extends State<MyDialog> {
                     if (_formKey.currentState?.validate() ?? false) {
                       if (_selectedValue == null) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Please select an option from the radio buttons'),
+                          content: Text(
+                              'Please select an option from the radio buttons'),
                         ));
                       } else {
                         Constants.showSnackbar("Download", "Success!!");

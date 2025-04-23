@@ -21,6 +21,7 @@ import 'package:aio_sport/widgets/selection_chip_widget.dart';
 import 'package:aio_sport/widgets/working_day_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:scaled_size/scaled_size.dart';
@@ -61,7 +62,8 @@ class _VenueDetailsState extends State<VenueDetails> {
   void initState() {
     selectSportsController.text = "Select Sports";
     discountC.text = "0";
-    if (!widget.addAnotherVenue && (getStorage.read<bool>(Constants.isNewAccount) ?? false)) {
+    if (!widget.addAnotherVenue &&
+        (getStorage.read<bool>(Constants.isNewAccount) ?? false)) {
       getStorage.write(Constants.lastPage, Get.currentRoute);
     }
     super.initState();
@@ -71,7 +73,10 @@ class _VenueDetailsState extends State<VenueDetails> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/background.jpg'), fit: BoxFit.fill)),
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/background.jpg'),
+              fit: BoxFit.fill)),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
@@ -80,7 +85,8 @@ class _VenueDetailsState extends State<VenueDetails> {
             return Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -95,20 +101,26 @@ class _VenueDetailsState extends State<VenueDetails> {
                                 children: [
                                   IconButton(
                                       onPressed: () {
-                                        String? lastPage = getStorage.read<String>(Constants.lastPage);
-                                        print("kajal hereee ${profileController.isLoggedIn.value}");
-                                        if (!profileController.isLoggedIn.value) {
+                                        String? lastPage = getStorage
+                                            .read<String>(Constants.lastPage);
+                                        print(
+                                            "kajal hereee ${profileController.isLoggedIn.value}");
+                                        if (!profileController
+                                            .isLoggedIn.value) {
                                           Get.to(() => SignupScreen());
                                         } else {
                                           Get.to(() => LoginScreen());
                                         }
                                       },
-                                      icon: Icon(Icons.arrow_back_rounded, color: CustomTheme.appColor)),
+                                      icon: Icon(Icons.arrow_back_rounded,
+                                          color: CustomTheme.appColor)),
                                 ],
                               ),
                               SizedBox(height: 10.rh),
-                              Text("Venue details", style: Get.textTheme.titleLarge),
-                              Text("Provide your personal information.", style: Get.textTheme.displaySmall),
+                              Text("Venue details",
+                                  style: Get.textTheme.titleLarge),
+                              Text("Provide your personal information.",
+                                  style: Get.textTheme.displaySmall),
                               SizedBox(height: 15.rh),
                               Row(
                                 children: [
@@ -140,14 +152,23 @@ class _VenueDetailsState extends State<VenueDetails> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              contentPadding: EdgeInsets.all(10),
+                                              contentPadding:
+                                                  EdgeInsets.all(10),
                                               content: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Container(
-                                                    decoration: BoxDecoration(border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(15)),
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.black),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15)),
                                                     child: ClipRRect(
-                                                      borderRadius: BorderRadius.circular(15),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
                                                       child: Image.file(
                                                         image!,
                                                         height: 200,
@@ -159,7 +180,9 @@ class _VenueDetailsState extends State<VenueDetails> {
                                                   SizedBox(height: 10),
                                                   ElevatedButton(
                                                     onPressed: () async {
-                                                      List<File> files = await Constants.pickImage();
+                                                      List<File> files =
+                                                          await Constants
+                                                              .pickImage();
                                                       if (files.isNotEmpty) {
                                                         setState(() {
                                                           image = files.first;
@@ -176,7 +199,8 @@ class _VenueDetailsState extends State<VenueDetails> {
                                         );
                                       } else {
                                         // If no image, let the user select a new image
-                                        List<File> files = await Constants.pickImage();
+                                        List<File> files =
+                                            await Constants.pickImage();
                                         if (files.isNotEmpty) {
                                           setState(() {
                                             image = files.first;
@@ -197,7 +221,10 @@ class _VenueDetailsState extends State<VenueDetails> {
                                   ),
 
                                   const SizedBox(width: 16.0),
-                                  Expanded(child: Text("Upload profile photo of venue", style: Get.textTheme.bodyLarge)),
+                                  Expanded(
+                                      child: Text(
+                                          "Upload profile photo of venue",
+                                          style: Get.textTheme.bodyLarge)),
                                 ],
                               ),
                               SizedBox(height: 5.rh),
@@ -213,7 +240,8 @@ class _VenueDetailsState extends State<VenueDetails> {
                                   return null;
                                 },
                                 textEditingController: venueController,
-                                leadingIcon: Image.asset('assets/icons/stadium.png'),
+                                leadingIcon:
+                                    Image.asset('assets/icons/stadium.png'),
                               ),
                               SizedBox(height: 5.rh),
                               InputFieldWidget(
@@ -227,14 +255,34 @@ class _VenueDetailsState extends State<VenueDetails> {
                                 },
                                 textEditingController: addressController,
                                 onTrailingTap: () async {
-                                  Get.to(PlacePickerScreen())!.then((value) {
+                                  LocationPermission permission =
+                                      await Geolocator.checkPermission();
+
+                                  if (permission == LocationPermission.denied) {
+                                    permission =
+                                        await Geolocator.requestPermission();
+                                  }
+                                  if (permission == LocationPermission.denied) {
+                                    return;
+                                  }
+
+                                  if (permission ==
+                                      LocationPermission.deniedForever) {
+                                    return;
+                                  }
+
+                                  Get.to(() => PlacePickerScreen())
+                                      ?.then((value) {
                                     addressController.text = value;
                                   });
 
                                   //  = "${address.name ?? ''}, ${address.formattedAddress ?? ""}";
                                 },
-                                trailingIcon: Image.asset("assets/icons/gps.png", width: 25.0),
-                                leadingIcon: Image.asset('assets/icons/location.png'),
+                                trailingIcon: Image.asset(
+                                    "assets/icons/gps.png",
+                                    width: 25.0),
+                                leadingIcon:
+                                    Image.asset('assets/icons/location.png'),
                               ),
                               SizedBox(height: 5.rh),
                               InputFieldWidget(
@@ -248,7 +296,8 @@ class _VenueDetailsState extends State<VenueDetails> {
                                 },
                                 inputType: TextInputType.number,
                                 textEditingController: numberOfGroundC,
-                                leadingIcon: Image.asset('assets/icons/football.png'),
+                                leadingIcon:
+                                    Image.asset('assets/icons/football.png'),
                               ),
                               SizedBox(height: 5.rh),
                               Row(
@@ -265,14 +314,18 @@ class _VenueDetailsState extends State<VenueDetails> {
                                         return null;
                                       },
                                       onTap: () async {
-                                        TimeOfDay? time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+                                        TimeOfDay? time = await showTimePicker(
+                                            context: context,
+                                            initialTime: TimeOfDay.now());
                                         if (time != null) {
-                                          openingController.text = Constants.getFormattedTime(time);
+                                          openingController.text =
+                                              "${time.hour}:${time.minute}:00";
                                         }
                                       },
                                       textEditingController: openingController,
                                       readOnly: true,
-                                      trailingIcon: Icon(Icons.access_time, color: CustomTheme.iconColor),
+                                      trailingIcon: Icon(Icons.access_time,
+                                          color: CustomTheme.iconColor),
                                     ),
                                   ),
                                   const SizedBox(width: 16.0),
@@ -289,19 +342,25 @@ class _VenueDetailsState extends State<VenueDetails> {
                                         return null;
                                       },
                                       onTap: () async {
-                                        TimeOfDay? time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+                                        TimeOfDay? time = await showTimePicker(
+                                            context: context,
+                                            initialTime: TimeOfDay.now());
                                         if (time != null) {
-                                          closingController.text = Constants.getFormattedTime(time);
+                                          closingController.text =
+                                              "${time.hour}:${time.minute}:00";
+                                          ;
                                         }
                                       },
                                       textEditingController: closingController,
-                                      trailingIcon: Icon(Icons.access_time, color: CustomTheme.iconColor),
+                                      trailingIcon: Icon(Icons.access_time,
+                                          color: CustomTheme.iconColor),
                                     ),
                                   ),
                                 ],
                               ),
                               SizedBox(height: 10.rh),
-                              Text("Select working days", style: Get.textTheme.displaySmall),
+                              Text("Select working days",
+                                  style: Get.textTheme.displaySmall),
                               SizedBox(height: 10.rh),
                               SizedBox(
                                   height: 6.5.mv,
@@ -317,15 +376,19 @@ class _VenueDetailsState extends State<VenueDetails> {
                                         closingController.text = "${time.hourOfPeriod}:${time.minute} ${time.period.name.toUpperCase()}";
                                       } */
 
-                                  List<Sport>? list = await Get.bottomSheet<List<Sport>?>(
+                                  List<Sport>? list =
+                                      await Get.bottomSheet<List<Sport>?>(
                                     Padding(
                                       padding: EdgeInsets.only(top: 50.rh),
-                                      child: SportsBottomSheet(selectedList: selectedSports),
+                                      child: SportsBottomSheet(
+                                          selectedList: selectedSports),
                                     ),
                                     enableDrag: true,
                                     isScrollControlled: true,
                                     ignoreSafeArea: false,
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10.br))),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(10.br))),
                                   );
 
                                   if (list != null) {
@@ -335,18 +398,25 @@ class _VenueDetailsState extends State<VenueDetails> {
                                   log("Selected sportsList $list");
                                 },
                                 textEditingController: selectSportsController,
-                                leadingIcon: Image.asset('assets/icons/football.png'),
-                                trailingIcon: Icon(Icons.keyboard_arrow_down_sharp, color: CustomTheme.textColorLight),
+                                leadingIcon:
+                                    Image.asset('assets/icons/football.png'),
+                                trailingIcon: Icon(
+                                    Icons.keyboard_arrow_down_sharp,
+                                    color: CustomTheme.textColorLight),
                               ),
                               const SizedBox(height: 4.0),
-                              Text("Select the sport you want to coach", style: Get.textTheme.displaySmall!.copyWith(color: CustomTheme.textColor2)),
+                              Text("Select the sport you want to coach",
+                                  style: Get.textTheme.displaySmall!
+                                      .copyWith(color: CustomTheme.textColor2)),
                               const SizedBox(height: 16.0),
                               Obx(() {
                                 return SizedBox(
-                                  height: Constants.getheight(selectedSports.length),
+                                  height: Constants.getheight(
+                                      selectedSports.length),
                                   child: GridView.builder(
                                     itemCount: selectedSports.length,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       return SelectionChip(
                                         isAdded: true,
@@ -358,7 +428,8 @@ class _VenueDetailsState extends State<VenueDetails> {
                                         },
                                       );
                                     },
-                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
                                       childAspectRatio: 3 / 4,
                                       mainAxisExtent: 40.rh,
@@ -371,7 +442,8 @@ class _VenueDetailsState extends State<VenueDetails> {
                               const SizedBox(height: 24.0),
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: CustomTheme.borderColor),
+                                  border: Border.all(
+                                      color: CustomTheme.borderColor),
                                   borderRadius: BorderRadius.circular(16.0),
                                 ),
                                 child: Material(
@@ -386,28 +458,39 @@ class _VenueDetailsState extends State<VenueDetails> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
                                             children: [
-                                              Text("Long term booking", style: Get.textTheme.labelMedium),
+                                              Text("Long term booking",
+                                                  style: Get
+                                                      .textTheme.labelMedium),
                                               const SizedBox(width: 5),
                                               Tooltip(
-                                                margin: EdgeInsets.only(left: 20, right: 20),
+                                                margin: EdgeInsets.only(
+                                                    left: 20, right: 20),
                                                 key: tooltipKey,
-                                                message: 'This is a suggestion text.',
-                                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                message:
+                                                    'This is a suggestion text.',
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 6),
                                                 textStyle: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14,
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color: Colors.black.withOpacity(0.7),
-                                                  borderRadius: BorderRadius.circular(8),
+                                                  color: Colors.black
+                                                      .withOpacity(0.7),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
                                                 ),
                                                 preferBelow: false,
                                                 child: InkWell(
                                                   onTap: () {
-                                                    tooltipKey.currentState?.ensureTooltipVisible();
+                                                    tooltipKey.currentState
+                                                        ?.ensureTooltipVisible();
                                                   },
                                                   child: const Icon(
-                                                    CupertinoIcons.exclamationmark_circle_fill,
+                                                    CupertinoIcons
+                                                        .exclamationmark_circle_fill,
                                                     size: 16,
                                                   ),
                                                 ),
@@ -415,10 +498,13 @@ class _VenueDetailsState extends State<VenueDetails> {
                                               const Spacer(),
                                               Obx(() {
                                                 return Switch(
-                                                  value: profileController.isLongTerm.value,
-                                                  activeTrackColor: CustomTheme.green,
+                                                  value: profileController
+                                                      .isLongTerm.value,
+                                                  activeTrackColor:
+                                                      CustomTheme.green,
                                                   onChanged: (value) {
-                                                    profileController.isLongTerm.value = value;
+                                                    profileController.isLongTerm
+                                                        .value = value;
                                                   },
                                                 );
                                               }),
@@ -427,59 +513,101 @@ class _VenueDetailsState extends State<VenueDetails> {
                                         ),
                                         Material(
                                             borderOnForeground: true,
-                                            borderRadius: BorderRadius.circular(8.0),
-                                            color: CustomTheme.bocLightBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            color:
+                                                CustomTheme.bocLightBackground,
                                             child: Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Expanded(
                                                     child: Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: Text("Long term booking discount", style: Get.textTheme.labelMedium),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                          "Long term booking discount",
+                                                          style: Get.textTheme
+                                                              .labelMedium),
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: SizedBox(
-                                                      width: constraints.maxWidth * 0.15,
+                                                      width:
+                                                          constraints.maxWidth *
+                                                              0.15,
                                                       child: Obx(() {
                                                         return InputFieldWidget(
                                                           hint: "0",
                                                           suffixText: "%",
-                                                          readOnly: !profileController.isLongTerm.value,
+                                                          readOnly:
+                                                              !profileController
+                                                                  .isLongTerm
+                                                                  .value,
                                                           maxlength: 2,
-                                                          inputType: TextInputType.number,
-                                                          textColor: CustomTheme.green,
-                                                          textEditingController: discountC,
+                                                          inputType:
+                                                              TextInputType
+                                                                  .number,
+                                                          textColor:
+                                                              CustomTheme.green,
+                                                          textEditingController:
+                                                              discountC,
                                                           onChange: (value) {
-                                                            if (value.isNotEmpty && double.parse(value) > 40) {
-                                                              discountC.text = "40";
+                                                            if (value
+                                                                    .isNotEmpty &&
+                                                                double.parse(
+                                                                        value) >
+                                                                    40) {
+                                                              discountC.text =
+                                                                  "40";
                                                               Get.dialog(Center(
                                                                 child: Padding(
-                                                                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                                                                  child: Material(
-                                                                    borderRadius: BorderRadius.circular(16.0),
-                                                                    child: Padding(
-                                                                      padding: const EdgeInsets.all(20.0),
-                                                                      child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
-                                                                        Text("You can't add discount more than 40% ", style: Get.textTheme.labelMedium),
-                                                                        const SizedBox(height: 16.0),
-                                                                        Divider(color: CustomTheme.borderColor),
-                                                                        InkWell(
-                                                                          onTap: () => Get.back(),
-                                                                          child: Row(
-                                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                                            children: [
-                                                                              Padding(
-                                                                                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                                                                                child: Text("OK", style: Get.textTheme.headlineSmall),
-                                                                              )
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ]),
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          32.0),
+                                                                  child:
+                                                                      Material(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            16.0),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          20.0),
+                                                                      child: Column(
+                                                                          mainAxisSize: MainAxisSize
+                                                                              .min,
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.center,
+                                                                          children: [
+                                                                            Text("You can't add discount more than 40% ",
+                                                                                style: Get.textTheme.labelMedium),
+                                                                            const SizedBox(height: 16.0),
+                                                                            Divider(color: CustomTheme.borderColor),
+                                                                            InkWell(
+                                                                              onTap: () => Get.back(),
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: [
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                                                                    child: Text("OK", style: Get.textTheme.headlineSmall),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ]),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -500,32 +628,56 @@ class _VenueDetailsState extends State<VenueDetails> {
                               ),
                               const SizedBox(height: 24.0),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 16.0),
                                 child: MyButton(
                                   text: "Next",
                                   // onPressed: () => Get.to(() => const UploadMediaScreen()),
                                   onPressed: () async {
                                     if (image == null) {
-                                      Constants.showSnackbar("Error", "Select profile picture");
+                                      Constants.showSnackbar(
+                                          "Error", "Select profile picture");
 
                                       return;
                                     }
                                     if (_formKey.currentState!.validate()) {
                                       controller.loading.value = true;
-                                      requestModel = AddVenueDetailsRequestModel(
-                                          name: venueController.text,
-                                          address: addressController.text,
-                                          openingHour: openingController.text,
-                                          closingHour: closingController.text,
-                                          workingDays: "${workingDays.map((x) => x.toJson()).toList()}",
-                                          sports: selectedSports.map((element) => element.id).toList().join(","),
-                                          longTermBooking: homeController.isLongTerm.value ? "1" : "0",
-                                          numberOfGrounds: numberOfGroundC.text,
-                                          ratings: "0",
-                                          wishlist: "1");
-                                      venue.VenueDetailsModel? value = await controller.venueService
-                                          .addVenueDetails(image!, controller.loginDataModel.value!.data!.user.token, requestModel!, addNewVenue: widget.addAnotherVenue);
-                                      if (value != null && value.data != null && value.httpCode == 200) {
+                                      requestModel =
+                                          AddVenueDetailsRequestModel(
+                                              name: venueController.text,
+                                              address: addressController.text,
+                                              openingHour:
+                                                  openingController.text,
+                                              closingHour:
+                                                  closingController.text,
+                                              workingDays: workingDays
+                                                  .map((x) => x.toJson())
+                                                  .toList(),
+                                              sports: selectedSports
+                                                  .map((element) => element.id)
+                                                  .toList()
+                                                  .join(","),
+                                              longTermBooking: homeController
+                                                      .isLongTerm.value
+                                                  ? "1"
+                                                  : "0",
+                                              numberOfGrounds:
+                                                  numberOfGroundC.text,
+                                              ratings: "0",
+                                              wishlist: "1");
+                                      venue.VenueDetailsModel? value =
+                                          await controller.venueService
+                                              .addVenueDetails(
+                                                  image!,
+                                                  controller.loginDataModel
+                                                      .value!.data!.user.token,
+                                                  requestModel!,
+                                                  addNewVenue:
+                                                      widget.addAnotherVenue);
+
+                                      if (value != null &&
+                                          value.data != null &&
+                                          value.httpCode == 200) {
                                         venueController.clear();
                                         addressController.clear();
                                         openingController.clear();
@@ -534,18 +686,25 @@ class _VenueDetailsState extends State<VenueDetails> {
                                         workingDays.clear();
                                         numberOfGroundC.clear();
                                         // controller.currentVenue.value ??= value;
-                                        venue.VenueDetailsModel? newVenueData = await controller.venueService.getVenueDetails(profileController.bearer, "${value.data!.venue.id}");
+                                        venue.VenueDetailsModel? newVenueData =
+                                            await controller.venueService
+                                                .getVenueDetails(
+                                                    profileController.bearer,
+                                                    "${value.data!.venue.id}");
                                         controller.getVenuesListData();
                                         log("results from venue details: ${value.toJson()}");
-                                        Constants.showSnackbar("Success", value.message);
+                                        Constants.showSnackbar(
+                                            "Success", value.message);
 
                                         if (!widget.addAnotherVenue) {
-                                          controller.currentVenue.value = newVenueData;
+                                          controller.currentVenue.value =
+                                              newVenueData;
                                           controller.currentVenue.refresh();
                                         }
 
                                         if (!widget.addAnotherVenue) {
-                                          Get.to(() => const UploadMediaScreen());
+                                          Get.to(
+                                              () => const UploadMediaScreen());
                                         } else {
                                           if (Get.isSnackbarOpen) {
                                             Get.back();
@@ -558,7 +717,8 @@ class _VenueDetailsState extends State<VenueDetails> {
                                           );
                                         }
                                       } else if (value != null) {
-                                        Constants.showSnackbar("Error", value.message);
+                                        Constants.showSnackbar(
+                                            "Error", value.message);
                                       }
                                       print("${numberOfGroundC.text}");
                                       controller.loading.value = false;
@@ -590,13 +750,38 @@ class _VenueDetailsState extends State<VenueDetails> {
     );
   }
 
-  void checkForPermissions() async {
-    final permissionStatus = await Permission.locationWhenInUse.status;
-    if (!permissionStatus.isGranted) {
-      final status = await Permission.locationWhenInUse.request();
-      if (!status.isGranted) {
-        Constants.showSnackbar("Permission Error", "Location permissions should be granted in order to continue with address");
-      }
+  Future<void> checkForPermissions() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // You can show a snackbar or a dialog here
+      Constants.showSnackbar(
+        "Location Disabled",
+        "Please enable location services to continue.",
+      );
+      return;
     }
+
+    // Check location permission status
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.deniedForever ||
+        permission == LocationPermission.denied) {
+      Constants.showSnackbar(
+        "Permission Error",
+        "Location permissions should be granted in order to continue with address",
+      );
+      return;
+    }
+
+    // All good — permission granted!
+    print("Location permission granted.");
   }
 }

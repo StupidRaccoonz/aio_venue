@@ -3,16 +3,18 @@
 //     final addVenueDetailsRequestModel = addVenueDetailsRequestModelFromJson(jsonString);
 import 'dart:convert';
 
-AddVenueDetailsRequestModel addVenueDetailsRequestModelFromJson(String str) => AddVenueDetailsRequestModel.fromJson(json.decode(str));
+AddVenueDetailsRequestModel addVenueDetailsRequestModelFromJson(String str) =>
+    AddVenueDetailsRequestModel.fromJson(json.decode(str));
 
-String addVenueDetailsRequestModelToJson(AddVenueDetailsRequestModel data) => json.encode(data.toJson());
+String addVenueDetailsRequestModelToJson(AddVenueDetailsRequestModel data) =>
+    json.encode(data.toJson());
 
 class AddVenueDetailsRequestModel {
   String name;
   String address;
   String openingHour;
   String closingHour;
-  String workingDays;
+  List<Map<String, dynamic>> workingDays;
   String sports;
   String longTermBooking;
   String numberOfGrounds;
@@ -32,7 +34,8 @@ class AddVenueDetailsRequestModel {
     required this.wishlist,
   });
 
-  factory AddVenueDetailsRequestModel.fromJson(Map<String, dynamic> json) => AddVenueDetailsRequestModel(
+  factory AddVenueDetailsRequestModel.fromJson(Map<String, dynamic> json) =>
+      AddVenueDetailsRequestModel(
         name: json["name"],
         address: json["address"],
         openingHour: json["opening_hour"],

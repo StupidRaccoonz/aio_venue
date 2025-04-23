@@ -58,201 +58,237 @@ class _SportsBottomSheetState extends State<SportsBottomSheet> {
           children: [
             Column(
               children: [
-                const InputFieldWidget(label: "Search sports", leadingIcon: Icon(Icons.search)),
+                const InputFieldWidget(
+                    label: "Search sports", leadingIcon: Icon(Icons.search)),
                 SizedBox(height: 10.rh),
                 Expanded(
                   child: SingleChildScrollView(
                     physics: const ClampingScrollPhysics(),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Row(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Popular Sports",
-                            style: Get.textTheme.displayMedium?.copyWith(color: CustomTheme.textColor, fontWeight: FontWeight.w500),
+                          Row(
+                            children: [
+                              Text(
+                                "Popular Sports",
+                                style: Get.textTheme.displayMedium?.copyWith(
+                                    color: CustomTheme.textColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Tooltip(
+                                margin: EdgeInsets.only(left: 20, right: 20),
+                                key: tooltipKey1,
+                                message: 'This is a suggestion text.',
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.7),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                preferBelow: false,
+                                child: InkWell(
+                                  onTap: () {
+                                    tooltipKey1.currentState
+                                        ?.ensureTooltipVisible();
+                                  },
+                                  child: const Icon(
+                                    CupertinoIcons.exclamationmark_circle_fill,
+                                    size: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 5,),
-                          Tooltip(
-                            margin: EdgeInsets.only(left: 20,right: 20),
-                            key: tooltipKey1,
-                            message: 'This is a suggestion text.',
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                            textStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.7),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            preferBelow: false,
-                            child: InkWell(
-                              onTap: () {
-                                tooltipKey1.currentState?.ensureTooltipVisible();
+                          Text("Select the sport you want to coach",
+                              style: Get.textTheme.bodyMedium),
+                          SizedBox(height: 5.rh),
+                          SizedBox(
+                            child: GridView.builder(
+                              itemCount: selectedPopularSports.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return SelectionChip(
+                                    isAdded: false,
+                                    sportModel: selectedPopularSports[index],
+                                    isSelected: selectedList
+                                        .contains(selectedPopularSports[index]),
+                                    callBack: (val) {
+                                      if (val) {
+                                        selectedList.addIf(
+                                            val, selectedPopularSports[index]);
+                                      } else {
+                                        selectedList.remove(
+                                            selectedPopularSports[index]);
+                                      }
+                                    });
                               },
-                              child: const Icon(
-                                CupertinoIcons.exclamationmark_circle_fill,
-                                size: 16,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 3 / 4,
+                                mainAxisExtent: 40.rh,
+                                mainAxisSpacing: 6.0,
+                                crossAxisSpacing: 4.0,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                      Text("Select the sport you want to coach", style: Get.textTheme.bodyMedium),
-                      SizedBox(height: 5.rh),
-                      SizedBox(
-                        height: getheight(selectedPopularSports.length) + 16,
-                        child: GridView.builder(
-                          itemCount: selectedPopularSports.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return SelectionChip(
-                                isAdded: false,
-                                sportModel: selectedPopularSports[index],
-                                isSelected: selectedList.contains(selectedPopularSports[index]),
-                                callBack: (val) {
-                                  if (val) {
-                                    selectedList.addIf(val, selectedPopularSports[index]);
-                                  } else {
-                                    selectedList.remove(selectedPopularSports[index]);
-                                  }
-                                });
-                          },
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 3 / 4,
-                            mainAxisExtent: 40.rh,
-                            mainAxisSpacing: 6.0,
-                            crossAxisSpacing: 4.0,
+                          SizedBox(height: 2.rh),
+                          Row(
+                            children: [
+                              Text(
+                                "Fitness Sports",
+                                style: Get.textTheme.displayMedium?.copyWith(
+                                    color: CustomTheme.textColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Tooltip(
+                                margin: EdgeInsets.only(left: 20, right: 20),
+                                key: tooltipKey2,
+                                message: 'This is a suggestion text.',
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.7),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                preferBelow: false,
+                                child: InkWell(
+                                  onTap: () {
+                                    tooltipKey2.currentState
+                                        ?.ensureTooltipVisible();
+                                  },
+                                  child: const Icon(
+                                    CupertinoIcons.exclamationmark_circle_fill,
+                                    size: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                      SizedBox(height: 2.rh),
-                      Row(
-                        children: [
-                          Text(
-                            "Fitness Sports",
-                            style: Get.textTheme.displayMedium?.copyWith(color: CustomTheme.textColor, fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 5,),
-                          Tooltip(
-                            margin: EdgeInsets.only(left: 20,right: 20),
-                            key: tooltipKey2,
-                            message: 'This is a suggestion text.',
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                            textStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.7),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            preferBelow: false,
-                            child: InkWell(
-                              onTap: () {
-                                tooltipKey2.currentState?.ensureTooltipVisible();
+                          Text("Select the sport you want to coach",
+                              style: Get.textTheme.bodyMedium),
+                          SizedBox(
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              itemCount: selectedFitnessSports.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return SelectionChip(
+                                    isAdded: false,
+                                    sportModel: selectedFitnessSports[index],
+                                    isSelected: selectedList
+                                        .contains(selectedFitnessSports[index]),
+                                    callBack: (val) {
+                                      if (val) {
+                                        selectedList.addIf(
+                                            val, selectedFitnessSports[index]);
+                                      } else {
+                                        selectedList.remove(
+                                            selectedFitnessSports[index]);
+                                      }
+                                    });
                               },
-                              child: const Icon(
-                                CupertinoIcons.exclamationmark_circle_fill,
-                                size: 16,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 3 / 4,
+                                mainAxisExtent: 40.rh,
+                                mainAxisSpacing: 6.0,
+                                crossAxisSpacing: 4.0,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                      Text("Select the sport you want to coach", style: Get.textTheme.bodyMedium),
-                      SizedBox(
-                        height: getheight(selectedFitnessSports.length) + 16,
-                        child: GridView.builder(
-                          itemCount: selectedFitnessSports.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return SelectionChip(
-                                isAdded: false,
-                                sportModel: selectedFitnessSports[index],
-                                isSelected: selectedList.contains(selectedFitnessSports[index]),
-                                callBack: (val) {
-                                  if (val) {
-                                    selectedList.addIf(val, selectedFitnessSports[index]);
-                                  } else {
-                                    selectedList.remove(selectedFitnessSports[index]);
-                                  }
-                                });
-                          },
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 3 / 4,
-                            mainAxisExtent: 40.rh,
-                            mainAxisSpacing: 6.0,
-                            crossAxisSpacing: 4.0,
+                          SizedBox(height: 2.rh),
+                          Row(
+                            children: [
+                              Text(
+                                "Water Sports",
+                                style: Get.textTheme.displayMedium?.copyWith(
+                                    color: CustomTheme.textColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Tooltip(
+                                margin: EdgeInsets.only(left: 20, right: 20),
+                                key: tooltipKey3,
+                                message: 'This is a suggestion text.',
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.7),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                preferBelow: false,
+                                child: InkWell(
+                                  onTap: () {
+                                    tooltipKey3.currentState
+                                        ?.ensureTooltipVisible();
+                                  },
+                                  child: const Icon(
+                                    CupertinoIcons.exclamationmark_circle_fill,
+                                    size: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                      SizedBox(height: 2.rh),
-                      Row(
-                        children: [
-                          Text(
-                            "Water Sports",
-                            style: Get.textTheme.displayMedium?.copyWith(color: CustomTheme.textColor, fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 5,),
-                          Tooltip(
-                            margin: EdgeInsets.only(left: 20,right: 20),
-                            key: tooltipKey3,
-                            message: 'This is a suggestion text.',
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                            textStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.7),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            preferBelow: false,
-                            child: InkWell(
-                              onTap: () {
-                                tooltipKey3.currentState?.ensureTooltipVisible();
+                          Text("Select the sport you want to coach",
+                              style: Get.textTheme.bodyMedium),
+                          SizedBox(height: 1.rh),
+                          SizedBox(
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              itemCount: selectedWaterSports.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return SelectionChip(
+                                    isAdded: false,
+                                    sportModel: selectedWaterSports[index],
+                                    isSelected: selectedList
+                                        .contains(selectedWaterSports[index]),
+                                    callBack: (val) {
+                                      if (val) {
+                                        selectedList.addIf(
+                                            val, selectedWaterSports[index]);
+                                      } else {
+                                        selectedList
+                                            .remove(selectedWaterSports[index]);
+                                      }
+                                    });
                               },
-                              child: const Icon(
-                                CupertinoIcons.exclamationmark_circle_fill,
-                                size: 16,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 3 / 4,
+                                mainAxisExtent: 40.rh,
+                                mainAxisSpacing: 6.0,
+                                crossAxisSpacing: 4.0,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                      Text("Select the sport you want to coach", style: Get.textTheme.bodyMedium),
-                      SizedBox(height: 1.rh),
-                      SizedBox(
-                        height: getheight(selectedWaterSports.length) + 16,
-                        child: GridView.builder(
-                          itemCount: selectedWaterSports.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return SelectionChip(
-                                isAdded: false,
-                                sportModel: selectedWaterSports[index],
-                                isSelected: selectedList.contains(selectedWaterSports[index]),
-                                callBack: (val) {
-                                  if (val) {
-                                    selectedList.addIf(val, selectedWaterSports[index]);
-                                  } else {
-                                    selectedList.remove(selectedWaterSports[index]);
-                                  }
-                                });
-                          },
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 3 / 4,
-                            mainAxisExtent: 40.rh,
-                            mainAxisSpacing: 6.0,
-                            crossAxisSpacing: 4.0,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 60.rh)
-                    ]),
+                          SizedBox(height: 60.rh)
+                        ]),
                   ),
                 ),
               ],

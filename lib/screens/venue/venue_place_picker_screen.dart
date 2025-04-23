@@ -47,7 +47,8 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
       if (permission == LocationPermission.deniedForever) return;
     }
 
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
 
     LatLng newLocation = LatLng(position.latitude, position.longitude);
 
@@ -66,11 +67,13 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
     });
 
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks[0];
         setState(() {
-          _address = "${place.street}, ${place.locality}, ${place.country} ${place.postalCode}";
+          _address =
+              "${place.street}, ${place.locality}, ${place.country} ${place.postalCode}";
         });
       }
     } catch (e) {
@@ -99,13 +102,23 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
   void _onConfirmLocation() {
     if (_manualAddress) {
       if (_formKey.currentState!.validate()) {
-        _address = "${addressController.text}, ${cityController.text} ,${stateController.text}, ${pinController.text} ";
+        _address =
+            "${addressController.text}, ${cityController.text} ,${stateController.text}, ${pinController.text} ";
         Navigator.pop(context, _address);
       }
     } else {
       Navigator.pop(context, _address);
     }
     print("Confirmed Location: $_currentLatLng, Address: $_address");
+  }
+
+  @override
+  void dispose() {
+    addressController.dispose();
+    stateController.dispose();
+    cityController.dispose();
+    pinController.dispose();
+    super.dispose();
   }
 
   @override
@@ -133,7 +146,8 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                           _mapController = controller;
                         },
                         onCameraMove: _onCameraMove,
-                        onCameraIdle: _onCameraIdle, // Fetch address when camera stops moving
+                        onCameraIdle:
+                            _onCameraIdle, // Fetch address when camera stops moving
                         myLocationEnabled: true,
                         myLocationButtonEnabled: false,
                       ),
@@ -145,8 +159,10 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                       decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(20), // Rounded bottom-left corner
-                          bottomRight: Radius.circular(20), // Rounded bottom-right corner
+                          bottomLeft:
+                              Radius.circular(20), // Rounded bottom-left corner
+                          bottomRight: Radius.circular(
+                              20), // Rounded bottom-right corner
                         ),
                       ),
                       child: Row(
@@ -171,7 +187,10 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                           ),
                           Text(
                             "Venue location",
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                           SizedBox(width: 40), // Balance alignment
                         ],
@@ -206,8 +225,11 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                    boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 10)
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,16 +297,23 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                           children: [
                             Text(
                               "Current location",
-                              style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(height: 8),
                             _isFetchingAddress
                                 ? Text("Fetching location...",
                                     style: TextStyle(
-                                        fontSize: 14, fontWeight: FontWeight.w500)) // Show loader when fetching address
+                                        fontSize: 14,
+                                        fontWeight: FontWeight
+                                            .w500)) // Show loader when fetching address
                                 : Text(
                                     _address,
-                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
                                   ),
                           ],
                         ),
@@ -305,7 +334,9 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                             },
                             child: Text(
                               "Enter manually",
-                              style: TextStyle(color: CustomTheme.appColorSecondary, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: CustomTheme.appColorSecondary,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),

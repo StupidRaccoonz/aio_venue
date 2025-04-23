@@ -6,9 +6,11 @@ import 'dart:convert';
 
 import 'venue_details_model.dart';
 
-MyVenuesResponseModel myVenuesResponseModelFromJson(String str) => MyVenuesResponseModel.fromJson(json.decode(str));
+MyVenuesResponseModel myVenuesResponseModelFromJson(String str) =>
+    MyVenuesResponseModel.fromJson(json.decode(str));
 
-String myVenuesResponseModelToJson(MyVenuesResponseModel data) => json.encode(data.toJson());
+String myVenuesResponseModelToJson(MyVenuesResponseModel data) =>
+    json.encode(data.toJson());
 
 class MyVenuesResponseModel {
   int httpCode;
@@ -21,7 +23,8 @@ class MyVenuesResponseModel {
     required this.data,
   });
 
-  factory MyVenuesResponseModel.fromJson(Map<String, dynamic> json) => MyVenuesResponseModel(
+  factory MyVenuesResponseModel.fromJson(Map<String, dynamic> json) =>
+      MyVenuesResponseModel(
         httpCode: json["http_code"],
         message: json["message"],
         data: Data.fromJson(json["data"]),
@@ -42,7 +45,9 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        venue: json["venue"] == null ? [] : List<Venue>.from(json["venue"].map((x) => Venue.fromJson(x))),
+        venue: json["venue"] == null
+            ? []
+            : List<Venue>.from(json["venue"].map((x) => Venue.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -116,7 +121,10 @@ class Venue {
         numberOfGrounds: json["number_of_grounds"],
         openingHour: json["opening_hour"],
         closingHour: json["closing_hour"],
-        workingDays: json["working_days"] == null ? <WorkingDay>[] : List<WorkingDay>.from(json["working_days"].map((e) => WorkingDay.fromJson(e))),
+        workingDays: json["working_days"] == null
+            ? <WorkingDay>[]
+            : List<WorkingDay>.from(
+                json["working_days"].map((e) => WorkingDay.fromJson(e))),
         longTermBooking: json["long_term_booking"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
@@ -126,12 +134,17 @@ class Venue {
                 ? json["wishlist"]
                 : int.parse(json["wishlist"])
             : 0,
-        establishedDate: json["established_date"],
+        establishedDate: json['established_date'] == null
+            ? null
+            : DateTime.parse(json["established_date"]),
         deletedAt: json["deleted_at"],
         futureDeletedDate: json["future_deleted_date"],
-        lastBookingDatetime: json["last_booking_datetime"] != null ? DateTime.parse(json["last_booking_datetime"]) : null,
+        lastBookingDatetime: json["last_booking_datetime"] != null
+            ? DateTime.parse(json["last_booking_datetime"])
+            : null,
         sports: List<Sport>.from(json["sports"].map((x) => Sport.fromJson(x))),
-        grounds: List<Ground>.from(json["grounds"].map((x) => Ground.fromJson(x))),
+        grounds:
+            List<Ground>.from(json["grounds"].map((x) => Ground.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
