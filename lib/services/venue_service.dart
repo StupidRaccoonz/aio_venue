@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -52,13 +53,27 @@ class VenueService {
       "profile_picture": await MultipartFile.fromFile(image.path,
           filename: image.path.split("/").last)
     });
+    body.remove("working_days");
 
     // form.files.add(MapEntry("profile_picture", MultipartFile(image, filename: image.path.split("/").last, contentType: "multipart/form-data")));
     try {
       final formData = FormData.fromMap(body);
+      // for (int i = 0; i < requestModel.workingDays.length; i++) {
+      //   print("working_days[$i][day]: ${requestModel.workingDays[i]["day"]!}");
+      //   formData.fields.add(MapEntry(
+      //       "working_days[$i][day]", requestModel.workingDays[i]["day"]!));
+      //   formData.fields.add(MapEntry("working_days[$i][status]",
+      //       requestModel.workingDays[i]["status"]!));
+      // }
+      formData.fields.add(MapEntry(
+        "working_days",
+        jsonEncode(requestModel.workingDays),
+      ));
       log("addVenueDetails request ${body.toString()} ");
       final response = await dio.post('${ServerUrls.basUrl}add_venue_detail',
           data: formData, options: options);
+
+      print(response.data);
 
       if (response.data == null) {
         log("internet error: addVenueDetails => ${response.data}");
@@ -78,6 +93,11 @@ class VenueService {
         return null;
       }
     } catch (ex) {
+      if (ex is DioException) {
+        log(ex.response!.data.toString());
+      } else {
+        log(ex.toString());
+      }
       // Constants.showSnackbar("Error", "check your internet connection");
       return null;
     }
@@ -545,26 +565,22 @@ class VenueService {
       "Authorization": "Bearer $token"
     };
     final options = Options(headers: headers);
-    try {
-      Response<Map<String, dynamic>> response =
-          await dio.get('get_my_venues', options: options);
 
-      if (response.data == null) {
-        // Constants.showSnackbar("Error", "check your internet connection");
-        return null;
-      }
-      if (response.statusCode == 500) {
-        Constants.showSnackbar(
-            "Error", "${response.statusCode}  ${response.statusMessage}");
-        return null;
-      }
+    Response<Map<String, dynamic>> response =
+        await dio.get('get_my_venues', options: options);
 
-      if (response.data != null) {
-        return MyVenuesResponseModel.fromJson(response.data!);
-      }
-    } catch (ex) {
+    if (response.data == null) {
       // Constants.showSnackbar("Error", "check your internet connection");
       return null;
+    }
+    if (response.statusCode == 500) {
+      Constants.showSnackbar(
+          "Error", "${response.statusCode}  ${response.statusMessage}");
+      return null;
+    }
+    log("getMyVenues response => ${response.data.toString()}");
+    if (response.data != null) {
+      return MyVenuesResponseModel.fromJson(response.data!);
     }
   }
 
@@ -589,6 +605,8 @@ class VenueService {
       };
       Response<Map<String, dynamic>> response = await dio
           .get('venue_booking_list', queryParameters: params, options: options);
+
+      log("response from getVenueBookings ${response.data.toString()}");
 
       if (response.data == null) {
         // Constants.showSnackbar("Error", "check your internet connection");
@@ -1027,8 +1045,23 @@ class VenueService {
     };
     final options = Options(headers: headers);
     Map<String, dynamic> body = request;
+
     try {
-      final formData = FormData.fromMap(body);
+      final formData = FormData();
+
+      body.forEach((key, value) {
+        if (key == 'working_days') {
+          for (int i = 0; i < value.length; i++) {
+            formData.fields
+                .add(MapEntry("working_days[$i][day]", value[i]["day"]!));
+            formData.fields
+                .add(MapEntry("working_days[$i][status]", value[i]["status"]!));
+          }
+        } else {
+          formData.fields.add(MapEntry(key, value.toString()));
+        }
+      });
+
       log("update venue request ${body.toString()} ");
       final response = await dio.post('${ServerUrls.basUrl}update_venue',
           data: formData, options: options);
@@ -1050,6 +1083,7 @@ class VenueService {
         return null;
       }
     } catch (ex) {
+      log(ex.toString());
       // Constants.showSnackbar("Error", "check your internet connection");
       return null;
     }

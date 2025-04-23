@@ -410,8 +410,10 @@ class ProfileController extends GetxController {
 
   void getVenuesListData() async {
     final results = await venueService.getMyVenuesDetails(bearer);
+    print('Rezulet' + results.toString());
     if (results != null && results.httpCode == 200 && results.data != null) {
       myVenues.value = results;
+      print("MyAvailableVenues: ${myVenues.value!.data!.venue.length}");
       myVenues.refresh();
     }
   }
@@ -473,7 +475,7 @@ class ProfileController extends GetxController {
 
   Future<VenueMediaModel?> getVenueMedia() async {
     venueMedia.value = await venueService
-        .getVenueMedia(bearer, "${loginDataModel.value!.data!.venueId}")
+        .getVenueMedia(bearer, "${venueId}")
         .then((value) => venueMedia.value = value ??
             VenueMediaModel(
                 httpCode: 401, message: "Data not found.", data: null));

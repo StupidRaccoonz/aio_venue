@@ -319,7 +319,7 @@ class _VenueDetailsState extends State<VenueDetails> {
                                             initialTime: TimeOfDay.now());
                                         if (time != null) {
                                           openingController.text =
-                                              Constants.getFormattedTime(time);
+                                              "${time.hour}:${time.minute}:00";
                                         }
                                       },
                                       textEditingController: openingController,
@@ -347,7 +347,8 @@ class _VenueDetailsState extends State<VenueDetails> {
                                             initialTime: TimeOfDay.now());
                                         if (time != null) {
                                           closingController.text =
-                                              Constants.getFormattedTime(time);
+                                              "${time.hour}:${time.minute}:00";
+                                          ;
                                         }
                                       },
                                       textEditingController: closingController,
@@ -641,24 +642,29 @@ class _VenueDetailsState extends State<VenueDetails> {
                                     }
                                     if (_formKey.currentState!.validate()) {
                                       controller.loading.value = true;
-                                      requestModel = AddVenueDetailsRequestModel(
-                                          name: venueController.text,
-                                          address: addressController.text,
-                                          openingHour: openingController.text,
-                                          closingHour: closingController.text,
-                                          workingDays:
-                                              "${workingDays.map((x) => x.toJson()).toList()}",
-                                          sports: selectedSports
-                                              .map((element) => element.id)
-                                              .toList()
-                                              .join(","),
-                                          longTermBooking:
-                                              homeController.isLongTerm.value
+                                      requestModel =
+                                          AddVenueDetailsRequestModel(
+                                              name: venueController.text,
+                                              address: addressController.text,
+                                              openingHour:
+                                                  openingController.text,
+                                              closingHour:
+                                                  closingController.text,
+                                              workingDays: workingDays
+                                                  .map((x) => x.toJson())
+                                                  .toList(),
+                                              sports: selectedSports
+                                                  .map((element) => element.id)
+                                                  .toList()
+                                                  .join(","),
+                                              longTermBooking: homeController
+                                                      .isLongTerm.value
                                                   ? "1"
                                                   : "0",
-                                          numberOfGrounds: numberOfGroundC.text,
-                                          ratings: "0",
-                                          wishlist: "1");
+                                              numberOfGrounds:
+                                                  numberOfGroundC.text,
+                                              ratings: "0",
+                                              wishlist: "1");
                                       venue.VenueDetailsModel? value =
                                           await controller.venueService
                                               .addVenueDetails(
@@ -668,6 +674,7 @@ class _VenueDetailsState extends State<VenueDetails> {
                                                   requestModel!,
                                                   addNewVenue:
                                                       widget.addAnotherVenue);
+
                                       if (value != null &&
                                           value.data != null &&
                                           value.httpCode == 200) {

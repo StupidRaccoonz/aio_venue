@@ -18,7 +18,8 @@ class ShortTermBookings extends StatefulWidget {
   State<ShortTermBookings> createState() => _ShortTermBookingsState();
 }
 
-class _ShortTermBookingsState extends State<ShortTermBookings> with AutomaticKeepAliveClientMixin {
+class _ShortTermBookingsState extends State<ShortTermBookings>
+    with AutomaticKeepAliveClientMixin {
   late BookingFilterModel filterModel;
   final profileController = Get.find<ProfileController>();
 
@@ -26,7 +27,10 @@ class _ShortTermBookingsState extends State<ShortTermBookings> with AutomaticKee
   void initState() {
     filterModel = BookingFilterModel(sport: Sport(), date: 1);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      filterModel = BookingFilterModel(sport: profileController.currentVenue.value!.data!.venue.sports!.first, date: 1);
+      filterModel = BookingFilterModel(
+          sport:
+              profileController.currentVenue.value!.data!.venue.sports!.first,
+          date: 1);
       setState(() {});
     });
     super.initState();
@@ -49,7 +53,8 @@ class _ShortTermBookingsState extends State<ShortTermBookings> with AutomaticKee
                     child: Chip(
                       label: Text(
                         filterModel.sport.name ?? "",
-                        style: Get.textTheme.labelMedium!.copyWith(fontWeight: FontWeight.w500),
+                        style: Get.textTheme.labelMedium!
+                            .copyWith(fontWeight: FontWeight.w500),
                       ),
                       deleteIcon: const Icon(Icons.keyboard_arrow_down_rounded),
                       onDeleted: () {
@@ -57,7 +62,8 @@ class _ShortTermBookingsState extends State<ShortTermBookings> with AutomaticKee
                       },
                       backgroundColor: Colors.white,
                       side: BorderSide(color: CustomTheme.borderColor),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.br)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.br)),
                     ),
                   ),
                   const SizedBox(width: 9.0),
@@ -66,7 +72,8 @@ class _ShortTermBookingsState extends State<ShortTermBookings> with AutomaticKee
                     child: Chip(
                       label: Text(
                         Constants.intToString(filterModel.date, true),
-                        style: Get.textTheme.labelMedium!.copyWith(fontWeight: FontWeight.w500),
+                        style: Get.textTheme.labelMedium!
+                            .copyWith(fontWeight: FontWeight.w500),
                       ),
                       deleteIcon: const Icon(Icons.keyboard_arrow_down_rounded),
                       onDeleted: () {
@@ -74,7 +81,8 @@ class _ShortTermBookingsState extends State<ShortTermBookings> with AutomaticKee
                       },
                       backgroundColor: Colors.white,
                       side: BorderSide(color: CustomTheme.borderColor),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.br)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.br)),
                     ),
                   ),
                 ],
@@ -83,21 +91,31 @@ class _ShortTermBookingsState extends State<ShortTermBookings> with AutomaticKee
 
             Expanded(child: Obx(() {
               log("allBookingsLength: ${profileController.venueBookings.value?.bookings!.data.length}");
-              var shortBookings = profileController.venueBookings.value?.bookings!.data.where((element) => element.longTermBooking == 0 && element.sportsName.toLowerCase() == filterModel.sport.name?.toLowerCase()).toList() ?? [];
-              shortBookings = Constants.filterBookingsByDate(shortBookings, filterModel.date);
+              var shortBookings = profileController
+                      .venueBookings.value?.bookings!.data
+                      .where((element) =>
+                          element.longTermBooking == 0 &&
+                          element.sportsName.toLowerCase() ==
+                              filterModel.sport.name?.toLowerCase())
+                      .toList() ??
+                  [];
+              shortBookings = Constants.filterBookingsByDate(
+                  shortBookings, filterModel.date);
               //  shortBookings =
               // final shortBookings = profileController.venueBookings.value?.bookings!.data.where((element) => element.longTermBooking == 0).toList() ?? [];
               log("shortBookings ============>");
               log(shortBookings.length.toString());
               return shortBookings.isEmpty
-                  ? Center(child: Text("No booking available", style: Get.textTheme.headlineMedium))
+                  ? Center(
+                      child: Text("No booking available",
+                          style: Get.textTheme.headlineMedium))
                   : ListView.builder(
                       itemCount: shortBookings.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: BookingCardWidget(
-                            height: constraints.maxHeight * 0.3,
+                            height: constraints.maxHeight * 0.35,
                             longterm: false,
                             onPressed: () {},
                             bookingData: shortBookings[index],
@@ -114,8 +132,10 @@ class _ShortTermBookingsState extends State<ShortTermBookings> with AutomaticKee
   }
 
   Future<void> applyFilters(int filterIndex) async {
-    BookingFilterModel? bookingFilters = await Get.bottomSheet<BookingFilterModel>(
-      VenueBookingFilters(filterModel: filterModel, isBooking: true, filterIndex: filterIndex),
+    BookingFilterModel? bookingFilters =
+        await Get.bottomSheet<BookingFilterModel>(
+      VenueBookingFilters(
+          filterModel: filterModel, isBooking: true, filterIndex: filterIndex),
       isScrollControlled: false,
       enableDrag: false,
     );

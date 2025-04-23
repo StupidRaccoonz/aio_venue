@@ -20,9 +20,12 @@ class _VenueListBottomSheetState extends State<VenueListBottomSheet> {
 
   @override
   void initState() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-      selectedVenue = profileController.myVenues.value!.data!.venue
-          .indexWhere((element) => element.id == profileController.currentVenue.value!.data!.venue.id);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print(profileController.myVenues.value!.data == null);
+      selectedVenue = profileController.myVenues.value!.data!.venue.indexWhere(
+          (element) =>
+              element.id ==
+              profileController.currentVenue.value!.data!.venue.id);
     });
     super.initState();
   }
@@ -36,7 +39,8 @@ class _VenueListBottomSheetState extends State<VenueListBottomSheet> {
           Material(
             borderRadius: BorderRadius.vertical(top: Radius.circular(15.br)),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
               child: Row(
                 children: [
                   Text("My Venue", style: Get.textTheme.displayMedium),
@@ -46,7 +50,8 @@ class _VenueListBottomSheetState extends State<VenueListBottomSheet> {
                       Get.back();
                       Get.to(() => const VenueDetails(addAnotherVenue: true));
                     },
-                    child: Text("+ Add new venue", style: Get.textTheme.headlineSmall),
+                    child: Text("+ Add new venue",
+                        style: Get.textTheme.headlineSmall),
                   )
                 ],
               ),
@@ -55,18 +60,24 @@ class _VenueListBottomSheetState extends State<VenueListBottomSheet> {
           const Divider(),
           profileController.myVenues.value == null
               ? VenueListWidget(
-                  imageUrl: profileController.currentVenue.value?.data?.venue.profilePicture ?? "",
+                  imageUrl: profileController
+                          .currentVenue.value?.data?.venue.profilePicture ??
+                      "",
                   selectedVenue: selectedVenue,
                   onChanged: (value) {},
-                  venueCity: profileController.currentVenue.value!.data!.venue.address,
-                  venueName: profileController.currentVenue.value!.data!.venue.name,
+                  venueCity:
+                      profileController.currentVenue.value!.data!.venue.address,
+                  venueName:
+                      profileController.currentVenue.value!.data!.venue.name,
                   index: 0,
                 )
               : Expanded(
                   child: ListView.builder(
-                    itemCount: profileController.myVenues.value?.data?.venue.length,
+                    itemCount:
+                        profileController.myVenues.value?.data?.venue.length,
                     itemBuilder: (context, index) {
-                      final model = profileController.myVenues.value!.data!.venue[index];
+                      final model =
+                          profileController.myVenues.value!.data!.venue[index];
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -79,7 +90,9 @@ class _VenueListBottomSheetState extends State<VenueListBottomSheet> {
 
                               setState(() {});
                               Get.back();
-                              if (model.id == profileController.currentVenue.value!.data!.venue.id) {
+                              if (model.id ==
+                                  profileController
+                                      .currentVenue.value!.data!.venue.id) {
                                 return;
                               }
 

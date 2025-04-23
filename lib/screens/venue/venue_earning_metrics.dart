@@ -11,7 +11,8 @@ class VenueEarningMetricsScreen extends StatefulWidget {
   const VenueEarningMetricsScreen({super.key});
 
   @override
-  State<VenueEarningMetricsScreen> createState() => _VenueEarningMetricsScreenState();
+  State<VenueEarningMetricsScreen> createState() =>
+      _VenueEarningMetricsScreenState();
 }
 
 class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
@@ -25,7 +26,8 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
     if (grounds == null) return "Unknown Ground"; // Handle null case
 
     try {
-      return grounds.firstWhere((ground) => ground.id == groundId).name ?? "Unknown Ground";
+      return grounds.firstWhere((ground) => ground.id == groundId).name ??
+          "Unknown Ground";
     } catch (e) {
       return "Unknown Ground"; // If ID not found
     }
@@ -36,15 +38,22 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
     Map<String, List<Earning>> groupedEarnings = {};
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final myEarnings = profileController.venueEarnings.value?.data?.myEarning?.data ?? [];
-    var longBookingsCount = myEarnings.where((item) => item.bookingType == "long").toList();
-    var shortBookingCount = myEarnings.where((item) => item.bookingType == "short").toList();
+    final myEarnings =
+        profileController.venueEarnings.value?.data?.myEarning?.data ?? [];
+    var longBookingsCount =
+        myEarnings.where((item) => item.bookingType == "long").toList();
+    var shortBookingCount =
+        myEarnings.where((item) => item.bookingType == "short").toList();
 
-    var totalLongBookingAmount = longBookingsCount.fold(0.0, (sum, item) => sum + (item.totalAmount ?? 0.0));
-    var totalshortBookingAmount = shortBookingCount.fold(0.0, (sum, item) => sum + (item.totalAmount ?? 0.0));
+    var totalLongBookingAmount = longBookingsCount.fold(
+        0.0, (sum, item) => sum + (item.totalAmount ?? 0.0));
+    var totalshortBookingAmount = shortBookingCount.fold(
+        0.0, (sum, item) => sum + (item.totalAmount ?? 0.0));
 
     for (var earning in myEarnings) {
-      groupedEarnings.putIfAbsent(earning.sportsId.toString(), () => []).add(earning);
+      groupedEarnings
+          .putIfAbsent(earning.sportsId.toString(), () => [])
+          .add(earning);
     }
     Map<String, Map<int, int>> groundEarningsMap = {};
     if (groupedEarnings.isNotEmpty) {
@@ -52,12 +61,16 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
         List<Earning> earningsForSport = groupedEarnings[sportId]!;
         Map<int, int> groundWiseEarnings = {};
         for (var earning in earningsForSport) {
-          groundWiseEarnings[earning.groundId!] = (groundWiseEarnings[earning.groundId] ?? 0) + (earning.totalAmount ?? 0);
+          groundWiseEarnings[earning.groundId!] =
+              (groundWiseEarnings[earning.groundId] ?? 0) +
+                  (earning.totalAmount ?? 0);
         }
         groundEarningsMap[sportId] = groundWiseEarnings;
       }
     }
     print("kajal heree $groupedEarnings");
+    print(
+        "longBookingsCount: ${longBookingsCount} shortBookingsCount: ${shortBookingCount}");
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.maxFinite, 10.vh),
@@ -76,7 +89,10 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 30),
-              Text("Overview", style: TextStyle(fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold)),
+              Text("Overview",
+                  style: TextStyle(
+                      fontSize: screenHeight * 0.03,
+                      fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -118,26 +134,44 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "OMR ${profileController.venueEarnings.value?.data?.totalVenueEarning}",
+                                      "OMR ${profileController.venueEarnings.value?.data?.totalVenueEarning ?? 0}",
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       "Earnings",
-                                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.grey),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                          _buildLegend(totalLongBookingAmount + totalshortBookingAmount > 0 ? (totalLongBookingAmount * 100 / (totalLongBookingAmount + totalshortBookingAmount)) : 0, totalLongBookingAmount + totalshortBookingAmount > 0 ? totalshortBookingAmount * 100 / (totalLongBookingAmount + totalshortBookingAmount) : 0),
+                          _buildLegend(
+                              totalLongBookingAmount + totalshortBookingAmount >
+                                      0
+                                  ? (totalLongBookingAmount *
+                                      100 /
+                                      (totalLongBookingAmount +
+                                          totalshortBookingAmount))
+                                  : 0,
+                              totalLongBookingAmount + totalshortBookingAmount >
+                                      0
+                                  ? totalshortBookingAmount *
+                                      100 /
+                                      (totalLongBookingAmount +
+                                          totalshortBookingAmount)
+                                  : 0),
                         ],
                       ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: CustomTheme.grey.withOpacity(0.5)),
+                        border: Border.all(
+                            color: CustomTheme.grey.withOpacity(0.5)),
                       ),
                     ),
                   ),
@@ -165,21 +199,29 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
                 ],
               ),
               SizedBox(height: 20),
-              Container(
-                // height: screenHeight * 0.5,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: CustomTheme.grey.withOpacity(0.5))),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                  child: _buildProgressIndicator(),
-                  // profileController.venueAnalytics.value?.data.shortTermBooking != null
-                  //     ? Center(
-                  //         child: Text('No Data Found'),
-                  //       )
-                  //     : MetricsBookingComparisonWidget(),
-                ),
-              ),
+              // Container(
+              //   // height: screenHeight * 0.5,
+              //   decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       borderRadius: BorderRadius.circular(16),
+              //       border:
+              //           Border.all(color: CustomTheme.grey.withOpacity(0.5))),
+              //   child: Padding(
+              //     padding:
+              //         const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+              //     child: _buildProgressIndicator(),
+              //     // profileController.venueAnalytics.value?.data.shortTermBooking != null
+              //     //     ? Center(
+              //     //         child: Text('No Data Found'),
+              //     //       )
+              //     //     : MetricsBookingComparisonWidget(),
+              //   ),
+              // ),
               SizedBox(height: 20),
-              Text("Earning By Sport", style: TextStyle(fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold)),
+              Text("Earning By Sport",
+                  style: TextStyle(
+                      fontSize: screenHeight * 0.03,
+                      fontWeight: FontWeight.bold)),
               SizedBox(height: 5),
               ListView.builder(
                 shrinkWrap: true,
@@ -188,9 +230,15 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
                 itemBuilder: (context, index) {
                   final items = groundEarningsMap;
                   if (items == null || items.isEmpty) {
-                    return Center(child: Text("No data available"));
+                    return Center(
+                        child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                          "No data available for ${profileController.sportsList[index]!.name}"),
+                    ));
                   }
-                  final item = items[profileController.sportsList[index]!.id.toString()];
+                  final item =
+                      items[profileController.sportsList[index]!.id.toString()];
                   if (item == null) {
                     return SizedBox.shrink();
                   }
@@ -202,10 +250,12 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    profileController.sportsList[index]?.name ?? "",
+                                    profileController.sportsList[index]?.name ??
+                                        "",
                                     style: Get.textTheme.titleMedium,
                                   ),
                                   Text(
@@ -219,14 +269,16 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
                                 decoration: BoxDecoration(
                                   color: Color(0xffE9E8EB).withOpacity(0.3),
                                   borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(color: CustomTheme.grey.withOpacity(0.5)),
+                                  border: Border.all(
+                                      color: CustomTheme.grey.withOpacity(0.5)),
                                 ),
                                 child: Column(
                                   children: item.entries.map((entry) {
                                     return Padding(
                                       padding: const EdgeInsets.all(12.0),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             "${getGroundName(entry.key)}", // Ground ID
@@ -303,7 +355,8 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: CustomTheme.grey.withOpacity(0.5)),
+                          border: Border.all(
+                              color: CustomTheme.grey.withOpacity(0.5)),
                         ),
                       )
                       // MetricsTotalGroundBookingsWidget(data: '${profileController.venueAnalytics.value!.data}',),
@@ -318,7 +371,8 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
   }
 
   Widget _buildProgressIndicator() {
-    double screenWidth = MediaQuery.of(context).size.width - 32; // Full width minus padding
+    double screenWidth =
+        MediaQuery.of(context).size.width - 32; // Full width minus padding
     double total = 10500;
     double orangeWidth = (2200 / total) * screenWidth;
     double blueWidth = (3150 / total) * screenWidth;
@@ -337,9 +391,13 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
               ),
             ),
             // 3️⃣ Last segment (Purple) - Drawn first
-            _progressSegment(purpleWidth, longTermColor, screenWidth - purpleWidth, overlap: 6, isLast: true),
+            _progressSegment(
+                purpleWidth, longTermColor, screenWidth - purpleWidth,
+                overlap: 6, isLast: true),
             // 2️⃣ Middle segment (Blue) - Drawn second, overlapping last
-            _progressSegment(blueWidth, shortTermColor, screenWidth - (purpleWidth + blueWidth), overlap: 6),
+            _progressSegment(blueWidth, shortTermColor,
+                screenWidth - (purpleWidth + blueWidth),
+                overlap: 6),
             // 1️⃣ First segment (Orange) - Drawn last, overlapping all
             _progressSegment(orangeWidth, Colors.orange, 0, isFirst: true),
           ],
@@ -402,7 +460,8 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
     );
   }
 
-  Widget _progressSegment(double width, Color color, double leftPosition, {bool isFirst = false, bool isLast = false, double overlap = 0}) {
+  Widget _progressSegment(double width, Color color, double leftPosition,
+      {bool isFirst = false, bool isLast = false, double overlap = 0}) {
     return Positioned(
       left: leftPosition - overlap,
       right: isLast ? 0 : null, // Adjust for overlapping effect
@@ -427,9 +486,11 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _legendItem("${long.round().toString()}%", "Long term Booking", longTermColor),
+        _legendItem(
+            "${long.round().toString()}%", "Long term Booking", longTermColor),
         SizedBox(width: 20),
-        _legendItem("${short.round().toString()}%", "Short term Booking", shortTermColor),
+        _legendItem("${short.round().toString()}%", "Short term Booking",
+            shortTermColor),
       ],
     );
   }
@@ -446,7 +507,8 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
               decoration: BoxDecoration(shape: BoxShape.circle, color: color),
             ),
             SizedBox(width: 5),
-            Text(percent, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(percent,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ],
         ),
         SizedBox(width: 5),

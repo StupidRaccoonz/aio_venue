@@ -36,6 +36,9 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
 
   final closingController = TextEditingController();
   final noOfGroundsController = TextEditingController();
+  final longTermBookingContorller = TextEditingController();
+
+  RxBool longTermBooking = false.obs;
 
   List<WorkingDay> workingDays = [
     WorkingDay.fromJson({"day": "Monday", "status": "false"}),
@@ -57,10 +60,13 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
           child: AppbarWidget(
               title: "Venue details",
               leading: IconButton(
-                  icon: const Icon(Icons.arrow_back_rounded, color: Colors.white), onPressed: () => Get.back()))),
+                  icon:
+                      const Icon(Icons.arrow_back_rounded, color: Colors.white),
+                  onPressed: () => Get.back()))),
       body: LayoutBuilder(builder: (context, constraints) {
         return GetX<ProfileController>(builder: (controller) {
-          venue_details.Venue venue = controller.currentVenue.value!.data!.venue;
+          venue_details.Venue venue =
+              controller.currentVenue.value!.data!.venue;
           if (venue.workingDays != null && venue.workingDays!.isNotEmpty) {
             workingDays = venue.workingDays!;
           }
@@ -70,6 +76,11 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
           openingController.text = venue.openingHour;
           closingController.text = venue.closingHour;
           noOfGroundsController.text = venue.numberOfGrounds.toString();
+          if (venue.longTermBooking != 0) {
+            longTermBooking.value = true;
+            longTermBookingContorller.text = venue.longTermBooking.toString();
+            // setState(() {});
+          }
           print("kajal hereee ${venue.latitude}");
           //   calenderController.text = ;
           DateTime dateTime = DateTime.parse(venue.createdAt.toIso8601String());
@@ -82,7 +93,8 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
           return Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -93,7 +105,8 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                           Row(
                             children: [
                               ClipRRect(
-                                borderRadius: BorderRadius.circular(constraints.maxHeight * 0.1),
+                                borderRadius: BorderRadius.circular(
+                                    constraints.maxHeight * 0.1),
                                 child: ImageWidget(
                                   imageurl:
                                       "${ServerUrls.mediaUrl}venue/${controller.currentVenue.value?.data?.venue.profilePicture}",
@@ -117,7 +130,8 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                               return null;
                             },
                             textEditingController: venueController,
-                            leadingIcon: Image.asset('assets/icons/stadium.png'),
+                            leadingIcon:
+                                Image.asset('assets/icons/stadium.png'),
                           ),
                           SizedBox(height: 5.rh),
                           InputFieldWidget(
@@ -137,14 +151,17 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                                     addressController.text = value;
                                   });
                                 },
-                                child: Image.asset('assets/icons/location.png')),
-                            leadingIcon: Image.asset('assets/icons/location.png'),
+                                child:
+                                    Image.asset('assets/icons/location.png')),
+                            leadingIcon:
+                                Image.asset('assets/icons/location.png'),
                           ),
                           SizedBox(height: 5.rh),
                           InputFieldWidget(
                             readOnly: true,
                             onTap: () async {},
-                            leadingIcon: Image.asset('assets/icons/calender.png'),
+                            leadingIcon:
+                                Image.asset('assets/icons/calender.png'),
                             initalValue: "${formattedDate}",
                             //   trailingIcon: Icon(Icons.calendar_month, color: CustomTheme.iconColor),
                           ),
@@ -163,14 +180,16 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                                     return null;
                                   },
                                   onTap: () async {
-                                    TimeOfDay? time =
-                                        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+                                    TimeOfDay? time = await showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.now());
                                     if (time != null) {
                                       openingController.text =
-                                          "${time.hourOfPeriod}:${time.minute} ${time.period.name.toUpperCase()}";
+                                          "${time.hour}:${time.minute}:00";
                                     }
                                   },
-                                  leadingIcon: Icon(Icons.access_time, color: CustomTheme.iconColor),
+                                  leadingIcon: Icon(Icons.access_time,
+                                      color: CustomTheme.iconColor),
                                   textEditingController: openingController,
                                   readOnly: true,
                                   //trailingIcon: Icon(Icons.access_time, color: CustomTheme.iconColor),
@@ -190,15 +209,17 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                                     return null;
                                   },
                                   onTap: () async {
-                                    TimeOfDay? time =
-                                        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+                                    TimeOfDay? time = await showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.now());
                                     if (time != null) {
                                       closingController.text =
-                                          "${time.hourOfPeriod}:${time.minute} ${time.period.name.toUpperCase()}";
+                                          "${time.hour}:${time.minute}:00";
                                     }
                                   },
                                   textEditingController: closingController,
-                                  leadingIcon: Icon(Icons.access_time, color: CustomTheme.iconColor),
+                                  leadingIcon: Icon(Icons.access_time,
+                                      color: CustomTheme.iconColor),
                                 ),
                               ),
                             ],
@@ -215,10 +236,12 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                             },
                             inputType: TextInputType.number,
                             textEditingController: noOfGroundsController,
-                            leadingIcon: Image.asset('assets/icons/football.png'),
+                            leadingIcon:
+                                Image.asset('assets/icons/football.png'),
                           ),
                           SizedBox(height: 10.rh),
-                          Text("Select working days", style: Get.textTheme.displaySmall),
+                          Text("Select working days",
+                              style: Get.textTheme.displaySmall),
                           SizedBox(height: 10.rh),
                           SizedBox(
                               height: 6.5.mv,
@@ -232,15 +255,19 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                             onTap: () async {},
                             onTrailingTap: () async {},
                             //textEditingController: selectSportsController,
-                            leadingIcon: Image.asset('assets/icons/football.png'),
+                            leadingIcon:
+                                Image.asset('assets/icons/football.png'),
                             initalValue: "Selected sports",
-                            trailingIcon: Icon(Icons.keyboard_arrow_down_sharp, color: CustomTheme.textColorLight),
+                            trailingIcon: Icon(Icons.keyboard_arrow_down_sharp,
+                                color: CustomTheme.textColorLight),
                           ),
                           const SizedBox(height: 4.0),
-                          Text("Select the sport you want to coach", style: Get.textTheme.displaySmall),
+                          Text("Select the sport you want to coach",
+                              style: Get.textTheme.displaySmall),
                           const SizedBox(height: 16.0),
                           SizedBox(
-                            height: Constants.getheight(venue.sports?.length ?? 0),
+                            height:
+                                Constants.getheight(venue.sports?.length ?? 0),
                             child: GridView.builder(
                               itemCount: venue.sports?.length ?? 0,
                               physics: const NeverScrollableScrollPhysics(),
@@ -248,9 +275,11 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                                 return SelectionChip(
                                     isAdded: true,
                                     index: index,
-                                    sportModel: sport.Sport.fromJson(venue.sports![index].toJson()));
+                                    sportModel: sport.Sport.fromJson(
+                                        venue.sports![index].toJson()));
                               },
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 childAspectRatio: 3 / 4,
                                 mainAxisExtent: 40.rh,
@@ -262,7 +291,8 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                           const SizedBox(height: 24.0),
                           Container(
                             decoration: BoxDecoration(
-                              border: Border.all(color: CustomTheme.textColorLight),
+                              border:
+                                  Border.all(color: CustomTheme.textColorLight),
                               borderRadius: BorderRadius.circular(16.0),
                             ),
                             child: Material(
@@ -277,41 +307,132 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         children: [
-                                          Text("Long term booking", style: Get.textTheme.bodyMedium),
+                                          Text("Long term booking",
+                                              style: Get.textTheme.bodyMedium),
                                           const Spacer(),
-                                          Switch(
-                                              activeTrackColor: CustomTheme.green,
-                                              value: true,
-                                              onChanged: (value) {
-                                                // profileController.isLongTerm.value = value;
-                                              }),
+                                          Obx(() {
+                                            return Switch(
+                                                activeTrackColor:
+                                                    CustomTheme.green,
+                                                value: longTermBooking.value,
+                                                onChanged: (value) {
+                                                  longTermBooking.value = value;
+                                                });
+                                          }),
                                         ],
                                       ),
                                     ),
-                                    Material(
-                                      borderOnForeground: true,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      color: CustomTheme.bocLightBackground,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child:
-                                                  Text("Long term booking discount", style: Get.textTheme.labelMedium),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                  "${controller.currentVenue.value?.data?.venue.longTermBooking}%",
-                                                  style: Get.textTheme.labelMedium!.copyWith(color: CustomTheme.green)),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                    Obx(() => longTermBooking.value
+                                        ? Material(
+                                            borderOnForeground: true,
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            color:
+                                                CustomTheme.bocLightBackground,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                          "Long term booking discount",
+                                                          style: Get.textTheme
+                                                              .labelMedium),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: SizedBox(
+                                                      width:
+                                                          constraints.maxWidth *
+                                                              0.15,
+                                                      child: Obx(() {
+                                                        return InputFieldWidget(
+                                                          hint: "0",
+                                                          suffixText: "%",
+                                                          readOnly:
+                                                              !longTermBooking
+                                                                  .value,
+                                                          maxlength: 2,
+                                                          inputType:
+                                                              TextInputType
+                                                                  .number,
+                                                          textColor:
+                                                              CustomTheme.green,
+                                                          textEditingController:
+                                                              longTermBookingContorller,
+                                                          onChange: (value) {
+                                                            if (value
+                                                                    .isNotEmpty &&
+                                                                double.parse(
+                                                                        value) >
+                                                                    40) {
+                                                              longTermBookingContorller
+                                                                  .text = "40";
+                                                              Get.dialog(Center(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          32.0),
+                                                                  child:
+                                                                      Material(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            16.0),
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          20.0),
+                                                                      child: Column(
+                                                                          mainAxisSize: MainAxisSize
+                                                                              .min,
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.center,
+                                                                          children: [
+                                                                            Text("You can't add discount more than 40% ",
+                                                                                style: Get.textTheme.labelMedium),
+                                                                            const SizedBox(height: 16.0),
+                                                                            Divider(color: CustomTheme.borderColor),
+                                                                            InkWell(
+                                                                              onTap: () => Get.back(),
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: [
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                                                                    child: Text("OK", style: Get.textTheme.headlineSmall),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ]),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ));
+                                                            }
+                                                          },
+                                                        );
+                                                      }),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ))
+                                        : const SizedBox()),
                                   ],
                                 ),
                               ),
@@ -319,7 +440,8 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                           ),
                           const SizedBox(height: 24.0),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 16.0),
                             child: MyButton(
                               text: "Save changes",
                               // onPressed: () => Get.to(() => const UploadMediaScreen()),
@@ -356,17 +478,31 @@ class _ShowVenueDetailsScreenState extends State<ShowVenueDetailsScreen> {
                                   */
 
                                 await controller.venueService
-                                    .updateVenueDetails(controller.loginDataModel.value!.data!.user.token, {
-                                  "name": venueController.text,
-                                  "address": addressController.text,
-                                  "opening_hour": openingController.text,
-                                  "closing_hour": closingController.text,
-                                  "venue_id": venue.id,
-                                  "numberOfGrounds": noOfGroundsController.text,
-                                  "working_days": workingDays.map((x) => x.toJson()).toList(),
-                                  "sports": venue.sports!.map((element) => element.id).toList().join(","),
-                                });
-                                await controller.venueService.getVenueDetails(controller.bearer, venue.id.toString());
+                                    .updateVenueDetails(
+                                        controller.loginDataModel.value!.data!
+                                            .user.token,
+                                        {
+                                      "name": venueController.text,
+                                      "address": addressController.text,
+                                      "opening_hour": openingController.text,
+                                      "closing_hour": closingController.text,
+                                      "venue_id": venue.id,
+                                      "number_of_grounds":
+                                          noOfGroundsController.text,
+                                      "working_days": workingDays
+                                          .map((x) => x.toJson())
+                                          .toList(),
+                                      "sports": venue.sports!
+                                          .map((element) => element.id)
+                                          .toList()
+                                          .join(","),
+                                      'long_term_booking': longTermBooking.value
+                                          ? longTermBookingContorller.text
+                                          : "0",
+                                    });
+                                await controller.venueService.getVenueDetails(
+                                    controller.bearer, venue.id.toString());
+                                controller.updateVenueData();
                                 controller.update();
                                 controller.loading.value = false;
                                 setState(() {});

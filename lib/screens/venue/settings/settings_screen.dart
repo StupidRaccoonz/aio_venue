@@ -12,8 +12,8 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.maxFinite, 10.vh),
@@ -27,63 +27,61 @@ class SettingScreen extends StatelessWidget {
       ),
       body: Container(
         padding: const EdgeInsets.all(20.0),
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Security",
-                  style: TextStyle(fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomListTile(
-                  title: "Change password",
-                  onTap: () {
-                    Get.to(ChangePasswordScreen());
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "About",
-                  style: TextStyle(fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomListTile(
-                  title: "Privacy Policy",
-                  onTap: () {
-                    Get.to(PrivacyPolicyScreen());
-                  },
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                CustomListTile(
-                  title: "Terms of use",
-                  onTap: () {
-                    Get.to(TermsValuesScreen());
-                  },
-                ),
-              ],
+            Text(
+              "Security",
+              style: TextStyle(
+                fontSize: screenHeight * 0.03,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            Positioned(
-              width: double.infinity,
-              bottom: 40,
+            const SizedBox(height: 20),
+            CustomListTile(
+              title: "Change password",
+              onTap: () {
+                Get.to(const ChangePasswordScreen());
+              },
+            ),
+            const SizedBox(height: 20),
+            Text(
+              "About",
+              style: TextStyle(
+                fontSize: screenHeight * 0.03,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            CustomListTile(
+              title: "Privacy Policy",
+              onTap: () {
+                Get.to(const PrivacyPolicyScreen());
+              },
+            ),
+            const SizedBox(height: 5),
+            CustomListTile(
+              title: "Terms of use",
+              onTap: () {
+                Get.to(const TermsValuesScreen());
+              },
+            ),
+            const Spacer(),
+            Center(
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Handle delete account logic here
+                },
                 child: Text(
-                  textAlign: TextAlign.center,
                   "Delete Account",
-                  style: TextStyle(color: CustomTheme.cherryRed, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: CustomTheme.cherryRed,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            )
+            ),
+            const SizedBox(height: 40),
           ],
         ),
       ),
@@ -94,6 +92,7 @@ class SettingScreen extends StatelessWidget {
 class CustomListTile extends StatelessWidget {
   final VoidCallback onTap;
   final String title;
+
   const CustomListTile({
     super.key,
     required this.onTap,
@@ -109,7 +108,11 @@ class CustomListTile extends StatelessWidget {
         border: Border.all(color: CustomTheme.grey.withOpacity(0.2)),
       ),
       child: ListTile(
-        title: Text(title, style: Get.textTheme.headlineLarge!.copyWith(fontWeight: FontWeight.bold)),
+        title: Text(
+          title,
+          style: Get.textTheme.headlineLarge!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
         onTap: onTap,
         trailing: const Icon(Icons.arrow_forward_ios_rounded),
       ),

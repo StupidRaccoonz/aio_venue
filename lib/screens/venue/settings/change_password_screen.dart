@@ -43,7 +43,9 @@ class ChangePasswordScreen extends StatelessWidget {
                 children: [
                   Text(
                     "Set New Password",
-                    style: TextStyle(fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: screenHeight * 0.03,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 5,
@@ -52,14 +54,17 @@ class ChangePasswordScreen extends StatelessWidget {
                     width: screenWidth * 0.7,
                     child: Text(
                       "Your new password must be different from previous password.",
-                      style: TextStyle(fontSize: screenHeight * 0.02, fontWeight: FontWeight.normal),
+                      style: TextStyle(
+                          fontSize: screenHeight * 0.02,
+                          fontWeight: FontWeight.normal),
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 16.0, bottom: 12, left: 16, right: 16),
+                    padding: const EdgeInsets.only(
+                        top: 16.0, bottom: 12, left: 16, right: 16),
                     child: InputFieldWidget(
                       textEditingController: oldPasswordC,
                       label: "Old Password",
@@ -77,7 +82,8 @@ class ChangePasswordScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0, left: 16, right: 16),
+                    padding: const EdgeInsets.only(
+                        bottom: 12.0, left: 16, right: 16),
                     child: InputFieldWidget(
                       textEditingController: passwordC,
                       label: "New Password",
@@ -95,7 +101,8 @@ class ChangePasswordScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0, left: 16, right: 16),
+                    padding: const EdgeInsets.only(
+                        bottom: 12.0, left: 16, right: 16),
                     child: InputFieldWidget(
                       textEditingController: confirmPasswordC,
                       label: "Confrim New Password",
