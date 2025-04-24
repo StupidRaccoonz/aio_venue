@@ -82,4 +82,6 @@ dependencies {
     debugImplementation("io.objectbox:objectbox-android-objectbrowser:3.7.1")
     implementation platform('com.google.firebase:firebase-bom:33.9.0')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation "io.objectbox:objectbox-android:4.1.0"
+    debugImplementation("io.objectbox:objectbox-android-objectbrowser:4.1.0")
 }

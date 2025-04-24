@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.4+4
+version: 1.0.5+4
 
 environment:
   sdk: ">=2.19.6 <4.0.0"
@@ -36,7 +36,7 @@ dependencies:
   # sign_in_with_apple: ^4.2.0
   google_sign_in: ^5.4.2
 
-  objectbox: any
+  
   cached_network_image: ^3.2.3
   video_player: ^2.7.0
   permission_handler: ^10.4.2
@@ -45,7 +45,7 @@ dependencies:
   # for multiple
   table_calendar: ^3.0.9
   get_storage: ^2.1.1
-  objectbox_flutter_libs: any
+  # objectbox_flutter_libs: ^4.1
   # video_thumbnail: ^0.5.3
   video_compress: ^3.1.2
   google_maps_flutter: ^2.1.5
@@ -60,6 +60,9 @@ dependencies:
   intl:
   url_launcher: ^6.3.1
   webview_flutter: ^4.9.0
+  objectbox: ^4.1.0
+  objectbox_flutter_libs: any
+
 
   # For ios please remove this to avoid issue
 
@@ -68,7 +71,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.0
-  objectbox_generator: any
+  objectbox_generator: ^4.1.0
   build_runner: ^2.4.14
   flutter_launcher_icons: ^0.14.3
 
