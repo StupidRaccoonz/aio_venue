@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:258826792456:android:772af4aa252e031ed32bbd",
         "android_client_info": {
-          "package_name": "com.macrew.AIOSports"
+          "package_name": "com.aiosports.venue"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "258826792456-7jtv57ugr36n3hhlaafn09pudrl7idkf.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.macrew.AIOSports"
+                "bundle_id": "com.aiosports.venue"
               }
             }
           ]
