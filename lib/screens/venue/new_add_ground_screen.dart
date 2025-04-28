@@ -556,7 +556,7 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen>
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: SizedBox(
-                                            height: 25.rfs * 3.5,
+                                            height: 25.rfs * 6,
                                             child: SelectTimeWidget(
                                               itemCount: 6,
                                               startingIndexValue: 6,
@@ -588,7 +588,7 @@ class _NewAddGroundScreenState extends State<NewAddGroundScreen>
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: SizedBox(
-                                              height: 25.rfs * 6,
+                                              height: 25.rfs * 8,
                                               child: SelectTimeWidget(
                                                 itemCount: 10,
                                                 startingIndexValue: 0,

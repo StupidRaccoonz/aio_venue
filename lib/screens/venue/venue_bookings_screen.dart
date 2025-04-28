@@ -227,15 +227,14 @@ class _MyDialogState extends State<MyDialog> {
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.05,
-                        vertical: screenHeight * 0.03),
+                        horizontal: 4, vertical: screenHeight * 0.02),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         RadioListTile<int>(
                           title: Text(
                             'Download both',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 18),
                           ),
                           value: 1,
                           groupValue: _selectedValue,
@@ -248,7 +247,7 @@ class _MyDialogState extends State<MyDialog> {
                         RadioListTile<int>(
                           title: Text(
                             'Only long term download',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 18),
                           ),
                           value: 2,
                           groupValue: _selectedValue,
@@ -261,7 +260,7 @@ class _MyDialogState extends State<MyDialog> {
                         RadioListTile<int>(
                           title: Text(
                             'Only long term download',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 18),
                           ),
                           value: 3,
                           groupValue: _selectedValue,
@@ -303,7 +302,7 @@ class _MyDialogState extends State<MyDialog> {
                     ),
                     labelText: "From",
                     labelStyle: TextStyle(
-                      fontSize: screenHeight * 0.03,
+                      fontSize: 18,
                       color: Color(0xff6E6F73),
                     ),
                     border: UnderlineInputBorder(
@@ -346,7 +345,7 @@ class _MyDialogState extends State<MyDialog> {
                     ),
                     labelText: "To",
                     labelStyle: TextStyle(
-                      fontSize: screenHeight * 0.03,
+                      fontSize: 18,
                       color: Color(0xff6E6F73),
                     ),
                     border: UnderlineInputBorder(

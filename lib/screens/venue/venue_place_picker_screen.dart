@@ -73,7 +73,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
         Placemark place = placemarks[0];
         setState(() {
           _address =
-              "${place.street}, ${place.locality}, ${place.country} ${place.postalCode}";
+              "${(place.street != null && place.street!.isNotEmpty) ? '${place.street},' : ""} ${(place.locality != null && place.locality!.isNotEmpty) ? '${place.locality},' : ""} ${place.country} ${place.postalCode}";
         });
       }
     } catch (e) {

@@ -5,12 +5,14 @@ import 'package:webview_flutter/webview_flutter.dart';
 class ThaiwanPayScreen extends StatefulWidget {
   final String url;
   final String targetUrl;
+  final String failedUrl;
 
-  const ThaiwanPayScreen({
-    Key? key,
-    required this.url,
-    required this.targetUrl,
-  }) : super(key: key);
+  const ThaiwanPayScreen(
+      {Key? key,
+      required this.url,
+      required this.targetUrl,
+      required this.failedUrl})
+      : super(key: key);
 
   @override
   _WebViewPageState createState() => _WebViewPageState();
@@ -18,6 +20,8 @@ class ThaiwanPayScreen extends StatefulWidget {
 
 class _WebViewPageState extends State<ThaiwanPayScreen> {
   late WebViewController _webViewController;
+
+  bool _hasNavigated = false; // Guard to prevent multiple Get.back calls
 
   @override
   void initState() {
@@ -28,8 +32,12 @@ class _WebViewPageState extends State<ThaiwanPayScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onUrlChange: (UrlChange change) {
-            if (change.url == widget.targetUrl) {
+            if (!_hasNavigated && change.url == widget.targetUrl) {
+              _hasNavigated = true; // Mark as navigated
               Get.back(result: "success");
+            } else if (!_hasNavigated && change.url == widget.failedUrl) {
+              _hasNavigated = true; // Mark as navigated
+              Get.back(result: "failed");
             }
           },
         ),

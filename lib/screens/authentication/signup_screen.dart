@@ -39,7 +39,9 @@ class _SignupScreenState extends State<SignupScreen> {
     return SafeArea(
       child: Container(
         decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage('assets/images/background.jpg'), fit: BoxFit.cover)),
+            image: DecorationImage(
+                image: AssetImage('assets/images/background.jpg'),
+                fit: BoxFit.cover)),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
@@ -48,25 +50,31 @@ class _SignupScreenState extends State<SignupScreen> {
               return Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 20.0),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Align(
                             alignment: Alignment.topLeft,
-                            child: Image.asset('assets/icons/logo.png', width: 20.vw),
+                            child: Image.asset('assets/icons/logo.png',
+                                width: 20.vw),
                           ),
                           const SizedBox(height: 20.0),
                           Row(children: [
                             IconButton(
                                 onPressed: () => Get.to(() => LoginScreen()),
-                                icon: Icon(Icons.arrow_back_rounded, color: CustomTheme.appColor)),
-                            Text("Create Account!", style: Get.textTheme.displayLarge),
+                                icon: Icon(Icons.arrow_back_rounded,
+                                    color: CustomTheme.appColor)),
+                            Text("Create Account!",
+                                style: Get.textTheme.displayLarge),
                           ]),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 45.0),
-                            child: Text("Setup your account!", style: Get.textTheme.labelLarge),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 45.0),
+                            child: Text("Setup your account!",
+                                style: Get.textTheme.labelLarge),
                           ),
                           const SizedBox(height: 20.0),
                           // Text("Select your role!", style: Get.textTheme.labelLarge),
@@ -84,7 +92,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                   inputAction: TextInputAction.next,
                                   capitalization: TextCapitalization.none,
                                   inputType: TextInputType.emailAddress,
-                                  leadingIcon: Image.asset("assets/icons/sms.png"),
+                                  leadingIcon:
+                                      Image.asset("assets/icons/sms.png"),
                                   // onChange: (value) => emailC.text = value,
                                   validate: (value) {
                                     if (value == null || value.isEmpty) {
@@ -117,7 +126,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                   inputAction: TextInputAction.next,
                                   capitalization: TextCapitalization.none,
                                   obsecureText: true,
-                                  leadingIcon: Image.asset("assets/icons/lock.png"),
+                                  leadingIcon:
+                                      Image.asset("assets/icons/lock.png"),
                                   // onChange: (value) => passwordC.text = value,
                                   validate: (value) {
                                     if (value == null || value.isEmpty) {
@@ -126,7 +136,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
                                     return null;
                                   },
-                                  trailingIcon: const Icon(Icons.remove_red_eye),
+                                  trailingIcon:
+                                      const Icon(Icons.remove_red_eye),
                                 ),
                                 const SizedBox(height: 12.0),
                                 InputFieldWidget(
@@ -135,19 +146,22 @@ class _SignupScreenState extends State<SignupScreen> {
                                   obsecureText: true,
                                   inputAction: TextInputAction.done,
                                   capitalization: TextCapitalization.none,
-                                  leadingIcon: Image.asset("assets/icons/lock.png"),
+                                  leadingIcon:
+                                      Image.asset("assets/icons/lock.png"),
                                   // onChange: (value) => confirmPasswordC.text = value,
                                   validate: (value) {
                                     if (value == null || value.isEmpty) {
                                       return "password field is required";
                                     }
-                                    if (passwordC.text != confirmPasswordC.text) {
+                                    if (passwordC.text !=
+                                        confirmPasswordC.text) {
                                       return "password mismatched";
                                     }
 
                                     return null;
                                   },
-                                  trailingIcon: const Icon(Icons.remove_red_eye),
+                                  trailingIcon:
+                                      const Icon(Icons.remove_red_eye),
                                 ),
                               ],
                             ),
@@ -158,12 +172,15 @@ class _SignupScreenState extends State<SignupScreen> {
                                   children: [
                                     Checkbox(
                                         value: agreeToAge.value,
-                                        onChanged: (value) => agreeToAge.value = value ?? false,
+                                        onChanged: (value) =>
+                                            agreeToAge.value = value ?? false,
                                         activeColor: CustomTheme.iconColor),
                                     Text(
                                       "I certify that I am 18 years of age or older.",
                                       style: Get.textTheme.headlineSmall!
-                                          .copyWith(color: CustomTheme.appColor, fontSize: 10.rfs),
+                                          .copyWith(
+                                              color: CustomTheme.appColor,
+                                              fontSize: 10.rfs),
                                     ),
                                     // RichText(text: TextSpan(children: [TextSpan(text: "I certify that, ")])),
                                   ],
@@ -174,24 +191,30 @@ class _SignupScreenState extends State<SignupScreen> {
                             children: [
                               Checkbox(
                                   value: agreeToTerms.value,
-                                  onChanged: (value) => agreeToTerms.value = value ?? false,
+                                  onChanged: (value) =>
+                                      agreeToTerms.value = value ?? false,
                                   activeColor: CustomTheme.iconColor),
                               RichText(
                                   text: TextSpan(
-                                style:
-                                    Get.textTheme.headlineSmall!.copyWith(color: CustomTheme.appColor, fontSize: 9.rfs),
+                                style: Get.textTheme.headlineSmall!.copyWith(
+                                    color: CustomTheme.appColor,
+                                    fontSize: 9.rfs),
                                 children: [
                                   const TextSpan(text: "I agree to the "),
                                   TextSpan(
                                     text: "terms of services",
                                     style: Get.textTheme.headlineSmall!
-                                        .copyWith(color: CustomTheme.iconColor, fontSize: 9.rfs),
+                                        .copyWith(
+                                            color: CustomTheme.iconColor,
+                                            fontSize: 9.rfs),
                                   ),
                                   const TextSpan(text: " and "),
                                   TextSpan(
                                     text: "Privacy policy",
                                     style: Get.textTheme.headlineSmall!
-                                        .copyWith(color: CustomTheme.iconColor, fontSize: 9.rfs),
+                                        .copyWith(
+                                            color: CustomTheme.iconColor,
+                                            fontSize: 9.rfs),
                                   ),
                                 ],
                               )),
@@ -203,16 +226,20 @@ class _SignupScreenState extends State<SignupScreen> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 if (!agreeToTerms.value) {
-                                  Constants.showSnackbar("Error", "please agree to the term of services");
+                                  Constants.showSnackbar("Error",
+                                      "please agree to the term of services");
                                   return;
                                 }
                                 controller.loading.value = true;
                                 // Navigator.push(context, MaterialPageRoute(builder: (context) => VenueDetails(addAnotherVenue: false,),));
                                 try {
-                                  final result = await controller.authService.registerAccount(
+                                  final result = await controller.authService
+                                      .registerAccount(
                                     number: phoneC.text,
                                     // userType: controller.accountType.toLowerCase().trim(),
-                                    userType: roleType.value == 2 ? "player" : "venue",
+                                    userType: roleType.value == 2
+                                        ? "player"
+                                        : "venue",
                                     email: emailC.text,
                                     password: passwordC.text,
                                   );
@@ -222,17 +249,24 @@ class _SignupScreenState extends State<SignupScreen> {
 
                                   if (result != null) {
                                     if (result.httpCode != 200) {
-                                      Constants.showSnackbar("Error", result.message);
+                                      Constants.showSnackbar(
+                                          "Error", result.message);
                                     } else {
                                       final res = await controller.authService
-                                          .login(email: emailC.text, password: passwordC.text);
+                                          .login(
+                                              email: emailC.text,
+                                              password: passwordC.text);
 
                                       if (res != null) {
-                                        getStorage.write(Constants.lastPage, "VenueDetails");
-                                        controller.loginResponseModel.value = res;
-                                        profileController.loginDataModel.value = res;
+                                        getStorage.write(
+                                            Constants.lastPage, "VenueDetails");
+                                        controller.loginResponseModel.value =
+                                            res;
+                                        profileController.loginDataModel.value =
+                                            res;
                                         profileController.firstTimeLoginCheck();
-                                        profileController.isLoggedIn.value = true;
+                                        profileController.isLoggedIn.value =
+                                            true;
                                         Get.offAll(() => VenueDetails(
                                               addAnotherVenue: false,
                                             ));
@@ -252,7 +286,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           SizedBox(height: constraints.maxHeight * 0.07),
                           Center(
                               child: Text("CONTINUE WITH",
-                                  textAlign: TextAlign.center, style: Get.textTheme.displaySmall)),
+                                  textAlign: TextAlign.center,
+                                  style: Get.textTheme.displaySmall)),
                           SizedBox(height: constraints.maxHeight * 0.02),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -279,7 +314,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           SizedBox(height: constraints.maxHeight * 0.05),
                           Center(
                               child: Text("Already have an account?",
-                                  textAlign: TextAlign.center, style: Get.textTheme.displaySmall)),
+                                  textAlign: TextAlign.center,
+                                  style: Get.textTheme.displaySmall)),
                           Center(
                               child: InkWell(
                                   // onTap: () => controller.isLoginPage.value = true,
@@ -287,7 +323,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text("Login Now",
-                                        textAlign: TextAlign.center, style: Get.textTheme.headlineSmall),
+                                        textAlign: TextAlign.center,
+                                        style: Get.textTheme.headlineSmall),
                                   ))),
                         ],
                       ),
@@ -298,7 +335,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           color: Colors.white54,
                           width: double.maxFinite,
                           height: double.maxFinite,
-                          child: const Center(child: CircularProgressIndicator()),
+                          child:
+                              const Center(child: CircularProgressIndicator()),
                         )
                       : const SizedBox(),
                 ],

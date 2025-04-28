@@ -31,7 +31,8 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
   RxList<Map<String, dynamic>> formsMapDataList = <Map<String, dynamic>>[].obs;
   RxList<int> numberOfGrounds = [1].obs;
   RxList<int> numberOfAddons = [1].obs;
-  RxList<req.AddOn> addonFormsData = <req.AddOn>[req.AddOn(itemName: "", quality: "", rentPrice: "")].obs;
+  RxList<req.AddOn> addonFormsData =
+      <req.AddOn>[req.AddOn(itemName: "", quality: "", rentPrice: "")].obs;
   List<String> morningTimings = [];
   List<String> eveningTimings = [];
   late RxList<FormInfo> groundFormsData;
@@ -58,7 +59,9 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(preferredSize: Size(double.maxFinite, 10.vh), child: const AppbarWidget(title: "Add New Ground")),
+      appBar: PreferredSize(
+          preferredSize: Size(double.maxFinite, 10.vh),
+          child: const AppbarWidget(title: "Add New Ground")),
       body: LayoutBuilder(builder: (context, constraints) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
@@ -69,12 +72,16 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
                 children: [
                   //for grounds form list
                   Container(
-                    decoration: BoxDecoration(border: Border.all(color: CustomTheme.borderColor, width: 1.5), borderRadius: BorderRadius.circular(8.0)),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: CustomTheme.borderColor, width: 1.5),
+                        borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: ExpansionPanelList(
                         elevation: 0.0,
-                        expansionCallback: (panelIndex, isExpanded) => groundExpanded.value = !groundExpanded.value,
+                        expansionCallback: (panelIndex, isExpanded) =>
+                            groundExpanded.value = !groundExpanded.value,
                         children: [
                           ExpansionPanel(
                               canTapOnHeader: true,
@@ -84,15 +91,20 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     children: [
-                                      Text("Ground Details (${numberOfGrounds.length})",
-                                          style: Get.textTheme.titleSmall!.copyWith(color: CustomTheme.appColor)),
+                                      Text(
+                                          "Ground Details (${numberOfGrounds.length})",
+                                          style: Get.textTheme.titleSmall!
+                                              .copyWith(
+                                                  color: CustomTheme.appColor)),
                                       const Spacer(),
                                       InkWell(
                                           onTap: () {
-                                            numberOfGrounds.add(numberOfGrounds.length);
+                                            numberOfGrounds
+                                                .add(numberOfGrounds.length);
                                             groundFormsData.add(FormInfo(
                                               groundName: "",
-                                              groundSize: widget.selectedSport.sportsizes.first.size,
+                                              groundSize: widget.selectedSport
+                                                  .sportsizes.first.size,
                                               groundUnits: "",
                                               hourlyRent: "",
                                               isIndoor: true,
@@ -104,10 +116,14 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
                                             // addnewGround(sportName: widget.selectedSport.name, formInfo: groundFormsData.last);
                                           },
                                           child: Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 16.0),
                                             child: Text(
                                               "+ Add more",
-                                              style: Get.textTheme.displaySmall!.copyWith(color: CustomTheme.iconColor),
+                                              style: Get.textTheme.displaySmall!
+                                                  .copyWith(
+                                                      color: CustomTheme
+                                                          .iconColor),
                                             ),
                                           )),
                                     ],
@@ -115,7 +131,9 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
                                 );
                               },
                               body: SizedBox(
-                                height: numberOfGrounds.length * constraints.maxHeight * 0.5,
+                                height: numberOfGrounds.length *
+                                    constraints.maxHeight *
+                                    0.5,
                                 child: ListView.builder(
                                   itemCount: numberOfGrounds.length,
                                   physics: const NeverScrollableScrollPhysics(),
@@ -124,25 +142,38 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0),
                                           child: ListTile(
-                                            title: Text("Ground ${index + 1}", style: Get.textTheme.headlineMedium),
+                                            title: Text("Ground ${index + 1}",
+                                                style: Get
+                                                    .textTheme.headlineMedium),
                                             tileColor: CustomTheme.borderColor,
                                             trailing: InkWell(
                                                 onTap: () {
-                                                  if (numberOfGrounds.length > 1) {
-                                                    numberOfGrounds.removeAt(index);
+                                                  if (numberOfGrounds.length >
+                                                      1) {
+                                                    numberOfGrounds
+                                                        .removeAt(index);
                                                     numberOfGrounds.refresh();
-                                                    groundFormsData.removeAt(index);
+                                                    groundFormsData
+                                                        .removeAt(index);
                                                     groundFormsData.refresh();
-                                                    removeGround(index, widget.selectedSport.name);
+                                                    removeGround(
+                                                        index,
+                                                        widget.selectedSport
+                                                            .name);
                                                   }
                                                 },
-                                                child: const Icon(Icons.close, size: 32.0)),
+                                                child: const Icon(Icons.close,
+                                                    size: 32.0)),
                                           ),
                                         ),
                                         AddGroundForm(
-                                          sport: profile.sportsList.firstWhere((e) => e!.id == widget.selectedSport.id)!,
+                                          sport: profile.sportsList.firstWhere(
+                                              (e) =>
+                                                  e!.id ==
+                                                  widget.selectedSport.id)!,
                                           formInfo: (FormInfo value) {
                                             groundFormsData[index] = value;
                                             // updateFormData(sportName: widget.selectedSport.name, formInfo: value, index: index);
@@ -162,12 +193,16 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
 
                   //for addons form list
                   Container(
-                    decoration: BoxDecoration(border: Border.all(color: CustomTheme.borderColor, width: 1.5), borderRadius: BorderRadius.circular(8.0)),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: CustomTheme.borderColor, width: 1.5),
+                        borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: ExpansionPanelList(
                         elevation: 0.0,
-                        expansionCallback: (panelIndex, isExpanded) => addonExpanded.value = !addonExpanded.value,
+                        expansionCallback: (panelIndex, isExpanded) =>
+                            addonExpanded.value = !addonExpanded.value,
                         children: [
                           ExpansionPanel(
                               canTapOnHeader: true,
@@ -176,24 +211,42 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
                                 return ListTile(
                                   title: Row(
                                     children: [
-                                      Text("Add ons (${numberOfAddons.length})", style: Get.textTheme.titleSmall!.copyWith(color: CustomTheme.appColor)),
+                                      Text("Add ons (${numberOfAddons.length})",
+                                          style: Get.textTheme.titleSmall!
+                                              .copyWith(
+                                                  color: CustomTheme.appColor)),
                                       const Spacer(),
                                       InkWell(
                                           onTap: () {
-                                            addonFormsData.add(req.AddOn(itemName: "", quality: "", rentPrice: ""));
-                                            numberOfAddons.add(numberOfAddons.length);
-                                            addAddonsToAllGrounds(addons: addonFormsData, sportName: widget.selectedSport.name);
+                                            addonFormsData.add(req.AddOn(
+                                                itemName: "",
+                                                quality: "",
+                                                rentPrice: ""));
+                                            numberOfAddons
+                                                .add(numberOfAddons.length);
+                                            addAddonsToAllGrounds(
+                                                addons: addonFormsData,
+                                                sportName:
+                                                    widget.selectedSport.name);
                                           },
                                           child: Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                                            child: Text("+ Add more", style: Get.textTheme.displaySmall!.copyWith(color: CustomTheme.iconColor)),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 16.0),
+                                            child: Text("+ Add more",
+                                                style: Get
+                                                    .textTheme.displaySmall!
+                                                    .copyWith(
+                                                        color: CustomTheme
+                                                            .iconColor)),
                                           )),
                                     ],
                                   ),
                                 );
                               },
                               body: SizedBox(
-                                height: numberOfAddons.length * constraints.maxHeight * 0.25,
+                                height: numberOfAddons.length *
+                                    constraints.maxHeight *
+                                    0.25,
                                 child: ListView.builder(
                                   itemCount: numberOfAddons.length,
                                   physics: const ClampingScrollPhysics(),
@@ -202,23 +255,33 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0),
                                           child: ListTile(
-                                            title: Text("Item ${index + 1}", style: Get.textTheme.headlineMedium),
+                                            title: Text("Item ${index + 1}",
+                                                style: Get
+                                                    .textTheme.headlineMedium),
                                             tileColor: CustomTheme.borderColor,
                                             trailing: InkWell(
                                                 onTap: () {
-                                                  numberOfAddons.removeAt(index);
+                                                  numberOfAddons
+                                                      .removeAt(index);
                                                   numberOfAddons.refresh();
-                                                  addonFormsData.removeAt(index);
-                                                  addAddonsToAllGrounds(addons: addonFormsData, sportName: widget.selectedSport.name);
+                                                  addonFormsData
+                                                      .removeAt(index);
+                                                  addAddonsToAllGrounds(
+                                                      addons: addonFormsData,
+                                                      sportName: widget
+                                                          .selectedSport.name);
                                                 },
-                                                child: const Icon(Icons.close, size: 32.0)),
+                                                child: const Icon(Icons.close,
+                                                    size: 32.0)),
                                           ),
                                         ),
                                         AddonFormWidget(
                                           index: index,
-                                          addonData: (value) => addonFormsData[index] = value,
+                                          addonData: (value) =>
+                                              addonFormsData[index] = value,
                                         ),
                                       ],
                                     );
@@ -233,11 +296,13 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
                   // time selection
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("Ground availability", style: Get.textTheme.displayMedium),
+                    child: Text("Ground availability",
+                        style: Get.textTheme.displayMedium),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("Ante meridiem (AM)", style: Get.textTheme.displaySmall),
+                    child: Text("Ante meridiem (AM)",
+                        style: Get.textTheme.displaySmall),
                   ),
 
                   Padding(
@@ -262,7 +327,8 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("Post meridiem (PM)", style: Get.textTheme.displaySmall),
+                    child: Text("Post meridiem (PM)",
+                        style: Get.textTheme.displaySmall),
                   ),
 
                   Padding(
@@ -303,13 +369,22 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
                           List<req.Ground> allGrounds = [];
                           for (var data in groundFormsData) {
                             Map<String, dynamic> map = data.toJson();
-                            map.putIfAbsent("add_ons", () => addonFormsData.map((element) => element.toJson()).toList());
-                            map.putIfAbsent("morning_availability", () => morningTimings);
-                            map.putIfAbsent("evening_availability", () => morningTimings);
+                            map.putIfAbsent(
+                                "add_ons",
+                                () => addonFormsData
+                                    .map((element) => element.toJson())
+                                    .toList());
+                            map.putIfAbsent(
+                                "morning_availability", () => morningTimings);
+                            map.putIfAbsent(
+                                "evening_availability", () => morningTimings);
                             allGrounds.add(req.Ground.fromJson(map));
                           }
-                          final result =
-                              await profile.venueService.addGround(profile.bearer, AddGroundRequestModel(venueId: profile.venueId!, grounds: allGrounds));
+                          final result = await profile.venueService.addGround(
+                              profile.bearer,
+                              AddGroundRequestModel(
+                                  venueId: profile.venueId!,
+                                  grounds: allGrounds));
                           if (result != null && result.httpCode == 200) {
                             // log("is this user new?  ${getStorage.read<bool>(Constants.isNewAccount)}");
                             log("result from add ground screen ${result.toJson()}");
@@ -345,7 +420,8 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
   void addnewGround({required String sportName, required FormInfo formInfo}) {
     // var data = formInfo.toJson();
     // data.addEntries([MapEntry("add_ons", addon.map((e) => e.toJson()).toList())]);
-    var listElement = formsMapDataList.firstWhere((element) => element['sport'] == sportName);
+    var listElement =
+        formsMapDataList.firstWhere((element) => element['sport'] == sportName);
     int index = formsMapDataList.indexOf(listElement);
     List<req.Ground> list = listElement['list'];
     formInfo.morningTiming = list.first.morningAvailability;
@@ -361,7 +437,8 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
   }
 
   void removeGround(int removeIndex, String sportname) {
-    var element = formsMapDataList.firstWhere((value) => value['sport'] == sportname);
+    var element =
+        formsMapDataList.firstWhere((value) => value['sport'] == sportname);
     int index = formsMapDataList.indexOf(element);
     List<req.Ground> list = element['list'];
     log("before removing ground ${list.map((e) => e.toJson()).toList().join(",")}");
@@ -370,8 +447,10 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
     formsMapDataList[index]['list'] = list;
   }
 
-  void addAddonsToAllGrounds({required List<req.AddOn> addons, required String sportName}) {
-    var data = formsMapDataList.firstWhere((element) => element['sport'] == sportName);
+  void addAddonsToAllGrounds(
+      {required List<req.AddOn> addons, required String sportName}) {
+    var data =
+        formsMapDataList.firstWhere((element) => element['sport'] == sportName);
     int index = formsMapDataList.indexOf(data);
     data['addons'] = addons;
     formsMapDataList[index] = data;
@@ -384,34 +463,41 @@ class _AddNewGroundScreenState extends State<AddNewGroundScreen> {
 
       // log("formData: ${data.map((e) => e.toJson()).toList().join(',')}");
       if (data.groundName.isEmpty) {
-        Constants.showSnackbar("Error", "Ground ${index + 1} name field is required");
+        Constants.showSnackbar(
+            "Error", "Ground ${index + 1} name field is required");
         return false;
       }
       if (data.hourlyRent.isEmpty) {
-        Constants.showSnackbar("Error", "Ground ${index + 1} hourly rent field is required");
+        Constants.showSnackbar(
+            "Error", "Ground ${index + 1} hourly rent field is required");
         return false;
       }
       if (data.morningTiming.isEmpty) {
-        Constants.showSnackbar("Error", "Ground ${index + 1} select morning availability");
+        Constants.showSnackbar(
+            "Error", "Ground ${index + 1} select morning availability");
         return false;
       }
       if (data.eveningTiming.isEmpty) {
-        Constants.showSnackbar("Error", "Ground ${index + 1} select evening availability");
+        Constants.showSnackbar(
+            "Error", "Ground ${index + 1} select evening availability");
         return false;
       }
     }
     for (int i = 0; i < addonFormsData.length; i++) {
       // log("addonsData: ${addonsData.map((e) => e.toJson()).toList().join(',')}");
       if (addonFormsData[i].itemName.isEmpty) {
-        Constants.showSnackbar("Error", "Addon ${i + 1} name field is required");
+        Constants.showSnackbar(
+            "Error", "Addon ${i + 1} name field is required");
         return false;
       }
       if (addonFormsData[i].rentPrice.isEmpty) {
-        Constants.showSnackbar("Error", "Addon ${i + 1} rent field is required");
+        Constants.showSnackbar(
+            "Error", "Addon ${i + 1} rent field is required");
         return false;
       }
       if (addonFormsData[i].quality.isEmpty) {
-        Constants.showSnackbar("Error", "Addon ${i + 1} select morning availability");
+        Constants.showSnackbar(
+            "Error", "Addon ${i + 1} select morning availability");
         return false;
       }
     }

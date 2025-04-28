@@ -568,7 +568,7 @@ class _VenueDetailsState extends State<VenueDetails> {
                                                                         value) >
                                                                     40) {
                                                               discountC.text =
-                                                                  "40";
+                                                                  value;
                                                               Get.dialog(Center(
                                                                 child: Padding(
                                                                   padding: const EdgeInsets
@@ -657,10 +657,11 @@ class _VenueDetailsState extends State<VenueDetails> {
                                                   .map((element) => element.id)
                                                   .toList()
                                                   .join(","),
-                                              longTermBooking: homeController
-                                                      .isLongTerm.value
-                                                  ? "1"
-                                                  : "0",
+                                              longTermBooking:
+                                                  profileController!
+                                                          .isLongTerm.value
+                                                      ? discountC.text
+                                                      : "0",
                                               numberOfGrounds:
                                                   numberOfGroundC.text,
                                               ratings: "0",

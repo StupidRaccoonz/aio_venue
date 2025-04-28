@@ -29,8 +29,11 @@ class Data {
   Data({this.myEarning, this.totalVenueEarning});
 
   Data.fromJson(Map<String, dynamic> json) {
-    myEarning = json['my_earning'] != null ? new MyEarning.fromJson(json['my_earning']) : null;
-    totalVenueEarning = double.parse(json['total_venue_earning'].toString()).toInt();
+    myEarning = json['my_earning'] != null
+        ? new MyEarning.fromJson(json['my_earning'])
+        : null;
+    totalVenueEarning =
+        double.parse(json['total_venue_earning'].toString()).toInt();
   }
 
   Map<String, dynamic> toJson() {
@@ -194,7 +197,8 @@ class Earning {
     // longTermBooking = json['long_term_booking'];
     createdAt = json['created_at'];
     // longTermBookingPrice = json['long_term_booking_price'];
-    player = json['player'] != null ? new Player.fromJson(json['player']) : null;
+    player =
+        json['player'] != null ? new Player.fromJson(json['player']) : null;
     // coachpackage = json['coachpackage'];
     if (json['slots'] != null) {
       slots = <Slots>[];
@@ -269,7 +273,18 @@ class Slots {
   String? updatedAt;
   String? bookingFor;
 
-  Slots({this.id, this.bookingId, this.date, this.time, this.venueId, this.groundId, this.playerId, this.sportsId, this.createdAt, this.updatedAt, this.bookingFor});
+  Slots(
+      {this.id,
+      this.bookingId,
+      this.date,
+      this.time,
+      this.venueId,
+      this.groundId,
+      this.playerId,
+      this.sportsId,
+      this.createdAt,
+      this.updatedAt,
+      this.bookingFor});
 
   Slots.fromJson(Map<String, dynamic> json) {
     id = json['id'];

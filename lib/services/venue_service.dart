@@ -599,14 +599,14 @@ class VenueService {
     try {
       Map<String, String> params = {
         "booking_type": bookingType,
-        "sports_id": sportsId,
+        // "sports_id": sportsId,
         "venue_id": venueId,
         "booking_category": bookingCategory
       };
       Response<Map<String, dynamic>> response = await dio
           .get('venue_booking_list', queryParameters: params, options: options);
 
-      log("response from getVenueBookings ${response.data.toString()}");
+      log("response from getVenueBookings payload:${params} ${response.data.toString()}");
 
       if (response.data == null) {
         // Constants.showSnackbar("Error", "check your internet connection");

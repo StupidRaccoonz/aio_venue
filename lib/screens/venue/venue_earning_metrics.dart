@@ -71,6 +71,12 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
     print("kajal heree $groupedEarnings");
     print(
         "longBookingsCount: ${longBookingsCount} shortBookingsCount: ${shortBookingCount}");
+    final challengesMatches =
+        profileController.venueAnalytics!.value!.data!.challanges ?? 0;
+    final hostedMatches =
+        profileController.venueAnalytics!.value!.data!.hostedActivity ?? 0;
+    final createdActivities =
+        profileController.venueAnalytics!.value!.data!.createdActivity ?? 0;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.maxFinite, 10.vh),
@@ -199,24 +205,27 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
                 ],
               ),
               SizedBox(height: 20),
-              // Container(
-              //   // height: screenHeight * 0.5,
-              //   decoration: BoxDecoration(
-              //       color: Colors.white,
-              //       borderRadius: BorderRadius.circular(16),
-              //       border:
-              //           Border.all(color: CustomTheme.grey.withOpacity(0.5))),
-              //   child: Padding(
-              //     padding:
-              //         const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-              //     child: _buildProgressIndicator(),
-              //     // profileController.venueAnalytics.value?.data.shortTermBooking != null
-              //     //     ? Center(
-              //     //         child: Text('No Data Found'),
-              //     //       )
-              //     //     : MetricsBookingComparisonWidget(),
-              //   ),
-              // ),
+              Container(
+                // height: screenHeight * 0.5,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border:
+                        Border.all(color: CustomTheme.grey.withOpacity(0.5))),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                  child: _buildProgressIndicator(
+                      challengesMatch: challengesMatches.toString(),
+                      hostedMatch: hostedMatches.toString(),
+                      createdActivity: createdActivities.toString()),
+                  // profileController.venueAnalytics.value?.data.shortTermBooking != null
+                  //     ? Center(
+                  //         child: Text('No Data Found'),
+                  //       )
+                  //     : MetricsBookingComparisonWidget(),
+                ),
+              ),
               SizedBox(height: 20),
               Text("Earning By Sport",
                   style: TextStyle(
@@ -370,7 +379,10 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
     );
   }
 
-  Widget _buildProgressIndicator() {
+  Widget _buildProgressIndicator(
+      {required String challengesMatch,
+      required String hostedMatch,
+      required String createdActivity}) {
     double screenWidth =
         MediaQuery.of(context).size.width - 32; // Full width minus padding
     double total = 10500;
@@ -406,9 +418,12 @@ class _VenueEarningMetricsScreenState extends State<VenueEarningMetricsScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _legendProgressItem("OMR 2200", "Challenges Match", Colors.orange),
-            _legendProgressItem("OMR 3150", "Hosted Match", shortTermColor),
-            _legendProgressItem("OMR 5150", "Created Activity", longTermColor),
+            _legendProgressItem(
+                "OMR $challengesMatch", "Challenges Match", Colors.orange),
+            _legendProgressItem(
+                "OMR $hostedMatch", "Hosted Match", shortTermColor),
+            _legendProgressItem(
+                "OMR $createdActivity", "Created Activity", longTermColor),
           ],
         ),
       ],

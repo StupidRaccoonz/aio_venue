@@ -790,6 +790,7 @@ class _VenueCreateActivityScreenState extends State<VenueCreateActivityScreen> {
       final status = await Get.to(() => ThaiwanPayScreen(
           url:
               'https://uatcheckout.thawani.om/pay/${data['data']['session_id']}?key=HGvTMLDssJghr9tlN9gr4DVYt0qyBy',
+          failedUrl: "https://yourapp.com/cancel",
           targetUrl: "https://yourapp.com/success"));
       print('Payment status: $status');
       if (status != null && status == 'success') {
