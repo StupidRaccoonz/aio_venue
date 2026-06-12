@@ -35,20 +35,20 @@ class PlayerDetailsModel {
 class Data {
   int id;
   int userId;
-  String name;
+  String? name;
   String email;
   String? phone;
   String? profilePicture;
   String? address;
-  DateTime birthDate;
+  DateTime? birthDate;
   String? aboutMe;
   DateTime? createdAt;
   DateTime? updatedAt;
-  String isDiscoverable;
+  int? isDiscoverable;
   dynamic latitude;
   dynamic longitude;
-  String isTeamDiscoverable;
-  String? totalPoints;
+  int? isTeamDiscoverable;
+  int? totalPoints;
   List<Sport>? sports;
 
   Data({
@@ -74,21 +74,29 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         userId: json["user_id"],
-        name: json["name"],
+        name: json["name"] as String?,
         email: json["email"],
-        phone: json["phone"],
-        profilePicture: json["profile_picture"],
-        address: json["address"],
-        birthDate: DateTime.parse(json["birth_date"]),
-        aboutMe: json["about_me"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        isDiscoverable: json["is_discoverable"],
+        phone: json["phone"] as String?,
+        profilePicture: json["profile_picture"] as String?,
+        address: json["address"] as String?,
+        birthDate: json["birth_date"] != null
+            ? DateTime.parse(json["birth_date"])
+            : null,
+        aboutMe: json["about_me"] as String?,
+        createdAt: json["created_at"] != null
+            ? DateTime.parse(json["created_at"])
+            : null,
+        updatedAt: json["updated_at"] != null
+            ? DateTime.parse(json["updated_at"])
+            : null,
+        isDiscoverable: json["is_discoverable"] as int?,
         latitude: json["latitude"],
         longitude: json["longitude"],
-        isTeamDiscoverable: json["is_team_discoverable"],
-        totalPoints: json["total_points"],
-        sports: List<Sport>.from(json["sports"].map((x) => Sport.fromJson(x))),
+        isTeamDiscoverable: json["is_team_discoverable"] as int?,
+        totalPoints: json["total_points"] as int?,
+        sports: json["sports"] != null
+            ? List<Sport>.from(json["sports"].map((x) => Sport.fromJson(x)))
+            : [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -99,7 +107,9 @@ class Data {
         "phone": phone,
         "profile_picture": profilePicture,
         "address": address,
-        "birth_date": "${birthDate.year.toString().padLeft(4, '0')}-${birthDate.month.toString().padLeft(2, '0')}-${birthDate.day.toString().padLeft(2, '0')}",
+        "birth_date": birthDate != null
+            ? "${birthDate!.year.toString().padLeft(4, '0')}-${birthDate!.month.toString().padLeft(2, '0')}-${birthDate!.day.toString().padLeft(2, '0')}"
+            : null,
         "about_me": aboutMe,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
@@ -108,7 +118,9 @@ class Data {
         "longitude": longitude,
         "is_team_discoverable": isTeamDiscoverable,
         "total_points": totalPoints,
-        "sports": sports == null ? null : List<dynamic>.from(sports!.map((x) => x.toJson())),
+        "sports": sports == null
+            ? null
+            : List<dynamic>.from(sports!.map((x) => x.toJson())),
       };
 }
 

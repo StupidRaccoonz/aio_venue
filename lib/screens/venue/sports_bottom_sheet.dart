@@ -31,21 +31,37 @@ class _SportsBottomSheetState extends State<SportsBottomSheet> {
   final GlobalKey<TooltipState> tooltipKey2 = GlobalKey<TooltipState>();
   final GlobalKey<TooltipState> tooltipKey3 = GlobalKey<TooltipState>();
 
-  @override
-  void initState() {
-    selectedList.assignAll(widget.selectedList);
+  void _buildCategories() {
+    selectedPopularSports.clear();
+    selectedFitnessSports.clear();
+    selectedWaterSports.clear();
     for (Sport? sport in profileController.sportsList) {
       if (sport!.id >= 1 && sport.id <= 5) {
         selectedPopularSports.add(sport);
-      }
-      if (sport.id >= 6 && sport.id <= 9) {
+      } else if (sport.id >= 6 && sport.id <= 9) {
         selectedFitnessSports.add(sport);
-      }
-      if (sport.id >= 10) {
+      } else if (sport.id >= 10) {
         selectedWaterSports.add(sport);
       }
     }
+  }
+
+  @override
+  void initState() {
     super.initState();
+    selectedList.assignAll(widget.selectedList);
+    if (profileController.sportsList.isNotEmpty) {
+      _buildCategories();
+    } else {
+      profileController.venueService
+          .getSports(profileController.bearer)
+          .then((value) {
+        if (value != null && value.data != null && value.data!.sports.isNotEmpty) {
+          profileController.sportsList.assignAll(value.data!.sports);
+          setState(() => _buildCategories());
+        }
+      });
+    }
   }
 
   @override
