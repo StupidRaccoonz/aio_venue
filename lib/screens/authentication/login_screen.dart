@@ -2,6 +2,7 @@ import 'package:aio_sport/constants/constants.dart';
 import 'package:aio_sport/controllers/auth_controller.dart';
 import 'package:aio_sport/controllers/home_controller.dart';
 import 'package:aio_sport/controllers/profile_controller.dart';
+import 'package:aio_sport/screens/authentication/forget_password_screen.dart';
 import 'package:aio_sport/screens/authentication/signup_screen.dart';
 import 'package:aio_sport/screens/authentication/wrapper.dart';
 import 'package:aio_sport/widgets/input_field_widget.dart';
@@ -105,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 10.0),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: InkWell(onTap: () {}, child: Text("Forgot Password?", style: Get.textTheme.headlineMedium)),
+                            child: InkWell(onTap: () => Get.to(() => const ForgetPasswordScreen()), child: Text("Forgot Password?", style: Get.textTheme.headlineMedium)),
                           ),
                           const SizedBox(height: 30.0),
                           MyButton(

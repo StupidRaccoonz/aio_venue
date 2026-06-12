@@ -1,4 +1,4 @@
-package com.macrew.AIOSports
+package com.aiosports.venue
 
 import io.flutter.embedding.android.FlutterActivity
 

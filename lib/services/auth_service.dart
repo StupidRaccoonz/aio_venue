@@ -11,17 +11,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'server_urls.dart';
 
 class AuthService {
-  Dio dio = Dio(BaseOptions(
-      baseUrl: ServerUrls.basUrl,
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 40),
-      sendTimeout: const Duration(seconds: 40)));
+  Dio dio = Dio(BaseOptions(baseUrl: ServerUrls.basUrl, connectTimeout: const Duration(seconds: 15), receiveTimeout: const Duration(seconds: 40), sendTimeout: const Duration(seconds: 40)));
 
-  Future<LoginResponseModel?> login(
-      {required String email, required String password}) async {
+  Future<LoginResponseModel?> login({required String email, required String password}) async {
     var headers = {'Accept': 'application/json'};
     final options = Options(headers: headers);
-    Map<String, dynamic> body = {'email': email, "password": password};
+    Map<String, dynamic> body = {
+      'email': email,
+      "password": password,
+    };
 
     // Request request = Request(url: url, method: method, headers: headers)
     try {
@@ -30,8 +28,7 @@ class AuthService {
       print(response.data!);
 
       if (response.data == null) {
-        Constants.showSnackbar(
-            "Error", "please check your internet connection");
+        Constants.showSnackbar("Error", "please check your internet connection");
       }
 
       if (response.statusCode == 200) {
@@ -42,8 +39,7 @@ class AuthService {
 
           return LoginResponseModel.fromJson(response.data);
         } else {
-          Constants.showSnackbar(
-              "Error", LoginResponseModel.fromJson(response.data).message);
+          Constants.showSnackbar("Error", LoginResponseModel.fromJson(response.data).message);
           return null;
         }
       } else {
@@ -74,17 +70,11 @@ class AuthService {
       );
 
       if (googleSignIn.currentUser != null) {
-        Map<String, dynamic> body = {
-          'email': googleSignIn.currentUser?.email,
-          "social_type": "google",
-          "social_id": googleSignIn.clientId
-        };
-        Response response =
-            await dio.post("social_login", data: body, options: options);
+        Map<String, dynamic> body = {'email': googleSignIn.currentUser?.email, "social_type": "google", "social_id": googleSignIn.clientId};
+        Response response = await dio.post("social_login", data: body, options: options);
 
         if (response.data == null) {
-          Constants.showSnackbar(
-              "Error", "please check your internet connection");
+          Constants.showSnackbar("Error", "please check your internet connection");
         }
 
         if (response.statusCode == 200) {
@@ -95,8 +85,7 @@ class AuthService {
 
             return LoginResponseModel.fromJson(response.data);
           } else {
-            Constants.showSnackbar(
-                "Error", LoginResponseModel.fromJson(response.data).message);
+            Constants.showSnackbar("Error", LoginResponseModel.fromJson(response.data).message);
             return null;
           }
         }
@@ -124,15 +113,12 @@ class AuthService {
       'phone': number,
       "password": password,
       "user_type": userType,
-      "device_token":
-          'Test_device_tokenwkdwiqnwieuwq089du90w8d0w9a8d09wa8d09sa8d0sa8d0sad90siad8as09d9a',
+      "device_token": 'Test_device_tokenwkdwiqnwieuwq089du90w8d0w9a8d09wa8d09sa8d0sa8d0sad90siad8as09d9a',
     };
 
     try {
       // Request request = Request(url: url, method: method, headers: headers)
-      Response response = await dio
-          .post("register", data: body, options: options)
-          .catchError((error) {
+      Response response = await dio.post("register", data: body, options: options).catchError((error) {
         log('Error: $error');
         return error;
       }, test: (error) {
@@ -146,18 +132,15 @@ class AuthService {
         return null;
       }
 
-      if (response.statusCode == 200 &&
-          SuccessResponseModel.fromJson(response.data).httpCode == 200) {
+      if (response.statusCode == 200 && SuccessResponseModel.fromJson(response.data).httpCode == 200) {
         // log("${response.bodyString}");
         getStorage.write(Constants.isNewAccount, true);
-        RegisterResponseModel model =
-            RegisterResponseModel.fromJson(response.data);
+        RegisterResponseModel model = RegisterResponseModel.fromJson(response.data);
         log("response status code success: ${response.statusCode} body: ${response.statusMessage}");
         return model;
       } else {
         log("response status code error: ${response.statusCode} body: ${response.statusMessage}");
-        Constants.showSnackbar(
-            "Result", SuccessResponseModel.fromJson(response.data).message);
+        Constants.showSnackbar("Result", SuccessResponseModel.fromJson(response.data).message);
         // response.status.printError(info: response.statusText ?? "-");
         return null;
       }
@@ -170,16 +153,37 @@ class AuthService {
     // return response.bodyString == null ? null : await login(email: email, password: password);
   }
 
+  Future<SuccessResponseModel?> forgotPassword({required String email}) async {
+    var headers = {'Accept': 'application/json'};
+    final options = Options(headers: headers);
+    Map<String, dynamic> body = {'email': email};
+
+    try {
+      Response response = await dio.post("forgot_password", data: body, options: options);
+
+      if (response.data == null) {
+        Constants.showSnackbar("Error", "please check your internet connection");
+        return null;
+      }
+
+      if (response.statusCode == 200) {
+        return SuccessResponseModel.fromJson(response.data);
+      } else {
+        Constants.showSnackbar("Error", response.data['message']);
+        return null;
+      }
+    } catch (ex) {
+      return null;
+    }
+  }
+
   Future<RegisterResponseModel?> changePassword({
     required String oldPassword,
     required String password,
     required String confirmPassword,
     required String token,
   }) async {
-    var headers = {
-      'Accept': 'application/json',
-      "Authorization": "Bearer $token"
-    };
+    var headers = {'Accept': 'application/json', "Authorization": "Bearer $token"};
     final options = Options(headers: headers);
     Map<String, dynamic> body = {
       'old_password': oldPassword,
@@ -188,9 +192,7 @@ class AuthService {
     };
 
     try {
-      Response response = await dio
-          .post("change_password", data: body, options: options)
-          .catchError((error) {
+      Response response = await dio.post("change_password", data: body, options: options).catchError((error) {
         log('Error: $error');
         return error;
       }, test: (error) {
@@ -204,21 +206,17 @@ class AuthService {
         return null;
       }
 
-      if (response.statusCode == 200 &&
-          SuccessResponseModel.fromJson(response.data).httpCode == 200) {
+      if (response.statusCode == 200 && SuccessResponseModel.fromJson(response.data).httpCode == 200) {
         // log("${response.bodyString}");
 
-        RegisterResponseModel model =
-            RegisterResponseModel.fromJson(response.data);
+        RegisterResponseModel model = RegisterResponseModel.fromJson(response.data);
         log("response status code success: ${response.statusCode} body: ${response.statusMessage}");
-        Constants.showSnackbar(
-            "Sucesss", SuccessResponseModel.fromJson(response.data).message);
+        Constants.showSnackbar("Sucesss", SuccessResponseModel.fromJson(response.data).message);
 
         return model;
       } else {
         log("response status code error: ${response.statusCode} body: ${response.statusMessage}");
-        Constants.showSnackbar(
-            "Error", SuccessResponseModel.fromJson(response.data).message);
+        Constants.showSnackbar("Error", SuccessResponseModel.fromJson(response.data).message);
         // response.status.printError(info: response.statusText ?? "-");
         return null;
       }

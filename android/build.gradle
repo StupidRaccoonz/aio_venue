@@ -1,36 +1,30 @@
-buildscript {
-    ext.kotlin_version = '2.1.0'
-    ext {
-        agp_version = '7.2.1'
-        agp_version1 = '7.3.1'
-    }
-    repositories {
-        google()
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath "com.android.tools.build:gradle:$agp_version1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.4.2'
-    }
-}
-
 allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 }
 
-rootProject.buildDir = '../build'
+// AGP 8.x requires namespace on all library modules. Older Flutter plugins that
+// predate this requirement won't have one set. Flutter's plugin loader sets
+// project.group to the plugin's package name, so use that as the namespace.
+subprojects {
+    afterEvaluate { project ->
+        if (project.plugins.hasPlugin("com.android.library")) {
+            def android = project.extensions.findByName("android")
+            if (android != null && android.namespace == null) {
+                android.namespace = project.group.toString()
+            }
+        }
+    }
+}
+
+rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 subprojects {
-    project.evaluationDependsOn(':app')
+    project.evaluationDependsOn(":app")
 }
 
 tasks.register("clean", Delete) {
